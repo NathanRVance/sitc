@@ -1,0 +1,54 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo "Server In The Cloud version `cat $DIR/version`"
+echo "Copyright (c) 2015, WebMO, LLC, all rights reserved."
+
+if [ -n "`uname -a | grep Debian`" ]; then
+   OS="debian"
+elif [ -n "`uname -a | grep ubuntu`" ] || [ -n "`uname -a | grep Ubuntu`" ]; then
+   OS="ubuntu"
+elif [ -e "/etc/redhat-release" ]; then
+   OS="centos"
+else
+   echo "Unidentified OS! Exiting."
+   exit
+fi
+
+echo "*** RUNNING OS_ADDITIONS ***"
+$DIR/scripts/$OS/os_additions
+read -s -n 1 -p "Press any key to continue"
+
+echo -e "\n"
+echo "*** RUNNING CONFIGURE ***"
+$DIR/scripts/$OS/configure
+read -s -n 1 -p "Press any key to continue"
+
+echo -e "\n"
+echo "*** RUNNING INSTALL_WEBMO ***"
+$DIR/scripts/$OS/install_webmo
+read -s -n 1 -p "Press any key to continue"
+
+echo -e "\n"
+echo "*** RUNNING INSTALL_MOPAC7 ***"
+$DIR/scripts/$OS/install_mopac7
+read -s -n 1 -p "Press any key to continue"
+
+echo -e "\n"
+echo "*** COPYING SCRIPTS TO /HOME/WEMO ***"
+sudo cp -a $DIR/../sitc /home/webmo/
+sudo chown -R webmo:webmo /home/webmo/sitc
+read -s -n 1 -p "Press any key to continue"
+
+IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
+
+echo "
+
+*** CONFIGURE INSTALLATION ***
+
+In your web browser, login to $IP/webmo with the username \"admin\" and a blank password. Set the admin password.
+
+Run a test job.
+"

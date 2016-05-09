@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+username=$1
+password=$2
+
+cd /home/webmo/public_html/cgi-bin/webmo
+
+sudo su webmo -c "perl -e \"
+	require qw(usercontrol.cgi);
+	create_user(\"$username\", 'webmo', \"$password\", '0');
+        \""
+sudo su webmo -c "perl -e \"
+	require qw(usercontrol.cgi);
+        my %user_profile;
+        \\\$user_profile{'timeLimit'} = -1;
+     	\\\$user_profile{'jobTimeLimit'} = 'group';
+      	\\\$user_profile{'enabledInterfaces'} = 'group';
+      	\\\$user_profile{'enabledServers'} = 'group';
+    	\\\$user_profile{'enabledQueues'} = 'group';
+  	&set_user_profile(\"$username\", \\%user_profile);
+        \""

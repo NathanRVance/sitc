@@ -1,0 +1,15 @@
+--- public_html.000/cgi-bin/webmo/interfaces/mopac.int.disabled	2015-02-17 10:22:28.000000000 -0500
++++ public_html/cgi-bin/webmo/interfaces/mopac.int	2015-09-16 12:27:07.215953308 -0400
+@@ -1,9 +1,9 @@
+ interfaceDescription{'mopac'}="Semi-empirical calculations"
+ interfaceDescription{'mopac_admin'}="Edit preferences specific to Mopac"
+ interfaceDescription{'mopac_name'}="Mopac"
+-mopacVersion="2009"
+-mopacPath="/usr/local/mopac2009/MOPAC2009.exe"
+-mopacExternal="/usr/local/mopac2009"
++mopacVersion="7"
++mopacPath="/usr/local/mopac7/mopac.exe"
++mopacExternal="/usr/local/mopac7"
+ nodesMin="1"
+ nodesMax="1"
+ nodesDefault="1"

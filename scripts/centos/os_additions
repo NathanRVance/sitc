@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+version=`cat /etc/redhat-release | grep -o '[0-9]' | awk '{ print $1 }' | head -n 1`
+
+#Run script to update os
+$DIR/os_update
+
+echo "Installing httpd..."
+# Install httpd
+sudo yum -y install httpd >> $DIR/../../sitc.log 2>&1
+if (( "$version" == 6 )); then
+	sudo chkconfig --add httpd >> $DIR/../../sitc.log 2>&1
+	sudo service httpd start >> $DIR/../../sitc.log 2>&1
+else
+	sudo systemctl enable httpd >> $DIR/../../sitc.log 2>&1
+	sudo systemctl start httpd >> $DIR/../../sitc.log 2>&1
+fi
+
+echo "Installing perl..."
+# Install perl
+sudo yum -y install perl >> $DIR/../../sitc.log 2>&1
+sudo yum -y install perl-CGI >> $DIR/../../sitc.log 2>&1
+
+echo "Installing mlocate..."
+# Install mlocate
+sudo yum -y install mlocate >> $DIR/../../sitc.log 2>&1
+sudo updatedb
+
+echo "Installing nano..."
+# Install nano
+sudo yum -y install nano >> $DIR/../../sitc.log 2>&1
+
+echo "Installing patch..."
+# Install patch
+sudo yum -y install patch >> $DIR/../../sitc.log 2>&1

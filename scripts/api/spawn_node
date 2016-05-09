@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ `whoami` != "webmo" ]; then
+	echo "Please run this script as the webmo user"
+	exit
+fi
+
+echo "Creating a compute node..."
+
+image="debian-8"
+name="supernode"
+project=`gcloud compute project-info describe | grep "name: " | awk '{print $2}'`
+zone=`gcloud compute instances list | grep "$(hostname)" | awk '{print $2}'`
+disksize="10"
+#memory can by any of standard, highmem, highcpu
+memory="standard"
+#numcpus can be any of 1, 2, 4, 8, 16, 32
+numcpus="1"
+
+gcloud compute --project "$project" instances create "$name" --zone "$zone" --machine-type "n1-$memory-$numcpus" --network "default" --maintenance-policy "MIGRATE" --scopes "https://www.googleapis.com/auth/cloud.useraccounts.readonly","https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring.write" --image "$image" --boot-disk-size "$disksize" --boot-disk-type "pd-standard" --boot-disk-device-name "$name"
+
+ip=`gcloud compute instances list "$name" | tail -1 | rev | cut -d " " -f 2 | rev`
+
+echo
+echo "Generating an ssh key. If prompted, press enter for no passphrase"
+echo
+gcloud compute config-ssh
+rm /home/webmo/.ssh/config
+
+#Automatic passwordless ssh
+cp /home/webmo/.ssh/google_compute_engine /home/webmo/.ssh/id_rsa
+#Remove ip from knownhosts
+ssh-keygen -R $ip
+
+echo
+echo "########## SSHing into webmo@$name ##########"
+
+echo "curl -O http://107.4.53.178/~nathan/sitc.tar.gz && tar xzf sitc.tar.gz && ./sitc/compute_install" | ssh -o StrictHostKeyChecking=no $name
+
+echo "########## Finished work in webmo@$name ##########"
+echo
+
+echo "In the WebMO admin page, under Remote Server Manager, add $name as a remote server with:
+ Server name:		$name
+ Hostname:		$name
+ CPU cores:		$numcpus
+ Username:		webmo
+ Home directory:	/home/webmo
+ Scratch directory:	/tmp
+ Protocal:		ssh
+
+Under Interface Manager, select $name as the server being edited and enable Mopac. Verify that the paths for the interface were set up correctly.
+"

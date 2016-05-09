@@ -1,0 +1,89 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+debian7="https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-7-wheezy-v20151104"
+debian8="https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20151104"
+centos6="https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images/centos-6-v20151104"
+centos7="https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images/centos-7-v20151104"
+ubuntu12="https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1204-precise-v2015111"
+ubuntu14="https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1404-trusty-v20151113"
+umuntu15="https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1510-wily-v20151114"
+
+token=`$DIR/get_token`
+name="supernode2"
+project="sitc-1070"
+zone="us-central1-f"
+
+read -r -d '' reststring << EOF
+{ 
+	"name": "$name",
+	"zone": "https://www.googleapis.com/compute/v1/projects/$project/zones/$zone",
+	"machineType": "https://www.googleapis.com/compute/v1/projects/$project/zones/$zone/machineTypes/n1-standard-1",
+	"metadata": { "items": [] },
+	"tags": { "items": [ "http-server" ] },
+	"disks": [ 
+	{ 
+		"type": "PERSISTENT",
+		"boot": true,
+		"mode": "READ_WRITE",
+		"autoDelete": true,
+		"deviceName": "$name",
+		"initializeParams": {
+			"sourceImage": "$ubuntu14",
+			"diskType": "https://www.googleapis.com/compute/v1/projects/$project/zones/$zone/diskTypes/pd-standard",
+			"diskSizeGb": "10"
+		}
+	} ],
+	"canIpForward": false,
+	"networkInterfaces": [
+	{
+		"network": "https://www.googleapis.com/compute/v1/projects/$project/global/networks/default",
+		"accessConfigs": [ 
+		{ 
+			"name": "External NAT",
+			"type": "ONE_TO_ONE_NAT"
+		} ]
+	} ],
+	"description": "",
+	"scheduling":
+	{
+		"preemptible": false,
+		"onHostMaintenance": "MIGRATE",
+		"automaticRestart": true
+	},
+	"serviceAccounts": [
+	{
+		"email": "default",
+		"scopes": [ "https://www.googleapis.com/auth/cloud-platform" ]
+	} ]
+}
+EOF
+
+curl -X POST -d "$reststring" https://www.googleapis.com/compute/v1/projects/$project/zones/$zone/instances --header "Content-Type:application/json" -H "Authorization":"Bearer $token"
+
+echo "
+When the instance boots, run the following:
+ gcloud compute ssh $name --zone $zone
+
+Then, from with in $name, execute:
+ curl -O http://107.4.53.178/~nathan/sitc.tar.gz
+ tar xzf sitc.tar.gz
+ ./sitc/compute_install
+ exit
+
+Back as `hostname`, run this command using the password "webmo":
+ ssh-copy-id webmo@{external ip of $name}
+
+In the WebMO admin page, under Remote Server Manager, add $name as a remote server with:
+ Server name:		$name
+ Hostname:		{external ip of $name}
+ CPU cores:		{todo: figure out cores based on machineType}
+ Username:		webmo
+ Home directory:	/home/webmo
+ Scratch directory:	/tmp
+ Protocal:		ssh
+
+Finally, under Interface Manager, select $name as the server being edited and enable Mopac. Verify that the paths for the interface were set up correctly.
+"

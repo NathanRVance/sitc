@@ -1,0 +1,63 @@
+--- httpd.conf.orig     2015-08-18 05:57:01.000000000 +0000
++++ httpd.conf  2015-10-13 01:35:59.029466367 +0000
+@@ -363,14 +363,14 @@
+     # of a username on the system (depending on home directory
+     # permissions).
+     #
+-    UserDir disabled
++    #UserDir disabled
+
+     #
+     # To enable requests to /~user/ to serve the user's public_html
+     # directory, remove the "UserDir disabled" line above, and uncomment
+     # the following line instead:
+     # 
+-    #UserDir public_html
++    UserDir public_html
+
+ </IfModule>
+
+@@ -378,18 +378,18 @@
+ # Control access to UserDir directories.  The following is an example
+ # for a site where these directories are restricted to read-only.
+ #
+-#<Directory /home/*/public_html>
+-#    AllowOverride FileInfo AuthConfig Limit
+-#    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+-#    <Limit GET POST OPTIONS>
+-#        Order allow,deny
+-#        Allow from all
+-#    </Limit>
+-#    <LimitExcept GET POST OPTIONS>
+-#        Order deny,allow
+-#        Deny from all
+-#    </LimitExcept>
+-#</Directory>
++<Directory /home/*/public_html>
++    AllowOverride All
++    Options None
++    <Limit GET POST OPTIONS>
++        Order allow,deny
++        Allow from all
++    </Limit>
++    <LimitExcept GET POST OPTIONS>
++        Order deny,allow
++        Deny from all
++    </LimitExcept>
++</Directory>
+
+ #
+ # DirectoryIndex: sets the file that Apache will serve if a directory
+--- httpd.conf.otherorig        2015-10-13 02:21:36.599050103 +0000
++++ httpd.conf  2015-10-13 02:23:49.250054747 +0000
+@@ -1007,3 +1007,10 @@
+ #    ErrorLog logs/dummy-host.example.com-error_log
+ #    CustomLog logs/dummy-host.example.com-access_log common
+ #</VirtualHost>
++
++<Directory /home/*/public_html/cgi-bin>
++    Options +ExecCGI
++    AddHandler cgi-script .cgi
++</Directory>
++#Redirect access to <ip>/webmo to login
++RedirectMatch ^/webmo(()|/)$ /~webmo/cgi-bin/webmo/login.cgi

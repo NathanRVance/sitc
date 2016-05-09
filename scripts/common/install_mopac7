@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Download and untar mopac7 to /usr/local
+echo "Downloading mopac7..."
+cd /usr/local
+sudo curl -s -O http://webmo.net/cloud/software/mopac7-bin.tar.gz
+echo "Untarring mopac7 to /usr/local..."
+sudo tar xzf mopac7-bin.tar.gz
+sudo rm -f mopac7-bin.tar.gz
+sudo chown -R root:root mopac7
+
+echo "Enabling mopac7 in WebMO..."
+# Enable mopac7 in WebMO
+cd /home/webmo/public_html/cgi-bin/webmo/interfaces/
+sudo mv mopac.int.disabled mopac.int
+patch mopac.int < $DIR/../../patches/mopac.int.patch

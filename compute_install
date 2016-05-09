@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo "Server In The Cloud version `cat $DIR/version`"
+echo "Copyright (c) 2015, WebMO, LLC, all rights reserved."
+
+if [ -n "`uname -a | grep Debian`" ]; then
+   OS="debian"
+elif [ -n "`uname -a | grep ubuntu`" ] || [ -n "`uname -a | grep Ubuntu`" ]; then
+   OS="ubuntu"
+elif [ -e "/etc/redhat-release" ]; then
+   OS="centos"
+else
+   echo "Unidentified OS! Exiting."
+   exit
+fi
+
+#Update the OS
+$DIR/scripts/$OS/os_additions
+
+echo "Downloading mopac7..."
+cd /usr/local
+sudo curl -s -O http://webmo.net/cloud/software/mopac7-bin.tar.gz
+echo "Untarring mopac7 to /usr/local..."
+sudo tar xzf mopac7-bin.tar.gz
+sudo rm -f mopac7-bin.tar.gz
+sudo chown -R root:root mopac7

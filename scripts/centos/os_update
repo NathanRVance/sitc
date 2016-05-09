@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo "Updating operating system..."
+# Update operating system
+sudo yum clean all >> $DIR/../../sitc.log 2>&1
+yum makecache fast >> $DIR/../../sitc.log 2>&1
+sudo yum -y update >> $DIR/../../sitc.log 2>&1

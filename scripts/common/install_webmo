@@ -1,0 +1,130 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+#Assume license and password have been checked for validity elsewhere.
+license=$1
+password=$2
+
+if [ -n "$license" ]; then
+	skip="yes"
+else
+	skip=""
+fi
+
+echo "Setting up WebMO user..."
+# Set up WebMO user
+sudo useradd -m webmo -s /bin/bash
+
+echo "Creating public_html directory..."
+# Create public_html directory
+sudo mkdir /home/webmo/public_html
+sudo mkdir /home/webmo/public_html/cgi-bin
+sudo chown -R webmo:webmo /home/webmo/public_html
+sudo chmod 711 /home/webmo
+sudo chmod -R 755 /home/webmo/public_html/cgi-bin
+
+echo "Installing WebMO..."
+# Install WebMO
+cd /tmp
+while : ; do
+	if [ -n "$skip" ]; then
+		#We already have our license!
+		:
+	else
+		##### GET USERNAME AND PASSWORD #####
+		$DIR/get_license.pl /tmp/credentials
+		# get_lecense.pl is set up to populate /tmp/credentials with
+		# your license and password.
+		license=`sed '1q;d' /tmp/credentials`
+		password=`sed '2q;d' /tmp/credentials`
+		##### END GET USERNAME AND PASSWORD #####
+	fi
+	echo "Downloading WebMO..."
+	# Download WebMO
+	curl -o WebMO.tar.gz -s "http://www.webmo.net/cgi-bin/download/download.cgi?license=$license&password=$password&version=latest&operation=download"
+	
+	if [ "`cat WebMO.tar.gz`" != "Password not valid" ] && [ "`cat WebMO.tar.gz`" != "License not found" ]; then
+		break;
+	fi
+	echo "Invalid license or password, try again."
+	if [ -n "$skip" ]; then
+		#Nobody's here to try again, so exit.
+		exit
+	fi
+done
+
+echo "Unpacking WebMO..."
+# Unpack WebMO
+tar xzf WebMO.tar.gz
+
+#Setup autoinstall script
+sudo cat > /tmp/WebMO.install/setup.conf << EOF
+license="$license"
+perlPath="/usr/bin/perl"
+webserver="localhost"
+htmlBase="/home/webmo/public_html/webmo"
+url_htmlBase="/~webmo/webmo"
+cgiBase="/home/webmo/public_html/cgi-bin/webmo"
+url_cgiBase="/~webmo/cgi-bin/webmo"
+userBase="/home/webmo/webmo"
+EOF
+
+sudo chown -R webmo:webmo WebMO.install
+cd WebMO.install
+sudo su webmo -c "perl setup.pl" >> $DIR/../../sitc.log 2>&1
+
+echo "Cleaning up temporary files..."
+# Clean up temporary files
+cd ..
+sudo rm -rf WebMO.install
+
+# Make sure permissions are correct for /home/webmo/webmo
+# (it can get messed up on different distributions)
+sudo chmod 757 /home/webmo/webmo
+
+if [ -n "$skip" ]; then
+	#We're done here!
+	exit
+fi
+
+# Set up a user?
+answer="a" # just anything other than "n", "y", and ""
+while [ "$answer" != "n" ] && [ "$answer" != "y" ] && [ "$answer" != "" ]; do
+	echo -n "Set up a WebMO user? [y/n]:"
+	read answer
+done
+if [ "$answer" == "y" ] || [ "$answer" == "" ]; then
+	while [ : ]; do
+		echo -n "Enter a username: "
+		read username
+		if [ "$username" == "" ]; then
+			echo
+			echo "Cannot have a blank username, try again."
+			continue
+		fi
+		equal=0
+		while [ $equal -eq 0 ]; do
+			echo -n "Enter a password: "
+			read -s password1
+			echo
+			echo -n "Enter password again: "
+			read -s password2
+			if [ "$password1" == "$password2" ]; then
+				equal=1
+			else
+				echo
+				echo "Passwords do not match. Try again."
+			fi
+		done
+		if [ "$password1" == "" ]; then
+                        echo
+                        echo "Cannot have a blank password, try again."
+                        continue
+                fi
+		$DIR/../common/create_webmo_user "$username" "$password2"
+		echo
+		break
+	done
+fi

@@ -1,0 +1,30 @@
+--- userdir.conf.000    2015-03-12 14:57:51.000000000 +0000
++++ userdir.conf        2015-06-11 20:22:14.972844656 +0000
+@@ -14,14 +14,14 @@
+     # of a username on the system (depending on home directory
+     # permissions).
+     #
+-    UserDir disabled
++    #UserDir disabled
+ 
+     #
+     # To enable requests to /~user/ to serve the user's public_html
+     # directory, remove the "UserDir disabled" line above, and uncomment
+     # the following line instead:
+     # 
+-    #UserDir public_html
++    UserDir public_html
+ </IfModule>
+ 
+ #
+@@ -34,3 +34,10 @@
+     Require method GET POST OPTIONS
+ </Directory>
+ 
++<Directory /home/*/public_html/cgi-bin>
++    Options +ExecCGI
++    AddHandler cgi-script .cgi
++</Directory>
++
++#Redirect access to <ip>/webmo to login
++RedirectMatch ^/webmo(()|/)$ /~webmo/cgi-bin/webmo/login.cgi
