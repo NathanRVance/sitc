@@ -11,5 +11,5 @@ echo "Installing apache..."
 sudo apt-get -y install apache2 >> $DIR/../../sitc.log 2>&1
 
 echo "Installing apache suexec..."
-# Install appache suexec
+# Install apache suexec
 sudo apt-get -y install apache2-suexec-custom >> $DIR/../../sitc.log 2>&1

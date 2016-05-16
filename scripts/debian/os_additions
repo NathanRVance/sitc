@@ -12,7 +12,7 @@ sudo apt-get -y install apache2 >> $DIR/../../sitc.log 2>&1
 
 echo "Installing suexec..."
 # Install suexec. Using custom rather than pristine because debian 7 doesn't have it in the repositories.
-sudo apt-get install apache2-suexec-custom >> $DIR/../../sitc.log 2>&1
+sudo apt-get -y install apache2-suexec-custom >> $DIR/../../sitc.log 2>&1
 
 echo "Installing perl..."
 # Install perl
