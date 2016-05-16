@@ -3,30 +3,34 @@
 #Obtain current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+APPEND="
+<Directory /home/*/public_html/cgi-bin>
+    Options +ExecCGI
+    AddHandler cgi-script .cgi
+</Directory>
+#Redirect access to <ip>/webmo to login
+RedirectMatch ^/webmo(()|/)$ /~webmo/cgi-bin/webmo/login.cgi"
+
 echo "Configuring webserver..."
 # Configure webserver
+sudo a2enmod userdir >> $DIR/../../sitc.log 2>&1
+sudo a2enmod suexec >> $DIR/../../sitc.log 2>&1
+sudo a2enmod cgid >> $DIR/../../sitc.log 2>&1
 if [ -e /etc/apache2/conf.d/ ]; then
 	#debian 7
-	sudo a2enmod userdir >> $DIR/../../sitc.log 2>&1
-	sudo a2enmod suexec >> $DIR/../../sitc.log 2>&1
 	sudo cp /etc/apache2/mods-enabled/userdir.conf /etc/apache2/conf.d
 	if [ ! -e /etc/apache2/conf.d/userdir.conf.orig ]; then
 		#This is the first time the script was run, so back up the current userdir.conf
 		sudo cp -p /etc/apache2/conf.d/userdir.conf /etc/apache2/conf.d/userdir.conf.orig
+		echo $APPEND >> /etc/apache2/cond.d/userdir.conf
 	fi
-	sudo rm -f /etc/apache2/conf.d/userdir.conf
-	sudo cp $DIR/../../patches/userdir.conf.dropin.deb7 /etc/apache2/conf.d/userdir.conf
 	sudo service apache2 restart >> $DIR/../../sitc.log 2>&1
 elif [ -e /etc/apache2/mods-available/userdir.conf ]; then
 	#debian 8
-	sudo a2enmod userdir >> $DIR/../../sitc.log 2>&1
-	sudo a2enmod suexec >> $DIR/../../sitc.log 2>&1
-	sudo a2enmod cgid >> $DIR/../../sitc.log 2>&1
 	if [ ! -e /etc/apache2/mods-available/userdir.conf.orig ]; then
 		#This is the first time the script was run, so back up the current userdir.conf
                 sudo cp -p /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-available/userdir.conf.orig
+		echo $APPEND >> /etc/apache2/mods-available/userdir.conf
         fi
-	sudo rm -f /etc/apache2/mods-available/userdir.conf
-	sudo cp $DIR/../../patches/userdir.conf.dropin.deb8 /etc/apache2/mods-available/userdir.conf
 	sudo systemctl restart apache2 >> $DIR/../../sitc.log 2>&1
 fi
