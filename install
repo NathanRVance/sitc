@@ -4,11 +4,11 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo "Server In The Cloud version `cat $DIR/version`"
-echo "Copyright (c) 2015, WebMO, LLC, all rights reserved."
+echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
-if [ -n "`uname -a | grep Debian`" ]; then
+if [ -n "`uname -a | grep -i Debian`" ]; then
    OS="debian"
-elif [ -n "`uname -a | grep ubuntu`" ] || [ -n "`uname -a | grep Ubuntu`" ]; then
+elif [ -n "`uname -a | grep -i ubuntu`" ]; then
    OS="ubuntu"
 elif [ -e "/etc/redhat-release" ]; then
    OS="centos"
@@ -37,7 +37,7 @@ $DIR/scripts/$OS/install_mopac7
 read -s -n 1 -p "Press any key to continue"
 
 echo -e "\n"
-echo "*** COPYING SCRIPTS TO /HOME/WEMO ***"
+echo "*** COPYING SCRIPTS TO /HOME/WEBMO ***"
 sudo cp -a $DIR/../sitc /home/webmo/
 sudo chown -R webmo:webmo /home/webmo/sitc
 read -s -n 1 -p "Press any key to continue"

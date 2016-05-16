@@ -13,3 +13,7 @@ sudo apt-get -y install apache2 >> $DIR/../../sitc.log 2>&1
 echo "Installing apache suexec..."
 # Install apache suexec
 sudo apt-get -y install apache2-suexec-custom >> $DIR/../../sitc.log 2>&1
+
+echo "Installing perl..."
+# Install perl
+sudo apt-get -y install libcgi-pm-perl >> $DIR/../../sitc.log 2>&1
