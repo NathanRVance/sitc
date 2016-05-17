@@ -1,5 +1,0 @@
---- sshd_config.orig	2016-01-07 20:34:21.937054186 +0000
-+++ sshd_config	2016-01-07 19:00:35.455563982 +0000
-@@ -49,1 +49,1 @@
--PasswordAuthentication no
-+PasswordAuthentication yes

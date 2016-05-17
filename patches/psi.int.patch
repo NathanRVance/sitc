@@ -1,0 +1,11 @@
+--- psi.int.disabled        2016-05-17 14:11:25.147369891 +0000
++++ psi.int     2016-05-17 14:11:20.255371509 +0000
+@@ -2,7 +2,7 @@
+ interfaceDescription{'psi_admin'}="Edit preferences specific to PSI4"
+ interfaceDescription{'psi_name'}="PSI4"
+ psiVersion="4.0"
+-psiBase="/share/apps/psi4"
++psiBase="/usr/local/miniconda"
+ nodesMin="1"
+ nodesMax="1"
+ nodesDefault="1"

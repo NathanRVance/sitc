@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#Obtain current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Install miniconda, psi4's installer
+echo "Downloading miniconda..."
+cd /usr/local
+sudo curl -o Miniconda-latest.sh "https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh" -k >> $DIR/../../sitc.log 2>&1
+echo "Installing miniconda..."
+sudo bash Miniconda-latest.sh -b -p /usr/local/miniconda >> $DIR/../../sitc.log 2>&1
+echo "export PATH=/usr/local/miniconda/bin:\$PATH" | sudo tee --append /etc/bash.bashrc > /dev/null
+source /etc/bash.bashrc
+sudo env "PATH=$PATH" conda update --yes --all >> $DIR/../../sitc.log 2>&1
+sudo env "PATH=$PATH" conda config --add channels http://conda.anaconda.org/psi4 >> $DIR/../../sitc.log 2>&1
+sudo env "PATH=$PATH" conda install --yes psi4 >> $DIR/../../sitc.log 2>&1
+
+echo "Enabling psi4 in WebMO..."
+# Enable psi4 in WebMO
+cd /home/webmo/public_html/cgi-bin/webmo/interfaces/
+sudo mv psi.int.disabled psi.int
+patch psi.int < $DIR/../../patches/psi.int.patch
