@@ -1,0 +1,35 @@
+#!/bin/bash
+
+cd /usr/local
+
+echo "Unpacking gamess"
+tar xzf gamess-current.tar.gz
+
+echo "Configuring installation"
+cd gamess
+echo "
+linux64
+
+
+
+gfortran
+4.9
+
+none
+
+
+sockets
+no
+" | ./config
+
+echo "Compiling ddi"
+cd ddi
+./compddi
+mv ddikick.x ..
+cd ..
+
+echo "Compiling gamess"
+./compall
+./lked games 00
+
+echo "Please edit rungms and make a patch!"
