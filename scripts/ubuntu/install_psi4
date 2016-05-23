@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo "Installing bzip2..."
+# Install bzip2
+sudo apt-get -y install bzip2 >> $DIR/../../sitc.log 2>&1
+
+$DIR/../common/install_psi4

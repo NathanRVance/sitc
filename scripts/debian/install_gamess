@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo "Installing csh..."
+# Install csh
+sudo apt-get -y install csh >> $DIR/../../sitc.log 2>&1
+
+echo "Installing gfortran..."
+# Install gfortran
+sudo apt-get -y install gfortran >> $DIR/../../sitc.log 2>&1
+
+$DIR/../common/install_gamess

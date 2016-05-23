@@ -3,33 +3,34 @@
 cd /usr/local
 
 echo "Unpacking gamess"
-tar xzf gamess-current.tar.gz
+sudo tar xzf gamess-current.tar.gz
 
 echo "Configuring installation"
 cd gamess
+GFORTVERS=`gfortran -v 2>&1 | tail -1 | awk '{print $3}' | cut -c1-3`
 echo "
 linux64
 
 
 
 gfortran
-4.9
+$GFORTVERS
 
 none
 
 
 sockets
 no
-" | ./config
+" | sudo ./config
 
 echo "Compiling ddi"
 cd ddi
-./compddi
-mv ddikick.x ..
+sudo ./compddi
+sudo mv ddikick.x ..
 cd ..
 
 echo "Compiling gamess"
-./compall
-./lked games 00
+sudo ./compall
+sudo ./lked gamess 00
 
 echo "Please edit rungms and make a patch!"
