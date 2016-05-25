@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 cd /usr/local
 
 echo "Unpacking gamess"
@@ -33,4 +35,4 @@ echo "Compiling gamess"
 sudo ./compall
 sudo ./lked gamess 00
 
-echo "Please edit rungms and make a patch!"
+sudo patch rungms < $DIR/../../patches/rungms.patch
