@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo "Installing unzip..."
+# Install unzip
+sudo apt-get -y install unzip >> $DIR/../../sitc.log 2>&1
+
+$DIR/../common/install_openmopac
