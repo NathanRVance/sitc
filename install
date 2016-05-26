@@ -6,6 +6,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "Server In The Cloud version `cat $DIR/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
+echo
+echo "This script automates the installation of software from numerous"
+echo "third parties. Many of these have licenses that are agreed to"
+echo "automatically by this script. Please indicate your conscent by"
+echo "pressing ENTER. Otherwise, press CTRL-c to exit."
+echo
+read ans
+
+
 if [ -n "`uname -a | grep -i Debian`" ]; then
    OS="debian"
 elif [ -n "`uname -a | grep -i ubuntu`" ]; then
@@ -16,6 +25,8 @@ else
    echo "Unidentified OS! Exiting."
    exit
 fi
+
+echo -e "\nInstalling for $OS"
 
 echo "*** RUNNING OS_ADDITIONS ***"
 $DIR/scripts/$OS/os_additions
