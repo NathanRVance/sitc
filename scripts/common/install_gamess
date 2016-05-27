@@ -6,6 +6,7 @@ cd /usr/local
 
 echo "Unpacking gamess"
 sudo tar xzf gamess-current.tar.gz
+sudo chown -R root:root gamess
 
 echo "Configuring installation"
 cd gamess
