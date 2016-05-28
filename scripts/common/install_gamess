@@ -14,7 +14,7 @@ GFORTVERS=`gfortran -dumpversion | cut -c1-3`
 
 # Gamess doesn't normally compile for gfortran version > 4.9, but that's only because of
 # checks in the config and comp files, not because of incompatabilities in the code.
-if (( $(echo "$GFORTVERS > 4.9" | bc -l) )); then
+if (( $(echo "$GFORTVERS 4.9" | awk '{print ($1 > $2)}') )); then
 	sed "s/X/$GFORTVERS/" $DIR/../../patches/gamess_config.patch | sudo patch config
 	sed "s/X/$GFORTVERS/" $DIR/../../patches/gamess_comp.patch | sudo patch comp
 fi
