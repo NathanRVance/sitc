@@ -1,0 +1,10 @@
+--- gamess/config	2014-12-08 20:09:21.000000000 +0000
++++ gamess.new/config	2016-05-27 12:22:49.887313253 +0000
+@@ -394,6 +394,7 @@
+          case 4.7:
+          case 4.8:
+          case 4.9:
++	 case X:
+             echo "   Good, the newest gfortrans can compile REAL*16 data type."
+             breaksw
+          default:
