@@ -1,0 +1,15 @@
+--- mopac.int.disabled	2015-02-17 10:22:28.000000000 -0500
++++ mopac.int	2015-09-16 12:27:07.215953308 -0400
+@@ -1,9 +1,9 @@
+ interfaceDescription{'mopac'}="Semi-empirical calculations"
+ interfaceDescription{'mopac_admin'}="Edit preferences specific to Mopac"
+ interfaceDescription{'mopac_name'}="Mopac"
+-mopacVersion="7"
+-mopacPath="/usr/local/mopac7/mopac.exe"
+-mopacExternal="/usr/local/mopac7"
++mopacVersion="2016"
++mopacPath="/opt/mopac/MOPAC2016.exe"
++mopacExternal="/opt/mopac"
+ nodesMin="1"
+ nodesMax="1"
+ nodesDefault="1"

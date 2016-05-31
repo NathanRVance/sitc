@@ -9,8 +9,11 @@ sudo mv /opt/mopac/libiomp5.so /usr/lib/
 sudo chmod 777 /opt/mopac/
 sudo chmod +x /opt/mopac/MOPAC2016.exe
 sudo ldconfig
-echo "You should have received a password from Mr Mopac."
+echo "You should have received a password from Mr MOPAC."
 echo "If not, please go to http://openmopac.net/form.php and request one."
 echo -n "Enter the password you recieved from Mr MOPAC: "
 read password
 echo -e "\nYes\n" | /opt/mopac/MOPAC2016.exe $password
+
+#mopac.int was already enabled when we installed mopac7
+patch /home/webmo/public_html/cgi-bin/webmo/interfaces/mopac.int < $DIR/../../patches/openmopac.int.patch
