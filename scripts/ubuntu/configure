@@ -3,6 +3,14 @@
 #Obtain current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+APPEND="
+<Directory /home/*/public_html/cgi-bin>
+    Options +ExecCGI
+    AddHandler cgi-script .cgi
+</Directory>
+#Redirect access to <ip>/webmo to login
+RedirectMatch ^/webmo(()|/)$ /~webmo/cgi-bin/webmo/login.cgi"
+
 echo "Configuring webserver..."
 # Configure webserver
 sudo a2enmod suexec >> $DIR/../../sitc.log 2>&1
@@ -10,12 +18,13 @@ sudo a2enmod cgid >> $DIR/../../sitc.log 2>&1
 sudo a2enmod userdir >> $DIR/../../sitc.log 2>&1
 if [ ! -e /etc/apache2/mods-available/userdir.conf.orig ]; then
 	sudo cp -p /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-available/userdir.conf.orig
+	sudo rm -f /etc/apache2/mods-available/userdir.conf
+	release=`lsb_release -rs`
+	if (( ${release%%.*} >= "14" )); then
+		echo "$APPEND" | sudo tee --append /etc/apache2/mods-available/userdir.conf > /dev/null
+		sudo systemctl restart apache2
+	else
+		echo "$APPEND" | sudo tee --append /etc/apache2/mods-available/userdir.conf > /dev/null
+		sudo service apache2 restart >> $DIR/../../sitc.log 2>&1
+	fi
 fi
-sudo rm -f /etc/apache2/mods-available/userdir.conf
-release=`lsb_release -rs`
-if (( ${release%%.*} >= "14" )); then
-	sudo cp $DIR/../../patches/userdir.conf.dropin.deb8 /etc/apache2/mods-available/userdir.conf
-else
-	sudo cp $DIR/../../patches/userdir.conf.dropin.deb7 /etc/apache2/mods-available/userdir.conf
-fi
-sudo service apache2 restart >> $DIR/../../sitc.log 2>&1
