@@ -3,11 +3,11 @@
 #Obtain current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+cd /opt/
 sudo curl -O http://openmopac.net/MOPAC2016_for_Linux_64_bit.zip
 sudo unzip MOPAC2016_for_Linux_64_bit.zip -d /opt/mopac/
 sudo mv /opt/mopac/libiomp5.so /usr/lib/
-sudo chmod 777 /opt/mopac/
-sudo chmod +x /opt/mopac/MOPAC2016.exe
+sudo chmod -R 777 /opt/mopac/
 sudo ldconfig
 echo "You should have received a password from Mr MOPAC."
 echo "If not, please go to http://openmopac.net/form.php and request one."
