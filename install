@@ -59,7 +59,8 @@ echo "
 
 *** CONFIGURE INSTALLATION ***
 
-In your web browser, login to $IP/webmo with the username \"admin\" and a blank password. Set the admin password.
+In your web browser, login to $IP/webmo with the
+username \"admin\" and a blank password. Set the admin password.
 
 Run a test job.
 "

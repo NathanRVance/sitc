@@ -11,6 +11,10 @@ sudo chown -R root:root gamess
 echo "Configuring installation"
 cd gamess
 GFORTVERS=`gfortran -dumpversion | cut -c1-3`
+if [ `echo "$GFORTVERS" | head -1` == "GNU" ]; then
+	#Earlier versions of gfortran didn't dump the version nicely.
+	GFORTVERS=`gfortran -dumpversion | head -1 | awk '{print $4}' | cut -c1-3`
+fi
 
 # Gamess doesn't normally compile for gfortran version > 4.9, but that's only because of
 # checks in the config and comp files, not because of incompatabilities in the code.
