@@ -45,3 +45,9 @@ sudo ./compall
 sudo ./lked gamess 00
 
 sudo patch rungms < $DIR/../../patches/rungms.patch
+
+echo "Enabling gamess in WebMO..."
+# Enable gamess in WebMO
+cd /home/webmo/public_html/cgi-bin/webmo/interfaces/
+sudo mv gamess.int.disabled gamess.int
+patch gamess.int < $DIR/../../patches/gamess.int.patch
