@@ -8,6 +8,7 @@ sudo curl -O http://openmopac.net/MOPAC2016_for_Linux_64_bit.zip
 sudo unzip -d mopac2016/ MOPAC2016_for_Linux_64_bit.zip
 cd mopac2016/
 sudo mv libiomp5.so /usr/lib/
+sudo ldconfig
 sudo chmod 755 MOPAC2016.exe
 export MOPAC_LICENSE=$ENGINE_DIR/mopac2016
 echo "You should have received a password from Mr MOPAC."
@@ -17,8 +18,7 @@ read password
 echo -e "\nYes\n" | ./MOPAC2016.exe $password
 
 cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
-sudo mv mopac.int.disabled mopac.int
+sudo mv mopac.int.disabled mopac.int > /dev/null 2>&1
 sed -i "s&mopacVersion=.*&mopacVersion=\"2016\"&" mopac.int
 sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac2016/MOPAC2016.exe\"&" mopac.int
 sed -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int
-

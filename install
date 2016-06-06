@@ -8,14 +8,16 @@ source $DIR/sitc.conf
 echo "Server In The Cloud version `cat $DIR/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
-echo
-echo "This script automates the installation of software from several"
-echo "third parties. Many of these have licenses that are agreed to"
-echo "automatically by this script. Indicate your consent by pressing"
-echo "ENTER, or press CTRL-c to exit."
-echo
-read ans
-
+if [ ! -e $DIR/license_agreed ]; then
+	echo
+	echo "This script automates the installation of software from several"
+	echo "third parties. Many of these have licenses that are agreed to"
+	echo "automatically by this script. Indicate your consent by pressing"
+	echo "ENTER, or press CTRL-c to exit."
+	echo
+	read ans
+	touch $DIR/license_agreed
+fi
 
 if [ -n "`uname -a | grep -i Debian`" ]; then
    OS="debian"
