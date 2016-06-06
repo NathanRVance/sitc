@@ -54,5 +54,5 @@ echo "Enabling gamess in WebMO..."
 # Enable gamess in WebMO
 cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
 sudo mv gamess.int.disabled gamess.int
-sed -i "s&gamessVersion=.*&gamessVersion=\"2014\"&" gamess.int
-sed -i "s&gamessGMSPATH=.*&gamessGMSPATH=\"$ENGINE_DIR/gamess\"&" gamess.int
+sudo sed -i "s&gamessVersion=.*&gamessVersion=\"2014\"&" gamess.int
+sudo sed -i "s&gamessGMSPATH=.*&gamessGMSPATH=\"$ENGINE_DIR/gamess\"&" gamess.int

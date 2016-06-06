@@ -19,6 +19,6 @@ echo -e "\nYes\n" | ./MOPAC2016.exe $password
 
 cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
 sudo mv mopac.int.disabled mopac.int > /dev/null 2>&1
-sed -i "s&mopacVersion=.*&mopacVersion=\"2016\"&" mopac.int
-sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac2016/MOPAC2016.exe\"&" mopac.int
-sed -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int
+sudo sed -i "s&mopacVersion=.*&mopacVersion=\"2016\"&" mopac.int
+sudo sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac2016/MOPAC2016.exe\"&" mopac.int
+sudo  -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int

@@ -19,4 +19,4 @@ echo "Enabling psi4 in WebMO..."
 # Enable psi4 in WebMO
 cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
 sudo mv psi.int.disabled psi.int
-sed -i "s&psiBase=.*&psiBase=\"$ENGINE_DIR/miniconda\"&" psi.int
+sudo sed -i "s&psiBase=.*&psiBase=\"$ENGINE_DIR/miniconda\"&" psi.int

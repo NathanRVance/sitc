@@ -15,6 +15,6 @@ echo "Enabling mopac7 in WebMO..."
 # Enable mopac7 in WebMO
 cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
 sudo mv mopac.int.disabled mopac.int
-sed -i "s&mopacVersion=.*&mopacVersion=\"7\"&" mopac.int
-sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac7/mopac.exe\"&" mopac.int
-sed -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int
+sudo sed -i "s&mopacVersion=.*&mopacVersion=\"7\"&" mopac.int
+sudo sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac7/mopac.exe\"&" mopac.int
+sudo sed -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int
