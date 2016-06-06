@@ -127,7 +127,7 @@ if [ "$answer" == "y" ] || [ "$answer" == "" ]; then
 		cd /home/$WEBMO_USER/public_html/cgi-bin/webmo
 		sudo su $WEBMO_USER -c "perl -e \"
         		require qw(usercontrol.cgi);
-        		create_user(\"$username\", 'webmo', \"$password\", '0');
+        		create_user(\"$username\", 'webmo', \"$password2\", '0');
         		\""
 		sudo su $WEBMO_USER -c "perl -e \"
         		require qw(usercontrol.cgi);
