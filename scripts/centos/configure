@@ -7,10 +7,10 @@ echo "Configuring webserver..."
 # Configure webserver (enable public_html, enable cgi scripts, redirect webmo to login.cgi)
 version=`cat /etc/redhat-release | grep -o '[0-9]' | awk '{ print $1 }' | head -n 1`
 if (( "$version" >= 7 )); then
-	sudo patch -b /etc/httpd/conf.d/userdir.conf $DIR/../../patches/userdir.conf.patch
+	sed "s/WEBMO_USER/$WEBMO_USER/g" $DIR/../../patches/userdir.conf.patch | sudo patch -b /etc/httpd/conf.d/userdir.conf
 	sudo systemctl restart httpd >> $DIR/../../sitc.log 2>&1
 else
-	sudo patch -b /etc/httpd/conf/httpd.conf $DIR/../../patches/httpd.conf.patch
+	sed "s/WEBMO_USER/$WEBMO_USER/g" $DIR/../../patches/httpd.conf.patch | sudo patch -b /etc/httpd/conf/httpd.conf
 	sudo service httpd restart >> $DIR/../../sitc.log 2>&1
 fi
 

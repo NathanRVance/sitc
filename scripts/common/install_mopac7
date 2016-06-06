@@ -7,7 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "Downloading mopac7..."
 cd $ENGINE_DIR
 sudo curl -s -O http://webmo.net/cloud/software/mopac7-bin.tar.gz
-echo "Untarring mopac7 to /usr/local..."
+echo "Untarring mopac7 to $ENGINE_DIR..."
 sudo tar xzf mopac7-bin.tar.gz
 sudo chown -R root:root mopac7
 

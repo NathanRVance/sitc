@@ -26,5 +26,5 @@
 +    AddHandler cgi-script .cgi
 +</Directory>
 +
-+#Redirect access to <ip>/webmo to login
-+RedirectMatch ^/webmo(()|/)$ /~webmo/cgi-bin/webmo/login.cgi
++#Redirect access to <ip>/WEBMO_USER to login
++RedirectMatch ^/WEBMO_USER(()|/)$ /~WEBMO_USER/cgi-bin/webmo/login.cgi
