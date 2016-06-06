@@ -38,28 +38,28 @@ echo -e "Installing for $OS"
 
 echo "*** RUNNING OS_ADDITIONS ***"
 $DIR/scripts/$OS/os_additions $DIR
-if [ -n "$WEBMO_LICENSE" ]; then
+if [ -z "$WEBMO_LICENSE" ]; then
 	read -s -n 1 -p "Press any key to continue"
 fi
 
 echo -e "\n"
 echo "*** RUNNING CONFIGURE ***"
 $DIR/scripts/$OS/configure $DIR
-if [ -n "$WEBMO_LICENSE" ]; then
+if [ -z "$WEBMO_LICENSE" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
 echo -e "\n"
 echo "*** RUNNING INSTALL_WEBMO ***"
 $DIR/scripts/$OS/install_webmo $DIR
-if [ -n "$WEBMO_LICENSE" ]; then
+if [ -z "$WEBMO_LICENSE" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
 echo -e "\n"
 echo "*** RUNNING INSTALL_MOPAC7 ***"
 $DIR/scripts/$OS/install_mopac7 $DIR
-if [ -n "$WEBMO_LICENSE" ]; then
+if [ -z "$WEBMO_LICENSE" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
@@ -67,7 +67,7 @@ echo -e "\n"
 echo "*** COPYING SCRIPTS TO /HOME/WEBMO ***"
 sudo cp -a $DIR/../sitc /home/webmo/
 sudo chown -R webmo:webmo /home/webmo/sitc
-if [ -n "$WEBMO_LICENSE" ]; then
+if [ -z "$WEBMO_LICENSE" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
