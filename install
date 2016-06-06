@@ -38,28 +38,38 @@ echo -e "Installing for $OS"
 
 echo "*** RUNNING OS_ADDITIONS ***"
 $DIR/scripts/$OS/os_additions $DIR
-read -s -n 1 -p "Press any key to continue"
+if [ -n "$WEBMO_LICENSE" ]; then
+	read -s -n 1 -p "Press any key to continue"
+fi
 
 echo -e "\n"
 echo "*** RUNNING CONFIGURE ***"
 $DIR/scripts/$OS/configure $DIR
-read -s -n 1 -p "Press any key to continue"
+if [ -n "$WEBMO_LICENSE" ]; then
+        read -s -n 1 -p "Press any key to continue"
+fi
 
 echo -e "\n"
 echo "*** RUNNING INSTALL_WEBMO ***"
 $DIR/scripts/$OS/install_webmo $DIR
-read -s -n 1 -p "Press any key to continue"
+if [ -n "$WEBMO_LICENSE" ]; then
+        read -s -n 1 -p "Press any key to continue"
+fi
 
 echo -e "\n"
 echo "*** RUNNING INSTALL_MOPAC7 ***"
 $DIR/scripts/$OS/install_mopac7 $DIR
-read -s -n 1 -p "Press any key to continue"
+if [ -n "$WEBMO_LICENSE" ]; then
+        read -s -n 1 -p "Press any key to continue"
+fi
 
 echo -e "\n"
 echo "*** COPYING SCRIPTS TO /HOME/WEBMO ***"
 sudo cp -a $DIR/../sitc /home/webmo/
 sudo chown -R webmo:webmo /home/webmo/sitc
-read -s -n 1 -p "Press any key to continue"
+if [ -n "$WEBMO_LICENSE" ]; then
+        read -s -n 1 -p "Press any key to continue"
+fi
 
 IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
 
