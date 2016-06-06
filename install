@@ -3,6 +3,8 @@
 #Obtain current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+source $DIR/sitc.conf
+
 echo "Server In The Cloud version `cat $DIR/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 

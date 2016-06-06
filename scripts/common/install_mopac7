@@ -5,15 +5,16 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Download and untar mopac7 to /usr/local
 echo "Downloading mopac7..."
-cd /usr/local
+cd $ENGINE_DIR
 sudo curl -s -O http://webmo.net/cloud/software/mopac7-bin.tar.gz
 echo "Untarring mopac7 to /usr/local..."
 sudo tar xzf mopac7-bin.tar.gz
-sudo rm -f mopac7-bin.tar.gz
 sudo chown -R root:root mopac7
 
 echo "Enabling mopac7 in WebMO..."
 # Enable mopac7 in WebMO
-cd /home/webmo/public_html/cgi-bin/webmo/interfaces/
+cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
 sudo mv mopac.int.disabled mopac.int
-patch mopac.int < $DIR/../../patches/mopac.int.patch
+sed -i "s&mopacVersion=.*&mopacVersion=\"7\"&" mopac.int
+sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac7/mopac.exe\"&" mopac.int
+sed -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int

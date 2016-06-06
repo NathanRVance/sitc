@@ -4,8 +4,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #Assume license and password have been checked for validity elsewhere.
-license=$1
-password=$2
+license=$WEBMO_LICENSE
+password=$WEBMO_PASSWORD
 
 if [ -n "$license" ]; then
 	skip="yes"
@@ -15,15 +15,15 @@ fi
 
 echo "Setting up WebMO user..."
 # Set up WebMO user
-sudo useradd -m webmo -s /bin/bash
+sudo useradd -m $WEBMO_USER -s /bin/bash
 
 echo "Creating public_html directory..."
 # Create public_html directory
-sudo mkdir /home/webmo/public_html
-sudo mkdir /home/webmo/public_html/cgi-bin
-sudo chown -R webmo:webmo /home/webmo/public_html
-sudo chmod 711 /home/webmo
-sudo chmod -R 755 /home/webmo/public_html/cgi-bin
+sudo mkdir /home/$WEBMO_USER/public_html
+sudo mkdir /home/$WEBMO_USER/public_html/cgi-bin
+sudo chown -R $WEBMO_USER:$WEBMO_USER /home/$WEBMO_USER/public_html
+sudo chmod 711 /home/$WEBMO_USER
+sudo chmod -R 755 /home/$WEBMO_USER/public_html/cgi-bin
 
 echo "Installing WebMO..."
 # Install WebMO
@@ -64,25 +64,25 @@ sudo cat > /tmp/WebMO.install/setup.conf << EOF
 license="$license"
 perlPath="/usr/bin/perl"
 webserver="localhost"
-htmlBase="/home/webmo/public_html/webmo"
-url_htmlBase="/~webmo/webmo"
-cgiBase="/home/webmo/public_html/cgi-bin/webmo"
-url_cgiBase="/~webmo/cgi-bin/webmo"
-userBase="/home/webmo/webmo"
+htmlBase="/home/$WEBMO_USER/public_html/webmo"
+url_htmlBase="/~$WEBMO_USER/webmo"
+cgiBase="/home/$WEBMO_USER/public_html/cgi-bin/webmo"
+url_cgiBase="/~$WEBMO_USER/cgi-bin/webmo"
+userBase="/home/$WEBMO_USER/webmo"
 EOF
 
-sudo chown -R webmo:webmo WebMO.install
+sudo chown -R $WEBMO_USER:$WEBMO_USER WebMO.install
 cd WebMO.install
-sudo su webmo -c "perl setup.pl" >> $DIR/../../sitc.log 2>&1
+sudo su $WEBMO_USER -c "perl setup.pl" >> $DIR/../../sitc.log 2>&1
 
 echo "Cleaning up temporary files..."
 # Clean up temporary files
 cd ..
 sudo rm -rf WebMO.install
 
-# Make sure permissions are correct for /home/webmo/webmo
+# Make sure permissions are correct for /home/$WEBMO_USER/webmo
 # (it can get messed up on different distributions)
-sudo chmod 757 /home/webmo/webmo
+sudo chmod 757 /home/$WEBMO_USER/webmo
 
 if [ -n "$skip" ]; then
 	#We're done here!
@@ -123,7 +123,22 @@ if [ "$answer" == "y" ] || [ "$answer" == "" ]; then
                         echo "Cannot have a blank password, try again."
                         continue
                 fi
-		$DIR/../common/create_webmo_user "$username" "$password2"
+		# $DIR/../common/create_webmo_user "$username" "$password2"
+		cd /home/$WEBMO_USER/public_html/cgi-bin/webmo
+		sudo su $WEBMO_USER -c "perl -e \"
+        		require qw(usercontrol.cgi);
+        		create_user(\"$username\", 'webmo', \"$password\", '0');
+        		\""
+		sudo su $WEBMO_USER -c "perl -e \"
+        		require qw(usercontrol.cgi);
+        		my %user_profile;
+        		\\\$user_profile{'timeLimit'} = -1;
+        		\\\$user_profile{'jobTimeLimit'} = 'group';
+        		\\\$user_profile{'enabledInterfaces'} = 'group';
+        		\\\$user_profile{'enabledServers'} = 'group';
+        		\\\$user_profile{'enabledQueues'} = 'group';
+        		&set_user_profile(\"$username\", \\%user_profile);
+        		\""
 		echo
 		break
 	done

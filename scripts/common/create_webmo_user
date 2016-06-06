@@ -6,13 +6,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 username=$1
 password=$2
 
-cd /home/webmo/public_html/cgi-bin/webmo
+cd /home/$WEBMO_USER/public_html/cgi-bin/webmo
 
-sudo su webmo -c "perl -e \"
+sudo su $WEBMO_USER -c "perl -e \"
 	require qw(usercontrol.cgi);
 	create_user(\"$username\", 'webmo', \"$password\", '0');
         \""
-sudo su webmo -c "perl -e \"
+sudo su $WEBMO_USER -c "perl -e \"
 	require qw(usercontrol.cgi);
         my %user_profile;
         \\\$user_profile{'timeLimit'} = -1;

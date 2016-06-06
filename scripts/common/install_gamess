@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cd /usr/local
+cd $ENGINE_DIR
 
 echo "Unpacking gamess"
 sudo tar xzf gamess-current.tar.gz
@@ -52,6 +52,7 @@ sudo patch rungms < $DIR/../../patches/rungms.patch
 
 echo "Enabling gamess in WebMO..."
 # Enable gamess in WebMO
-cd /home/webmo/public_html/cgi-bin/webmo/interfaces/
+cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
 sudo mv gamess.int.disabled gamess.int
-patch gamess.int < $DIR/../../patches/gamess.int.patch
+sed -i "s&gamessVersion=.*&gamessVersion=\"2014\"&" gamess.int
+sed -i "s&gamessGMSPATH=.*&gamessGMSPATH=\"$ENGINE_DIR/gamess\"&" gamess.int
