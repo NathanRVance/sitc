@@ -84,6 +84,15 @@ sudo rm -rf WebMO.install
 # (it can get messed up on different distributions)
 sudo chmod 757 /home/$WEBMO_USER/webmo
 
+if [ -n "$WEBMO_INITIAL_USERS" ]; then
+	for user in $WEBMO_INITIAL_USERS; do
+		username=`echo $user | cut -f1 -d ":"`
+		password=`echo $user | cut -f2 -d ":"`
+		$SITC_ROOT/scripts/common/create_webmo_user "$username" "$password"
+	done
+	exit
+fi
+
 if [ -n "$skip" ]; then
 	#We're done here!
 	exit
@@ -124,20 +133,7 @@ if [ "$answer" == "y" ] || [ "$answer" == "" ]; then
                         continue
                 fi
 		cd /home/$WEBMO_USER/public_html/cgi-bin/webmo
-		sudo su $WEBMO_USER -c "perl -e \"
-        		require qw(usercontrol.cgi);
-        		create_user(\"$username\", 'webmo', \"$password2\", '0');
-        		\""
-		sudo su $WEBMO_USER -c "perl -e \"
-        		require qw(usercontrol.cgi);
-        		my %user_profile;
-        		\\\$user_profile{'timeLimit'} = -1;
-        		\\\$user_profile{'jobTimeLimit'} = 'group';
-        		\\\$user_profile{'enabledInterfaces'} = 'group';
-        		\\\$user_profile{'enabledServers'} = 'group';
-        		\\\$user_profile{'enabledQueues'} = 'group';
-        		&set_user_profile(\"$username\", \\%user_profile);
-        		\""
+		$SITC_ROOT/scripts/common/create_webmo_user "$username" "$password2"
 		echo
 		break
 	done
