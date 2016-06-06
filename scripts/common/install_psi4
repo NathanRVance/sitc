@@ -1,19 +1,19 @@
 #!/bin/bash
 
 #Obtain current directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SITC_ROOT=$1
 
 # Install miniconda, psi4's installer
 echo "Downloading miniconda..."
 cd $ENGINE_DIR
-sudo curl -o Miniconda-latest.sh "https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh" -k >> $DIR/../../sitc.log 2>&1
+sudo curl -o Miniconda-latest.sh "https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh" -k >> $SITC_ROOT/sitc.log 2>&1
 echo "Installing miniconda..."
-sudo bash Miniconda-latest.sh -b -p $ENGINE_DIR/miniconda >> $DIR/../../sitc.log 2>&1
+sudo bash Miniconda-latest.sh -b -p $ENGINE_DIR/miniconda >> $SITC_ROOT/sitc.log 2>&1
 export PATH=$ENGINE_DIR/miniconda/bin:$PATH
-sudo env "PATH=$PATH" conda update --yes --all >> $DIR/../../sitc.log 2>&1
-sudo env "PATH=$PATH" conda config --add channels http://conda.anaconda.org/psi4 >> $DIR/../../sitc.log 2>&1
+sudo env "PATH=$PATH" conda update --yes --all >> $SITC_ROOT/sitc.log 2>&1
+sudo env "PATH=$PATH" conda config --add channels http://conda.anaconda.org/psi4 >> $SITC_ROOT/sitc.log 2>&1
 echo "Installing psi4..."
-sudo env "PATH=$PATH" conda install --yes psi4 >> $DIR/../../sitc.log 2>&1
+sudo env "PATH=$PATH" conda install --yes psi4 >> $SITC_ROOT/sitc.log 2>&1
 
 echo "Enabling psi4 in WebMO..."
 # Enable psi4 in WebMO

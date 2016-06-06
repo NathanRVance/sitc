@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SITC_ROOT=$1
 
 cd $ENGINE_DIR
 
@@ -19,8 +19,8 @@ fi
 # Gamess doesn't normally compile for gfortran version > 4.9, but that's only because of
 # checks in the config and comp files, not because of incompatabilities in the code.
 if (( $(echo "$GFORTVERS 4.9" | awk '{print ($1 > $2)}') )); then
-	sed "s/X/$GFORTVERS/" $DIR/../../patches/gamess_config.patch | sudo patch config
-	sed "s/X/$GFORTVERS/" $DIR/../../patches/gamess_comp.patch | sudo patch comp
+	sed "s/X/$GFORTVERS/" $SITC_ROOT/patches/gamess_config.patch | sudo patch config
+	sed "s/X/$GFORTVERS/" $SITC_ROOT/patches/gamess_comp.patch | sudo patch comp
 fi
 
 echo "
@@ -48,7 +48,7 @@ echo "Compiling gamess"
 sudo ./compall
 sudo ./lked gamess 00
 
-sudo patch rungms < $DIR/../../patches/rungms.patch
+sudo patch rungms < $SITC_ROOT/patches/rungms.patch
 
 echo "Enabling gamess in WebMO..."
 # Enable gamess in WebMO

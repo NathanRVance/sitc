@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Obtain current directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SITC_ROOT=$1
 
 # Download and untar mopac7 to /usr/local
 echo "Downloading mopac7..."

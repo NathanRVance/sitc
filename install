@@ -28,25 +28,31 @@ else
    exit
 fi
 
+if [ -n "$1" ]; then
+	echo -e "Installing $1 for $OS"
+	$DIR/scripts/$OS/install_$1 $DIR
+	exit
+fi
+
 echo -e "Installing for $OS"
 
 echo "*** RUNNING OS_ADDITIONS ***"
-$DIR/scripts/$OS/os_additions
+$DIR/scripts/$OS/os_additions $DIR
 read -s -n 1 -p "Press any key to continue"
 
 echo -e "\n"
 echo "*** RUNNING CONFIGURE ***"
-$DIR/scripts/$OS/configure
+$DIR/scripts/$OS/configure $DIR
 read -s -n 1 -p "Press any key to continue"
 
 echo -e "\n"
 echo "*** RUNNING INSTALL_WEBMO ***"
-$DIR/scripts/$OS/install_webmo
+$DIR/scripts/$OS/install_webmo $DIR
 read -s -n 1 -p "Press any key to continue"
 
 echo -e "\n"
 echo "*** RUNNING INSTALL_MOPAC7 ***"
-$DIR/scripts/$OS/install_mopac7
+$DIR/scripts/$OS/install_mopac7 $DIR
 read -s -n 1 -p "Press any key to continue"
 
 echo -e "\n"
@@ -61,7 +67,7 @@ echo "
 
 *** CONFIGURE INSTALLATION ***
 
-In your web browser, login to $IP/webmo with the
+In your web browser, login to $IP/$WEBMO_USER with the
 username \"admin\" and a blank password. Set the admin password.
 
 Run a test job.

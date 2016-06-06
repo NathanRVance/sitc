@@ -1,17 +1,16 @@
 #!/bin/bash
 
-# Obtain current directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SITC_ROOT=$1
 
 echo "Configuring webserver..."
 # Configure webserver (enable public_html, enable cgi scripts, redirect webmo to login.cgi)
 version=`cat /etc/redhat-release | grep -o '[0-9]' | awk '{ print $1 }' | head -n 1`
 if (( "$version" >= 7 )); then
-	sed "s/WEBMO_USER/$WEBMO_USER/g" $DIR/../../patches/userdir.conf.patch | sudo patch -b /etc/httpd/conf.d/userdir.conf
-	sudo systemctl restart httpd >> $DIR/../../sitc.log 2>&1
+	sed "s/WEBMO_USER/$WEBMO_USER/g" $SITC_ROOT/patches/userdir.conf.patch | sudo patch -b /etc/httpd/conf.d/userdir.conf
+	sudo systemctl restart httpd >> $SITC_ROOT/sitc.log 2>&1
 else
-	sed "s/WEBMO_USER/$WEBMO_USER/g" $DIR/../../patches/httpd.conf.patch | sudo patch -b /etc/httpd/conf/httpd.conf
-	sudo service httpd restart >> $DIR/../../sitc.log 2>&1
+	sed "s/WEBMO_USER/$WEBMO_USER/g" $SITC_ROOT/patches/httpd.conf.patch | sudo patch -b /etc/httpd/conf/httpd.conf
+	sudo service httpd restart >> $SITC_ROOT/sitc.log 2>&1
 fi
 
 echo "Configuring selinux..."

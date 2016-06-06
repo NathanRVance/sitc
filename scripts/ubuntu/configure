@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Obtain current directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SITC_ROOT=$1
 
 APPEND="
 <Directory /home/*/public_html/cgi-bin>
@@ -13,11 +13,11 @@ RedirectMatch ^/$WEBMO_USER(()|/)$ /~$WEBMO_USER/cgi-bin/webmo/login.cgi"
 
 echo "Configuring webserver..."
 # Configure webserver
-sudo a2enmod suexec >> $DIR/../../sitc.log 2>&1
-sudo a2enmod cgid >> $DIR/../../sitc.log 2>&1
-sudo a2enmod userdir >> $DIR/../../sitc.log 2>&1
+sudo a2enmod suexec >> $SITC_ROOT/sitc.log 2>&1
+sudo a2enmod cgid >> $SITC_ROOT/sitc.log 2>&1
+sudo a2enmod userdir >> $SITC_ROOT/sitc.log 2>&1
 if [ ! -e /etc/apache2/mods-available/userdir.conf.orig ]; then
 	sudo cp -p /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-available/userdir.conf.orig
 	echo "$APPEND" | sudo tee --append /etc/apache2/mods-available/userdir.conf > /dev/null
-	sudo service apache2 restart >> $DIR/../../sitc.log 2>&1
+	sudo service apache2 restart >> $SITC_ROOT/sitc.log 2>&1
 fi

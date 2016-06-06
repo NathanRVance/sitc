@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#Obtain current directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 username=$1
 password=$2
 

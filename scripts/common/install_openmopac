@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Obtain current directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SITC_ROOT=$1
 
 cd $ENGINE_DIR
 sudo curl -O http://openmopac.net/MOPAC2016_for_Linux_64_bit.zip
