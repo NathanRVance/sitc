@@ -2,18 +2,18 @@
 
 IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
 
+sudo yum -y install openssl mod_ssl
 sudo yum -y install epel-release
 sudo yum -y install certbot
 sudo certbot certonly --webroot --webroot-path=/var/www/html -d $IP.xip.io
 
-sudo sed -i.orig "s&^SSLCertificateFile.*&SSLCertificateFile /etc/letsencrypt/live/$IP.xip.io/cert.pem/g" /etc/httpd/conf.d/ssl.conf
-sudo sed -i "s&^SSLCertificateKeyFile.*&SSLCertificateFile /etc/letsencrypt/live/$IP.xip.io/privkey.pem/g" /etc/httpd/conf.d/ssl.conf
-sudo sed -i "s&SSLCertificateFile.*&SSLCertificateFile /etc/letsencrypt/live/$IP.xip.io/chain.pem/g" /etc/httpd/conf.d/ssl.conf
+sudo sed -i.orig "s&^SSLCertificateFile.*&SSLCertificateFile /etc/letsencrypt/live/$IP.xip.io/cert.pem&g" /etc/httpd/conf.d/ssl.conf
+sudo sed -i "s&^SSLCertificateKeyFile.*&SSLCertificateKeyFile /etc/letsencrypt/live/$IP.xip.io/privkey.pem&g" /etc/httpd/conf.d/ssl.conf
+sudo sed -i "s&^#SSLCertificateChainFile.*&SSLCertificateChainFile /etc/letsencrypt/live/$IP.xip.io/chain.pem&g" /etc/httpd/conf.d/ssl.conf
 
-sudo cat >> /etc/httpd/conf/httpd.conf << EOF
+echo "
 <VirtualHost *:80>
 	Redirect permanent / https://$IP.xip.io/
-</VirtualHost>
-EOF
+</VirtualHost>" | sudo tee --append /etc/httpd/conf/httpd.conf > /dev/null
 
 sudo systemctl restart httpd
