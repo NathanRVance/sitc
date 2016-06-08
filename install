@@ -5,6 +5,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source $DIR/sitc.conf
 
+if [ "$1" == "--auth" ]; then
+        export WEBMO_LICENSE=`echo $2 | cut -f1 -d ":"`
+        export WEBMO_PASSWORD=`echo $2 | cut -f2 -d ":"`
+fi
+
 echo "Server In The Cloud version `cat $DIR/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
@@ -30,7 +35,7 @@ else
    exit
 fi
 
-if [ -n "$1" ]; then
+if [ -n "$1" ] && [ ! "$1" == "--auth" ]; then
 	echo -e "Installing $1 for $OS"
 	$DIR/scripts/$OS/install_$1 $DIR
 	exit

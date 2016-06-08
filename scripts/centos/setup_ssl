@@ -6,7 +6,7 @@ DN=$IP.xip.io
 sudo yum -y install openssl mod_ssl
 sudo yum -y install epel-release
 sudo yum -y install certbot
-sudo certbot certonly --webroot --webroot-path=/var/www/html -d $DN
+sudo certbot certonly --webroot --webroot-path=/var/www/html -d $DN --register-unsafely-without-email
 
 sudo sed -i.orig "s&^SSLCertificateFile.*&SSLCertificateFile /etc/letsencrypt/live/$DN/cert.pem&g" /etc/httpd/conf.d/ssl.conf
 sudo sed -i "s&^SSLCertificateKeyFile.*&SSLCertificateKeyFile /etc/letsencrypt/live/$DN/privkey.pem&g" /etc/httpd/conf.d/ssl.conf

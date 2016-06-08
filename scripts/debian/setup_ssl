@@ -4,7 +4,10 @@ IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/ac
 DN=$IP.xip.io
 
 sudo apt-get -y install python-certbot-apache -t jessie-backports
-sudo certbot certonly --webroot --webroot-path=/var/www/html -d $DN
+sudo certbot certonly --webroot --webroot-path=/var/www/html -d $DN --register-unsafely-without-email
+
+sudo a2enmod ssl
+sudo a2ensite default-ssl
 
 sudo sed -i.orig "s&SSLCertificateFile.*&SSLCertificateFile /etc/letsencrypt/live/$DN/cert.pem&g" /etc/apache2/sites-available/default-ssl.conf
 sudo sed -i "s&SSLCertificateKeyFile.*&SSLCertificateKeyFile /etc/letsencrypt/live/$DN/privkey.pem&g" /etc/apache2/sites-available/default-ssl.conf
