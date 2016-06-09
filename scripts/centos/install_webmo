@@ -24,4 +24,4 @@ echo "Configuring httpd..."
 # Configure httpd
 $SITC_ROOT/scripts/centos/configure $SITC_ROOT
 
-$SITC_ROOT/scripts/common/install_webmo $SITC_ROOT $2
+$SITC_ROOT/scripts/common/install_webmo $SITC_ROOT

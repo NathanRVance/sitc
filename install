@@ -95,8 +95,10 @@ else
    exit
 fi
 
-echo -e "Installing for $OS"
+echo
+echo "Installing for $OS"
 
+echo
 echo "*** RUNNING OS_ADDITIONS ***"
 $DIR/scripts/$OS/os_additions $DIR
 if [ "$accept_all" == "false" ]; then
@@ -104,15 +106,15 @@ if [ "$accept_all" == "false" ]; then
 fi
 
 if [ "$SKIP_WEBMO" != "true" ]; then
-	echo -e "\n"
+	echo
 	echo "*** RUNNING INSTALL_WEBMO ***"
-	$DIR/scripts/$OS/install_webmo $DIR $accept_all
+	$DIR/scripts/$OS/install_webmo $DIR
 	if [ "$accept_all" == "false" ]; then
 		read -s -n 1 -p "Press any key to continue"
 	fi
 fi
 
-echo -e "\n"
+echo
 echo "*** INSTALLING ENGINES ***"
 for engine in $ENGINES; do
         echo -e "Installing $engine"
@@ -122,17 +124,18 @@ if [ "$accept_all" == "false" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
-echo -e "\n"
-echo "*** COPYING SCRIPTS TO /HOME/WEBMO ***"
-sudo cp -a $DIR/../sitc /home/webmo/
-sudo chown -R webmo:webmo /home/webmo/sitc
-if [ "$accept_all" == "false" ]; then
-        read -s -n 1 -p "Press any key to continue"
-fi
+if [ "$SKIP_WEBMO" != "true" ]; then
+	echo
+	echo "*** COPYING SCRIPTS TO /HOME/WEBMO ***"
+	sudo cp -a $DIR/../sitc /home/webmo/
+	sudo chown -R webmo:webmo /home/webmo/sitc
+	if [ "$accept_all" == "false" ]; then
+	        read -s -n 1 -p "Press any key to continue"
+	fi
 
-IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
+	IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
 
-echo "
+	echo "
 
 *** CONFIGURE INSTALLATION ***
 
@@ -141,3 +144,4 @@ username \"admin\" and a blank password. Set the admin password.
 
 Run a test job.
 "
+fi

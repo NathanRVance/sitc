@@ -18,4 +18,4 @@ echo "Configuring apache..."
 # Configure apache
 $SITC_ROOT/scripts/ubuntu/configure $SITC_ROOT
 
-$SITC_ROOT/scripts/common/install_webmo $SITC_ROOT $2
+$SITC_ROOT/scripts/common/install_webmo $SITC_ROOT
