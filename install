@@ -2,7 +2,7 @@
 
 #Obtain current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $DIR/sitc.conf
+source $DIR/install.conf
 
 accept_all=false
 
@@ -45,7 +45,7 @@ exit
 }
 
 for param in $@; do
-	# Potentially override defaults in sitc.conf
+	# Potentially override defaults in install.conf
 	if [ "`echo $param | cut -c1-2`" == "--" ]; then
 		export "`echo $param | cut -c3-`"
 	elif [ "`echo $param | cut -c1-1`" == "-" ]; then
@@ -65,10 +65,10 @@ done
 #	exit
 #fi
 
-if [ -n "`echo $ENGINES | grep "mopac7"`" ] && [ -n "`echo $ENGINES | grep "openmopac"`" ]; then
-	echo "ERROR: Cannot install both mopac7 and openmopac"
-	exit
-fi
+#if [ -n "`echo $ENGINES | grep "mopac7"`" ] && [ -n "`echo $ENGINES | grep "openmopac"`" ]; then
+#	echo "ERROR: Cannot install both mopac7 and openmopac"
+#	exit
+#fi
 
 echo "Server In The Cloud version `cat $DIR/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."

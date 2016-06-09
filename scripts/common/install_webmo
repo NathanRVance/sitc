@@ -3,9 +3,6 @@
 # Obtain current directory
 SITC_ROOT=$1
 
-# If we're scripted, we won't prompt for user input, and assume
-# license and password have been checked for validity elsewhere.
-scripted=$2
 license=$WEBMO_LICENSE
 password=$WEBMO_PASSWORD
 
@@ -25,18 +22,13 @@ echo "Installing WebMO..."
 # Install WebMO
 cd /tmp
 while : ; do
-	if [ "$scripted" == "true" ]; then
-		#We already have our license!
-		:
-	else
-		##### GET USERNAME AND PASSWORD #####
-		$SITC_ROOT/scripts/common/get_license.pl /tmp/credentials "$license" "$password"
-		# get_lecense.pl is set up to populate /tmp/credentials with
-		# your license and password.
-		license=`sed '1q;d' /tmp/credentials`
-		password=`sed '2q;d' /tmp/credentials`
-		##### END GET USERNAME AND PASSWORD #####
-	fi
+	##### GET USERNAME AND PASSWORD #####
+	$SITC_ROOT/scripts/common/get_license.pl /tmp/credentials "$license" "$password"
+	# get_lecense.pl is set up to populate /tmp/credentials with
+	# your license and password.
+	license=`sed '1q;d' /tmp/credentials`
+	password=`sed '2q;d' /tmp/credentials`
+	##### END GET USERNAME AND PASSWORD #####
 	echo "Downloading WebMO..."
 	# Download WebMO
 	curl -o WebMO.tar.gz -s "http://www.webmo.net/cgi-bin/download/download.cgi?license=$license&password=$password&version=latest&operation=download"
@@ -45,10 +37,8 @@ while : ; do
 		break;
 	fi
 	echo "Invalid license or password, try again."
-	if [ "$scripted" == "true" ]; then
-		#Nobody's here to try again, so exit.
-		exit
-	fi
+	license=""
+	password=""
 done
 
 echo "Unpacking WebMO..."
@@ -72,7 +62,6 @@ cd WebMO.install
 sudo su $WEBMO_USER -c "perl setup.pl" >> $SITC_ROOT/sitc.log 2>&1
 
 echo "Cleaning up temporary files..."
-# Clean up temporary files
 cd ..
 sudo rm -rf WebMO.install
 
@@ -86,11 +75,6 @@ if [ -n "$WEBMO_INITIAL_USERS" ]; then
 		password=`echo $user | cut -f2 -d ":"`
 		$SITC_ROOT/scripts/common/create_webmo_user "$username" "$password"
 	done
-	exit
-fi
-
-if [ "$scripted" == "true" ]; then
-	#We're done here!
 	exit
 fi
 
