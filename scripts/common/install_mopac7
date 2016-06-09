@@ -2,6 +2,11 @@
 
 #Obtain current directory
 SITC_ROOT=$1
+help_and_exit=$2
+
+if [ "$help_and_exit" == "true" ]; then
+        exit
+fi
 
 # Download and untar mopac7 to /usr/local
 echo "Downloading mopac7..."

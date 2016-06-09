@@ -1,0 +1,26 @@
+#!/bin/bash
+
+SITC_ROOT=$1
+help_and_exit=$2
+
+if [ "$help_and_exit" == "true" ]; then
+        echo "
+Gaussian:
+  --GAUSSIAN_TAR=<path>	location of the gaussian tar file"
+        exit
+fi
+
+cd /etc
+sudo cp -p group group.bak
+sudo cp -p gshadow gshadow.bak
+sudo groupadd -g 499 gaussian
+sudo usermod -a -G gaussian $WEBMO_USER
+
+cd $ENGINE_DIR
+echo "Unpacking gaussian"
+while [ ! -e $GAUSSIAN_TAR ]; do
+        echo -n "Enter the location of the gaussian tar: "
+        read GAUSSIAN_TAR
+done
+sudo tar xzf $GAUSSIAN_TAR
+sudo chown -R root:gaussian g09

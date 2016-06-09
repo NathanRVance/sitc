@@ -1,11 +1,23 @@
 #!/bin/bash
 
 SITC_ROOT=$1
+help_and_exit=$2
+
+if [ "$help_and_exit" == "true" ]; then
+	echo "
+Gamess:
+  --GAMESS_TAR=<path>	location of the gamess tar file"
+	exit
+fi
 
 cd $ENGINE_DIR
 
 echo "Unpacking gamess"
-sudo tar xzf gamess-current.tar.gz
+while [ ! -e $GAMESS_TAR ]; do
+	echo -n "Enter the location of the gamess tar: "
+	read GAMESS_TAR
+done
+sudo tar xzf $GAMESS_TAR
 sudo chown -R root:root gamess
 
 echo "Configuring installation"

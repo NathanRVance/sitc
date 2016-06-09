@@ -4,8 +4,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $DIR/install.conf
 
-accept_all=false
-
 printHelp()
 {
 echo "Usage: install [OPTIONS...]
@@ -36,9 +34,20 @@ for file in `ls $DIR/scripts/common`; do
 	fi
 done
 
+for file in `ls $DIR/scripts/common`; do
+        if [ "`echo $file | cut -c1-7`" == "install" ]; then
+                engine="`echo $file | cut -c9-`"
+                if [ "$engine" != "webmo" ]; then
+                        $DIR/scripts/common/install_$engine $DIR "true"
+                fi
+        fi
+done
+
 echo
 echo "Miscellaneous:
-  -y			accept licenses and don't prompt for continuing
+  --YES_TO_ALL=<true/false>
+			accept licenses and don't prompt for continuing
+  -y			same as --YES_TO_ALL=true
   -v			display version information and exit
   -h			display this help text and exit"
 exit
@@ -52,7 +61,7 @@ for param in $@; do
 		param="`echo $param | cut -c2-`" # remove the '-'
 		for var in `echo "$param" | sed -e 's/\(.\)/\1\n/g'`; do
 			case $var in
-				"y") accept_all=true ;;
+				"y") YES_TO_ALL=true ;;
 				"v") cat $DIR/version && exit ;;
 				"h") printHelp ;;
 			esac
@@ -60,7 +69,7 @@ for param in $@; do
 	fi
 done
 
-#if [ "$accept_all" == "true" ] && [ -z "$WEBMO_LICENSE" -o -z "$WEBMO_PASSWORD" ]; then
+#if [ "$YES_TO_ALL" == "true" ] && [ -z "$WEBMO_LICENSE" -o -z "$WEBMO_PASSWORD" ]; then
 #	echo "ERROR: Cannot be accept_all without specifying both WEBMO_LICENSE and WEBMO_PASSWORD"
 #	exit
 #fi
@@ -98,18 +107,21 @@ fi
 echo
 echo "Installing for $OS"
 
-echo
-echo "*** RUNNING OS_ADDITIONS ***"
-$DIR/scripts/$OS/os_additions $DIR
-if [ "$accept_all" == "false" ]; then
-	read -s -n 1 -p "Press any key to continue"
+if [ ! -e $DIR/ran_os_additions ]; then
+	echo
+	echo "*** RUNNING OS_ADDITIONS ***"
+	$DIR/scripts/$OS/os_additions $DIR
+	if [ "$YES_TO_ALL" == "false" ]; then
+		read -s -n 1 -p "Press any key to continue"
+	fi
+	touch $DIR/ran_os_additions
 fi
 
 if [ "$SKIP_WEBMO" != "true" ]; then
 	echo
 	echo "*** RUNNING INSTALL_WEBMO ***"
 	$DIR/scripts/$OS/install_webmo $DIR
-	if [ "$accept_all" == "false" ]; then
+	if [ "$YES_TO_ALL" == "false" ]; then
 		read -s -n 1 -p "Press any key to continue"
 	fi
 fi
@@ -120,7 +132,7 @@ for engine in $ENGINES; do
         echo -e "Installing $engine"
         $DIR/scripts/$OS/install_$engine $DIR
 done
-if [ "$accept_all" == "false" ]; then
+if [ "$YES_TO_ALL" == "false" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
@@ -129,7 +141,7 @@ if [ "$SKIP_WEBMO" != "true" ]; then
 	echo "*** COPYING SCRIPTS TO /HOME/WEBMO ***"
 	sudo cp -a $DIR/../sitc /home/webmo/
 	sudo chown -R webmo:webmo /home/webmo/sitc
-	if [ "$accept_all" == "false" ]; then
+	if [ "$YES_TO_ALL" == "false" ]; then
 	        read -s -n 1 -p "Press any key to continue"
 	fi
 

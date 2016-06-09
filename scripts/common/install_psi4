@@ -2,6 +2,11 @@
 
 #Obtain current directory
 SITC_ROOT=$1
+help_and_exit=$2
+
+if [ "$help_and_exit" == "true" ]; then
+        exit
+fi
 
 cd $ENGINE_DIR
 # Install miniconda, psi4's installer
