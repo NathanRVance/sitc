@@ -1,17 +1,13 @@
 #!/bin/bash
 
-#Obtain current directory
+# Obtain current directory
 SITC_ROOT=$1
 
-#Assume license and password have been checked for validity elsewhere.
+# If we're scripted, we won't prompt for user input, and assume
+# license and password have been checked for validity elsewhere.
+scripted=$2
 license=$WEBMO_LICENSE
 password=$WEBMO_PASSWORD
-
-if [ -n "$license" ]; then
-	skip="yes"
-else
-	skip=""
-fi
 
 echo "Setting up WebMO user..."
 # Set up WebMO user
@@ -29,12 +25,12 @@ echo "Installing WebMO..."
 # Install WebMO
 cd /tmp
 while : ; do
-	if [ -n "$skip" ]; then
+	if [ "$scripted" == "true" ]; then
 		#We already have our license!
 		:
 	else
 		##### GET USERNAME AND PASSWORD #####
-		$SITC_ROOT/scripts/common/get_license.pl /tmp/credentials
+		$SITC_ROOT/scripts/common/get_license.pl /tmp/credentials "$license" "$password"
 		# get_lecense.pl is set up to populate /tmp/credentials with
 		# your license and password.
 		license=`sed '1q;d' /tmp/credentials`
@@ -49,7 +45,7 @@ while : ; do
 		break;
 	fi
 	echo "Invalid license or password, try again."
-	if [ -n "$skip" ]; then
+	if [ "$scripted" == "true" ]; then
 		#Nobody's here to try again, so exit.
 		exit
 	fi
@@ -93,7 +89,7 @@ if [ -n "$WEBMO_INITIAL_USERS" ]; then
 	exit
 fi
 
-if [ -n "$skip" ]; then
+if [ "$scripted" == "true" ]; then
 	#We're done here!
 	exit
 fi

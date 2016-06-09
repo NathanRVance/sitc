@@ -18,5 +18,6 @@ echo "
         Redirect permanent / https://$DN/
 </VirtualHost>" | sudo tee --append /etc/apache2/apache2.conf > /dev/null
 
-sudo systemctl restart apache2
+sudo mv /etc/apache2/sites-enabled/000-default.conf /etc/apache2/sites-enabled/000-default.conf.disabled
 
+sudo systemctl restart apache2

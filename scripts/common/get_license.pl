@@ -2,9 +2,19 @@
 
 use Socket;
 
-local $license = "";
 local $credentials = "$ARGV[0]";
 open my $out, '>', "$credentials" or die "Can't write new file: $!";
+local $license = test_license("$ARGV[1]");
+chomp $license;
+local $password = "$ARGV[2]";
+chomp $password;
+if (($license ne "") && ($password ne "")) {
+	print $out "$license\n";
+	print $out "$password\n";
+	close $out;
+	exit;
+}
+
 print "\n";
 print "Have you previously obtained a WebMO license number [y/n]:";
 local $choice = "";
@@ -37,7 +47,7 @@ local $choice = "";
                 my $last = <STDIN>;
                 chomp $last;
                 $last = escape($last);
-print "Affiliation: ";
+		print "Affiliation: ";
                 my $affiliation = <STDIN>;
                 chomp $affiliation;
                 $affiliation = escape($affiliation);
@@ -59,7 +69,23 @@ print "Affiliation: ";
 while ($license eq "")
 {
         print "License number: ";
-        local $trial_license = <STDIN>;
+	local $trial_license = <STDIN>;
+        $license = test_license($trial_license);
+}
+
+if ($password eq "") {
+	print "Password: ";
+	$password = <STDIN>;
+	chomp $password;
+}
+chomp $license;
+print $out "$license\n";
+print $out "$password\n";
+close $out;
+
+sub test_license
+{
+	local $trial_license = @_[0];
         chomp $trial_license;
 
         if ($trial_license !~ /\d\d\d\d-\d\d\d\d-\d\d\d\d/)
@@ -83,18 +109,11 @@ while ($license eq "")
                 }
                 else
                 {
-                        $license = $trial_license;
+                        return $trial_license;
                 }
-        }
+        }	
+	return "";
 }
-print $out "$license\n";
-
-print "Password: ";
-local $password = <STDIN>;
-chomp $password;
-print $out "$password\n";
-
-close $out;
 
 sub escape
 {

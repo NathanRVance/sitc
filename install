@@ -2,18 +2,78 @@
 
 #Obtain current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 source $DIR/sitc.conf
 
-if [ "$1" == "--auth" ]; then
-        export WEBMO_LICENSE=`echo $2 | cut -f1 -d ":"`
-        export WEBMO_PASSWORD=`echo $2 | cut -f2 -d ":"`
+accept_all=false
+
+printHelp()
+{
+echo "Usage: install [OPTIONS...]
+Installs WebMO and (a) computational chemistry engine(s).
+
+WebMO options:
+  --WEBMO_USER=<name>	unix user WebMO software will be installed under
+  --WEBMO_LICENSE=<license>
+			license used to download and instal WebMO
+  --WEBMO_PASSWORD=<password>
+			password that corresponds to WEBMO_LICENSE
+  --WEBMO_INITIAL_USERS=<users>
+			quoted space separated username:password
+  --SKIP_WEBMO=<true/false>
+			optionally omit webmo (install engines only)
+
+Engine options:
+  --ENGINE_DIR=<path>	path to directory that engines are to be installed in
+  --ENGINES=<engines>	quoted space separated engines
+
+Available engines:"
+for file in `ls $DIR/scripts/common`; do
+	if [ "`echo $file | cut -c1-7`" == "install" ]; then
+		engine="`echo $file | cut -c9-`"
+		if [ "$engine" != "webmo" ]; then
+			echo "  $engine"
+		fi
+	fi
+done
+
+echo
+echo "Miscellaneous:
+  -y			accept licenses and don't prompt for continuing
+  -v			display version information and exit
+  -h			display this help text and exit"
+exit
+}
+
+for param in $@; do
+	# Potentially override defaults in sitc.conf
+	if [ "`echo $param | cut -c1-2`" == "--" ]; then
+		export "`echo $param | cut -c3-`"
+	elif [ "`echo $param | cut -c1-1`" == "-" ]; then
+		param="`echo $param | cut -c2-`" # remove the '-'
+		for var in `echo "$param" | sed -e 's/\(.\)/\1\n/g'`; do
+			case $var in
+				"y") accept_all=true ;;
+				"v") cat $DIR/version && exit ;;
+				"h") printHelp ;;
+			esac
+		done
+	fi
+done
+
+#if [ "$accept_all" == "true" ] && [ -z "$WEBMO_LICENSE" -o -z "$WEBMO_PASSWORD" ]; then
+#	echo "ERROR: Cannot be accept_all without specifying both WEBMO_LICENSE and WEBMO_PASSWORD"
+#	exit
+#fi
+
+if [ -n "`echo $ENGINES | grep "mopac7"`" ] && [ -n "`echo $ENGINES | grep "openmopac"`" ]; then
+	echo "ERROR: Cannot install both mopac7 and openmopac"
+	exit
 fi
 
 echo "Server In The Cloud version `cat $DIR/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
-if [ ! -e $DIR/license_agreed ]; then
+if [ ! -e $DIR/license_agreed ] && [ "$accept_all" == "false" ]; then
 	echo
 	echo "This script automates the installation of software from several"
 	echo "third parties. Many of these have licenses that are agreed to"
@@ -35,38 +95,30 @@ else
    exit
 fi
 
-if [ -n "$1" ] && [ ! "$1" == "--auth" ]; then
-	echo -e "Installing $1 for $OS"
-	$DIR/scripts/$OS/install_$1 $DIR
-	exit
-fi
-
 echo -e "Installing for $OS"
 
 echo "*** RUNNING OS_ADDITIONS ***"
 $DIR/scripts/$OS/os_additions $DIR
-if [ -z "$WEBMO_LICENSE" ]; then
+if [ "$accept_all" == "false" ]; then
 	read -s -n 1 -p "Press any key to continue"
 fi
 
-echo -e "\n"
-echo "*** RUNNING CONFIGURE ***"
-$DIR/scripts/$OS/configure $DIR
-if [ -z "$WEBMO_LICENSE" ]; then
-        read -s -n 1 -p "Press any key to continue"
+if [ "$SKIP_WEBMO" != "true" ]; then
+	echo -e "\n"
+	echo "*** RUNNING INSTALL_WEBMO ***"
+	$DIR/scripts/$OS/install_webmo $DIR $accept_all
+	if [ "$accept_all" == "false" ]; then
+		read -s -n 1 -p "Press any key to continue"
+	fi
 fi
 
 echo -e "\n"
-echo "*** RUNNING INSTALL_WEBMO ***"
-$DIR/scripts/$OS/install_webmo $DIR
-if [ -z "$WEBMO_LICENSE" ]; then
-        read -s -n 1 -p "Press any key to continue"
-fi
-
-echo -e "\n"
-echo "*** RUNNING INSTALL_MOPAC7 ***"
-$DIR/scripts/$OS/install_mopac7 $DIR
-if [ -z "$WEBMO_LICENSE" ]; then
+echo "*** INSTALLING ENGINES ***"
+for engine in $ENGINES; do
+        echo -e "Installing $engine"
+        $DIR/scripts/$OS/install_$engine $DIR
+done
+if [ "$accept_all" == "false" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
@@ -74,7 +126,7 @@ echo -e "\n"
 echo "*** COPYING SCRIPTS TO /HOME/WEBMO ***"
 sudo cp -a $DIR/../sitc /home/webmo/
 sudo chown -R webmo:webmo /home/webmo/sitc
-if [ -z "$WEBMO_LICENSE" ]; then
+if [ "$accept_all" == "false" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
