@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#Obtain current directory
-SITC_ROOT=$1
-
 echo "Updating operating system..."
 # Update operating system
 sudo yum clean all >> $SITC_ROOT/sitc.log 2>&1

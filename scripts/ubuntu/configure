@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#Obtain current directory
-SITC_ROOT=$1
-
 APPEND="
 <Directory /home/*/public_html/cgi-bin>
     Options +ExecCGI

@@ -2,16 +2,12 @@
 
 use Socket;
 
-local $credentials = "$ARGV[0]";
-open my $out, '>', "$credentials" or die "Can't write new file: $!";
-local $license = test_license("$ARGV[1]");
+local $license = test_license("$ARGV[0]");
 chomp $license;
-local $password = "$ARGV[2]";
+local $password = "$ARGV[1]";
 chomp $password;
 if (($license ne "") && ($password ne "")) {
-	print $out "$license\n";
-	print $out "$password\n";
-	close $out;
+	print "$license $password";
 	exit;
 }
 
@@ -79,9 +75,7 @@ if ($password eq "") {
 	chomp $password;
 }
 chomp $license;
-print $out "$license\n";
-print $out "$password\n";
-close $out;
+print "$license $password";
 
 sub test_license
 {

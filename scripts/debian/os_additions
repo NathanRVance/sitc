@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Obtain current directory
-SITC_ROOT=$1
-
 # update os
 $SITC_ROOT/scripts/debian/os_update $SITC_ROOT
 

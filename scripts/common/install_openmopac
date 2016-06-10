@@ -1,8 +1,6 @@
 #!/bin/bash
 
-#Obtain current directory
-SITC_ROOT=$1
-help_and_exit=$2
+help_and_exit=$1
 
 if [ "$help_and_exit" == "true" ]; then
 	echo "
@@ -13,9 +11,9 @@ Openmopac:
 fi
 
 cd $ENGINE_DIR
-echo "Downloading mopac..."
+echo "Downloading openmopac..."
 sudo curl -O http://openmopac.net/MOPAC2016_for_Linux_64_bit.zip >> $SITC_ROOT/sitc.log 2>&1
-echo "Unzipping mopac..."
+echo "Unzipping openmopac..."
 sudo unzip -d mopac2016/ MOPAC2016_for_Linux_64_bit.zip >> $SITC_ROOT/sitc.log 2>&1
 cd mopac2016/
 sudo mv libiomp5.so /usr/lib/
@@ -33,7 +31,7 @@ fi
 echo -e "\nYes\n" | ./MOPAC2016.exe $OPENMOPAC_LICENSE >> $SITC_ROOT/sitc.log 2>&1
 sudo chmod 755 .
 
-echo "Enabling mopac in WebMO..."
+echo "Enabling openmopac in WebMO..."
 cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
 sudo mv mopac.int.disabled mopac.int > /dev/null 2>&1
 sudo sed -i "s&mopacVersion=.*&mopacVersion=\"2016\"&" mopac.int

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Obtain current directory
-SITC_ROOT=$1
-
 license=$WEBMO_LICENSE
 password=$WEBMO_PASSWORD
 
@@ -23,11 +20,11 @@ echo "Installing WebMO..."
 cd /tmp
 while : ; do
 	##### GET USERNAME AND PASSWORD #####
-	$SITC_ROOT/scripts/common/get_license.pl /tmp/credentials "$license" "$password"
-	# get_lecense.pl is set up to populate /tmp/credentials with
+	credentials=`$SITC_ROOT/scripts/common/get_license.pl "$license" "$password"`
+	# get_lecense.pl is set up to populate credentials with
 	# your license and password.
-	license=`sed '1q;d' /tmp/credentials`
-	password=`sed '2q;d' /tmp/credentials`
+	license=`echo $credentials | awk '{ print $1 }'`
+	password=`echo $credentials | awk '{ print $2 }'`
 	##### END GET USERNAME AND PASSWORD #####
 	echo "Downloading WebMO..."
 	# Download WebMO

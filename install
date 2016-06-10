@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #Obtain current directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $DIR/install.conf
+export SITC_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SITC_ROOT/install.conf
 
 printHelp()
 {
@@ -25,7 +25,7 @@ Engine options:
   --ENGINES=<engines>	quoted space separated engines
 
 Available engines:"
-for file in `ls $DIR/scripts/common`; do
+for file in `ls $SITC_ROOT/scripts/common`; do
 	if [ "`echo $file | cut -c1-7`" == "install" ]; then
 		engine="`echo $file | cut -c9-`"
 		if [ "$engine" != "webmo" ]; then
@@ -34,11 +34,11 @@ for file in `ls $DIR/scripts/common`; do
 	fi
 done
 
-for file in `ls $DIR/scripts/common`; do
+for file in `ls $SITC_ROOT/scripts/common`; do
         if [ "`echo $file | cut -c1-7`" == "install" ]; then
                 engine="`echo $file | cut -c9-`"
                 if [ "$engine" != "webmo" ]; then
-                        $DIR/scripts/common/install_$engine $DIR "true"
+                        $SITC_ROOT/scripts/common/install_$engine "true"
                 fi
         fi
 done
@@ -62,7 +62,7 @@ for param in $@; do
 		for var in `echo "$param" | sed -e 's/\(.\)/\1\n/g'`; do
 			case $var in
 				"y") YES_TO_ALL=true ;;
-				"v") cat $DIR/version && exit ;;
+				"v") cat $SITC_ROOT/version && exit ;;
 				"h") printHelp ;;
 			esac
 		done
@@ -79,10 +79,10 @@ done
 #	exit
 #fi
 
-echo "Server In The Cloud version `cat $DIR/version`"
+echo "Server In The Cloud version `cat $SITC_ROOT/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
-if [ ! -e $DIR/license_agreed ] && [ "$accept_all" == "false" ]; then
+if [ ! -e $SITC_ROOT/license_agreed ] && [ "$accept_all" == "false" ]; then
 	echo
 	echo "This script automates the installation of software from several"
 	echo "third parties. Many of these have licenses that are agreed to"
@@ -90,7 +90,7 @@ if [ ! -e $DIR/license_agreed ] && [ "$accept_all" == "false" ]; then
 	echo "ENTER, or press CTRL-c to exit."
 	echo
 	read ans
-	touch $DIR/license_agreed
+	touch $SITC_ROOT/license_agreed
 fi
 
 if [ -n "`uname -a | grep -i Debian`" ]; then
@@ -107,20 +107,20 @@ fi
 echo
 echo "Installing for $OS"
 
-if [ ! -e $DIR/ran_os_additions ]; then
+if [ ! -e $SITC_ROOT/ran_os_additions ]; then
 	echo
 	echo "*** RUNNING OS_ADDITIONS ***"
-	$DIR/scripts/$OS/os_additions $DIR
+	$SITC_ROOT/scripts/$OS/os_additions
 	if [ "$YES_TO_ALL" == "false" ]; then
 		read -s -n 1 -p "Press any key to continue"
 	fi
-	touch $DIR/ran_os_additions
+	touch $SITC_ROOT/ran_os_additions
 fi
 
 if [ "$SKIP_WEBMO" != "true" ]; then
 	echo
 	echo "*** RUNNING INSTALL_WEBMO ***"
-	$DIR/scripts/$OS/install_webmo $DIR
+	$SITC_ROOT/scripts/$OS/install_webmo $SITC_ROOT
 	if [ "$YES_TO_ALL" == "false" ]; then
 		read -s -n 1 -p "Press any key to continue"
 	fi
@@ -129,8 +129,8 @@ fi
 echo
 echo "*** INSTALLING ENGINES ***"
 for engine in $ENGINES; do
-        echo -e "Installing $engine"
-        $DIR/scripts/$OS/install_$engine $DIR
+        echo "Installing $engine"
+        $SITC_ROOT/scripts/$OS/install_$engine
 done
 if [ "$YES_TO_ALL" == "false" ]; then
         read -s -n 1 -p "Press any key to continue"
@@ -139,7 +139,7 @@ fi
 if [ "$SKIP_WEBMO" != "true" ]; then
 	echo
 	echo "*** COPYING SCRIPTS TO /HOME/WEBMO ***"
-	sudo cp -a $DIR/../sitc /home/webmo/
+	sudo cp -a $SITC_ROOT/../sitc /home/webmo/
 	sudo chown -R webmo:webmo /home/webmo/sitc
 	if [ "$YES_TO_ALL" == "false" ]; then
 	        read -s -n 1 -p "Press any key to continue"

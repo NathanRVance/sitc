@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SITC_ROOT=$1
-
 echo "Configuring webserver..."
 # Configure webserver (enable public_html, enable cgi scripts, redirect webmo to login.cgi)
 version=`cat /etc/redhat-release | grep -o '[0-9]' | awk '{ print $1 }' | head -n 1`

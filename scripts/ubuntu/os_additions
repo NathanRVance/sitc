@@ -1,7 +1,4 @@
 #!/bin/bash
 
-# Obtain current directory
-SITC_ROOT=$1
-
 # update os
-$SITC_ROOT/scripts/ubuntu/os_update $SITC_ROOT
+$SITC_ROOT/scripts/ubuntu/os_update

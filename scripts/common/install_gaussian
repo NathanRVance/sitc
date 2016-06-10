@@ -1,7 +1,6 @@
 #!/bin/bash
 
-SITC_ROOT=$1
-help_and_exit=$2
+help_and_exit=$1
 
 if [ "$help_and_exit" == "true" ]; then
         echo "
