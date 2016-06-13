@@ -16,10 +16,15 @@ sudo groupadd -g 499 gaussian
 sudo usermod -a -G gaussian $WEBMO_USER
 
 cd $ENGINE_DIR
-echo "Unpacking gaussian"
-while [ ! -e $GAUSSIAN_TAR ]; do
+while [ ! -e "$GAUSSIAN_TAR" ]; do
         echo -n "Enter the location of the gaussian tar: "
         read GAUSSIAN_TAR
 done
+echo "Unpacking gaussian"
 sudo tar xzf $GAUSSIAN_TAR
 sudo chown -R root:gaussian g09
+
+echo "Enabling gaussian in WebMO"
+cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
+sudo mv gaussian.int.disabled gaussian.int
+sudo sed -i "s&/usr/local&$ENGINE_DIR&g" gaussian.int

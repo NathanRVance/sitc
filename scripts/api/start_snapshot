@@ -1,0 +1,13 @@
+#!/bin/bash
+
+name=$1
+snapshotName=$2
+disksize="10"
+#memory can by any of standard, highmem, highcpu
+memory="standard"
+#numcpus can be any of 1, 2, 4, 8, 16, 32
+numcpus="1"
+
+gcloud compute disks create $name --size $disksize --source-snapshot $snapshotName
+
+gcloud compute instances create $name --machine-type "n1-$memory-$numcpus" --disk "name=$name,device-name=$name,mode=rw,boot=yes,auto-delete=yes"
