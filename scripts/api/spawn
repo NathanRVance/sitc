@@ -1,18 +1,10 @@
 #!/bin/bash
 
-#Obtain current directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-if [ `whoami` != "$WEBMO_USER" ]; then
-	echo "Please run this script as the webmo user"
-	exit
-fi
-
 echo "Creating a compute node..."
 
+name="$1"
 #Obtain list of available images through $ gcloud compute images list
 image="debian-8"
-name="supernode"
 disksize="10"
 #memory can by any of standard, highmem, highcpu
 memory="standard"
@@ -23,21 +15,21 @@ gcloud compute instances create "$name" --machine-type "n1-$memory-$numcpus" --i
 
 ip=`gcloud compute instances list "$name" | tail -1 | rev | cut -d " " -f 2 | rev`
 
-echo
-echo "Generating an ssh key. If prompted, press enter for no passphrase"
-echo
+if [ ! -e "/home/$WEBMO_USER/.ssh/google_compute_engine" ]; then
+	echo "/home/$WEBMO_USER/.ssh/google_compute_engine" | ssh-keygen -N ""
+fi
 gcloud compute config-ssh
 rm /home/$WEBMO_USER/.ssh/config
 
 #Automatic passwordless ssh
 cp /home/$WEBMO_USER/.ssh/google_compute_engine /home/$WEBMO_USER/.ssh/id_rsa
-#Remove ip from knownhosts
+#Remove our ip from knownhosts
 ssh-keygen -R $ip
 
 echo
 echo "########## SSHing into $WEBMO_USER@$name ##########"
 
-echo "curl -O http://107.4.53.178/~nathan/sitc.tar.gz && tar xzf sitc.tar.gz && ./sitc/compute_install" | ssh -o StrictHostKeyChecking=no $name
+ssh -o StrictHostKeyChecking=no $name
 
 echo "########## Finished work in $WEBMO_USER@$name ##########"
 echo
