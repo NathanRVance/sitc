@@ -5,7 +5,7 @@ help_and_exit=$1
 if [ "$help_and_exit" == "true" ]; then
         echo "
 Gaussian:
-  --GAUSSIAN_TAR=<path>	location of the gaussian tar file"
+  --GAUSSIAN_TAR=<path> location of the gaussian tar file"
         exit
 fi
 

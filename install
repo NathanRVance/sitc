@@ -10,19 +10,19 @@ echo "Usage: install [OPTIONS...]
 Installs WebMO and (a) computational chemistry engine(s).
 
 WebMO options:
-  --WEBMO_USER=<name>	unix user WebMO software will be installed under
+  --WEBMO_USER=<name>   unix user WebMO software will be installed under
   --WEBMO_LICENSE=<license>
-			license used to download and instal WebMO
+                        license used to download and install WebMO
   --WEBMO_PASSWORD=<password>
-			password that corresponds to WEBMO_LICENSE
+                        password that corresponds to WEBMO_LICENSE
   --WEBMO_INITIAL_USERS=<users>
-			quoted space separated username:password
+                        comma separated username:password
   --SKIP_WEBMO=<true/false>
-			optionally omit webmo (install engines only)
+                        optionally omit webmo (install engines only)
 
 Engine options:
-  --ENGINE_DIR=<path>	path to directory that engines are to be installed in
-  --ENGINES=<engines>	quoted space separated engines
+  --ENGINE_DIR=<path>   path to directory that engines are to be installed in
+  --ENGINES=<engines>   comma separated engines
 
 Available engines:"
 for file in `ls $SITC_ROOT/scripts/common`; do
@@ -46,10 +46,10 @@ done
 echo
 echo "Miscellaneous:
   --YES_TO_ALL=<true/false>
-			accept licenses and don't prompt for continuing
-  -y			same as --YES_TO_ALL=true
-  -v			display version information and exit
-  -h			display this help text and exit"
+                        accept licenses and don't prompt for continuing
+  -y                    same as --YES_TO_ALL=true
+  -v                    display version information and exit
+  -h                    display this help text and exit"
 exit
 }
 
@@ -128,7 +128,7 @@ fi
 
 echo
 echo "*** INSTALLING ENGINES ***"
-for engine in $ENGINES; do
+for engine in `sed 's/,/ /g' <<< $ENGINES`; do
         echo "Installing $engine"
         $SITC_ROOT/scripts/$OS/install_$engine
 done
@@ -154,6 +154,6 @@ if [ "$SKIP_WEBMO" != "true" ]; then
 In your web browser, login to $IP/$WEBMO_USER with the
 username \"admin\" and a blank password. Set the admin password.
 
-Run a test job.
-"
+Run a test job."
 fi
+echo

@@ -6,7 +6,7 @@ if [ "$help_and_exit" == "true" ]; then
 	echo "
 Openmopac:
   --OPENMOPAC_LICENSE=<key>
-			license key for openmopac"
+                        license key for openmopac"
         exit
 fi
 

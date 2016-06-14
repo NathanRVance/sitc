@@ -5,7 +5,7 @@ help_and_exit=$1
 if [ "$help_and_exit" == "true" ]; then
 	echo "
 Gamess:
-  --GAMESS_TAR=<path>	location of the gamess tar file"
+  --GAMESS_TAR=<path>   location of the gamess tar file"
 	exit
 fi
 
