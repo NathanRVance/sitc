@@ -10,19 +10,19 @@ echo "Usage: install [OPTIONS...]
 Installs WebMO and (a) computational chemistry engine(s).
 
 WebMO options:
-  --WEBMO_USER=<name>   unix user WebMO software will be installed under`printDefaultMaybe $WEBMO_USER`
+  --WEBMO_USER=<name>  unix user WebMO software will be installed under`printDefaultMaybe $WEBMO_USER`
   --WEBMO_LICENSE=<license>
-                        license used to download and install WebMO`printDefaultMaybe $WEBMO_LICENSE`
+                       license used to download and install WebMO`printDefaultMaybe $WEBMO_LICENSE`
   --WEBMO_PASSWORD=<password>
-                        password that corresponds to WEBMO_LICENSE`printDefaultMaybe $WEBMO_PASSWORD`
+                       password that corresponds to WEBMO_LICENSE`printDefaultMaybe $WEBMO_PASSWORD`
   --WEBMO_INITIAL_USERS=<users>
-                        comma separated username:password`printDefaultMaybe $WEBMO_INITIAL_USERS`
+                       comma separated username:password`printDefaultMaybe $WEBMO_INITIAL_USERS`
   --SKIP_WEBMO=<true/false>
-                        optionally omit webmo (install engines only)`printDefaultMaybe $SKIP_WEBMO`
+                       optionally omit webmo (install engines only)`printDefaultMaybe $SKIP_WEBMO`
 
 Engine options:
-  --ENGINE_DIR=<path>   path to directory that engines are to be installed in`printDefaultMaybe $ENGINE_DIR`
-  --ENGINES=<engines>   comma separated engines`printDefaultMaybe $ENGINES`
+  --ENGINE_DIR=<path>  path to directory that engines are to be installed in`printDefaultMaybe $ENGINE_DIR`
+  --ENGINES=<engines>  comma separated engines to be installed on this computer`printDefaultMaybe $ENGINES`
 
 Available engines:"
 for file in `ls $SITC_ROOT/scripts/common`; do
@@ -44,12 +44,19 @@ for file in `ls $SITC_ROOT/scripts/common`; do
 done
 
 echo
-echo "Miscellaneous:
+echo "Remote server options:
+  --REMOTE_SERVER=<true/false>
+                       create a remote server`printDefaultMaybe $REMOTE_SERVER`
+  --REMOTE_SERVER_ENGINES=<engines>
+                       comma separated engines to be installed to a remote server
+                       If blank, defaults to ENGINES`printDefaultMaybe $REMOTE_SERVER_ENGINES`
+
+Miscellaneous:
   --YES_TO_ALL=<true/false>
-                        accept licenses and don't prompt for continuing
-  -y                    same as --YES_TO_ALL=true
-  -v                    display version information and exit
-  -h                    display this help text and exit"
+                       accept licenses and don't prompt for continuing
+  -y                   same as --YES_TO_ALL=true
+  -v                   display version information and exit
+  -h                   display this help text and exit"
 exit
 }
 
@@ -57,7 +64,7 @@ printDefaultMaybe() {
 var=$1
 if [ ! -z "$var" ]; then
 	echo "
-                        default: $var"
+                       default: $var"
 fi
 }
 
@@ -65,6 +72,8 @@ for param in $@; do
 	# Potentially override defaults in install.conf
 	if [ "`echo $param | cut -c1-2`" == "--" ]; then
 		export "`echo $param | cut -c3-`"
+		paramname=`echo $param | cut -c3- | cut -d "=" -f1`
+		sed -i "s&export $paramname=.*&export $paramname=\"${!paramname}\"&" $SITC_ROOT/install.conf
 	elif [ "`echo $param | cut -c1-1`" == "-" ]; then
 		param="`echo $param | cut -c2-`" # remove the '-'
 		for var in `echo "$param" | sed -e 's/\(.\)/\1\n/g'`; do
@@ -144,17 +153,23 @@ if [ "$YES_TO_ALL" == "false" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
-if [ "$SKIP_WEBMO" != "true" ]; then
+if [ "$REMOTE_SERVER" == "true" ]; then
 	echo
-	echo "*** COPYING SCRIPTS TO /HOME/WEBMO ***"
-	sudo cp -a $SITC_ROOT/../sitc /home/webmo/
-	sudo chown -R webmo:webmo /home/webmo/sitc
+	echo "*** TARING SCRIPTS TO /home/$WEBMO_USER ***"
+	tar czf /home/$WEBMO_USER/sitc.tar.gz $SITC_ROOT
 	if [ "$YES_TO_ALL" == "false" ]; then
 	        read -s -n 1 -p "Press any key to continue"
 	fi
 
-	IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
+	echo
+	echo "*** CREATING A REMOTE SERVER ***"
+	sudo su $WEBMO_USER -c "$SITC_ROOT/scripts/api/api spawn"
+	
+fi
 
+if [ "$SKIP_WEBMO" != "true" ]; then
+
+	IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
 	echo "
 
 *** CONFIGURE INSTALLATION ***

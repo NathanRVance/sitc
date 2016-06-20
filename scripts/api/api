@@ -15,4 +15,7 @@ gcloud config set compute/zone $zone
 
 cmd=$1
 name=$2
+if [ -z "$name" ]; then
+	name=$NAME_BASE
+fi
 $DIR/scripts/$cmd $name
