@@ -15,31 +15,31 @@ gcloud compute instances create "$name" --machine-type "n1-$memory-$numcpus" --i
 
 ip=`gcloud compute instances list "$name" | tail -1 | rev | cut -d " " -f 2 | rev`
 
-if [ ! -e "/home/$WEBMO_USER/.ssh/google_compute_engine" ]; then
-	echo "/home/$WEBMO_USER/.ssh/google_compute_engine" | ssh-keygen -N ""
+if [ ! -e "/home/$USER/.ssh/google_compute_engine" ]; then
+	echo "/home/$USER/.ssh/google_compute_engine" | ssh-keygen -N ""
 fi
 gcloud compute config-ssh
-rm /home/$WEBMO_USER/.ssh/config
+rm /home/$USER/.ssh/config
 
 #Automatic passwordless ssh
-cp /home/$WEBMO_USER/.ssh/google_compute_engine /home/$WEBMO_USER/.ssh/id_rsa
+cp /home/$USER/.ssh/google_compute_engine /home/$USER/.ssh/id_rsa
 #Remove our ip from knownhosts
 ssh-keygen -R $ip
 
 echo
-echo "########## SSHing into $WEBMO_USER@$name ##########"
+echo "########## SSHing into $USER@$name ##########"
 
 ssh -o StrictHostKeyChecking=no $name
 
-echo "########## Finished work in $WEBMO_USER@$name ##########"
+echo "########## Finished work in $USER@$name ##########"
 echo
 
 echo "In the WebMO admin page, under Remote Server Manager, add $name as a remote server with:
  Server name:		$name
  Hostname:		$name
  CPU cores:		$numcpus
- Username:		$WEBMO_USER
- Home directory:	/home/$WEBMO_USER
+ Username:		$USER
+ Home directory:	/home/$USER
  Scratch directory:	/tmp
  Protocal:		ssh
 
