@@ -24,6 +24,8 @@ echo "########## Configuring $WEBMO_USER@$name ##########"
 for engine in `sed 's/,/ /g' <<< $ENGINES`; do
 	varname=${engine^^}_TAR
 	if [ -n "${!varname}" ]; then
+		destPath=`dirname ${!varname}`
+		echo "sudo mkdir -p $destPath && sudo chown $WEBMO_USER:$WEBMO_USER $destPath" | ssh $WEBMO_USER@$name
 		echo "Copying ${!varname} to $WEBMO_USER@$name"
 		scp ${!varname} $WEBMO_USER@${name}:/${!varname}
 	fi
@@ -33,7 +35,7 @@ if [ -z "$REMOTE_SERVER_ENGINES" ]; then
 	REMOTE_SERVER_ENGINES="$ENGINES"
 fi
 
-scp $SITC_ROOT/sitc.tar.gz $WEBMO_USER@${name}:/$SITC_ROT/sitc.tar.gz
+scp /home/$WEBMO_USER/sitc.tar.gz $WEBMO_USER@${name}:/$SITC_ROT/sitc.tar.gz
 
 echo "tar xzf $SITC_ROOT/sitc.tar.gz && $SITC_ROOT/sitc/install -y --SKIP_WEBMO=true --REMOTE_SERVER=false --ENGINES=$REMOTE_SERVER_ENGINES" | ssh -o StrictHostKeyChecking=no $name
 
