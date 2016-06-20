@@ -10,19 +10,19 @@ echo "Usage: install [OPTIONS...]
 Installs WebMO and (a) computational chemistry engine(s).
 
 WebMO options:
-  --WEBMO_USER=<name>   unix user WebMO software will be installed under
+  --WEBMO_USER=<name>   unix user WebMO software will be installed under`printDefaultMaybe $WEBMO_USER`
   --WEBMO_LICENSE=<license>
-                        license used to download and install WebMO
+                        license used to download and install WebMO`printDefaultMaybe $WEBMO_LICENSE`
   --WEBMO_PASSWORD=<password>
-                        password that corresponds to WEBMO_LICENSE
+                        password that corresponds to WEBMO_LICENSE`printDefaultMaybe $WEBMO_PASSWORD`
   --WEBMO_INITIAL_USERS=<users>
-                        comma separated username:password
+                        comma separated username:password`printDefaultMaybe $WEBMO_INITIAL_USERS`
   --SKIP_WEBMO=<true/false>
-                        optionally omit webmo (install engines only)
+                        optionally omit webmo (install engines only)`printDefaultMaybe $SKIP_WEBMO`
 
 Engine options:
-  --ENGINE_DIR=<path>   path to directory that engines are to be installed in
-  --ENGINES=<engines>   comma separated engines
+  --ENGINE_DIR=<path>   path to directory that engines are to be installed in`printDefaultMaybe $ENGINE_DIR`
+  --ENGINES=<engines>   comma separated engines`printDefaultMaybe $ENGINES`
 
 Available engines:"
 for file in `ls $SITC_ROOT/scripts/common`; do
@@ -51,6 +51,14 @@ echo "Miscellaneous:
   -v                    display version information and exit
   -h                    display this help text and exit"
 exit
+}
+
+printDefaultMaybe() {
+var=$1
+if [ ! -z "$var" ]; then
+	echo "
+                        default: $var"
+fi
 }
 
 for param in $@; do
