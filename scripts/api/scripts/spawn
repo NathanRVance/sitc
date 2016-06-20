@@ -3,43 +3,35 @@
 echo "Creating a compute node..."
 
 name="$1"
-#Obtain list of available images through $ gcloud compute images list
-image="debian-8"
-disksize="10"
-#memory can by any of standard, highmem, highcpu
-memory="standard"
-#numcpus can be any of 1, 2, 4, 8, 16, 32
-numcpus="1"
 
-gcloud compute instances create "$name" --machine-type "n1-$memory-$numcpus" --image "$image" --boot-disk-size "$disksize"
+gcloud compute instances create "$name" --machine-type "n1-$MEMORY-$NUMCPUS" --image-family "$IMAGE" --image-project "$IMAGE_PROJECT" --boot-disk-size "$DISKSIZE"
 
-ip=`gcloud compute instances list "$name" | tail -1 | rev | cut -d " " -f 2 | rev`
-
-if [ ! -e "/home/$USER/.ssh/google_compute_engine" ]; then
-	echo "/home/$USER/.ssh/google_compute_engine" | ssh-keygen -N ""
+# Set up ssh keys
+if [ ! -e "/home/$WEBMO_USER/.ssh/google_compute_engine" ]; then
+	echo "/home/$WEBMO_USER/.ssh/google_compute_engine" | ssh-keygen -N ""
 fi
 gcloud compute config-ssh
-rm /home/$USER/.ssh/config
-
-#Automatic passwordless ssh
-cp /home/$USER/.ssh/google_compute_engine /home/$USER/.ssh/id_rsa
-#Remove our ip from knownhosts
+rm /home/$WEBMO_USER/.ssh/config
+# Automatic passwordless ssh
+cp /home/$WEBMO_USER/.ssh/google_compute_engine /home/$WEBMO_USER/.ssh/id_rsa
+# Remove the ip from knownhosts in case it collides with an existing one
+ip=`gcloud compute instances list "$name" | tail -1 | rev | awk '{ print $2 }' | rev`
 ssh-keygen -R $ip
 
 echo
-echo "########## SSHing into $USER@$name ##########"
+echo "########## SSHing into $WEBMO_USER@$name ##########"
 
 ssh -o StrictHostKeyChecking=no $name
 
-echo "########## Finished work in $USER@$name ##########"
+echo "########## Finished work in $WEBMO_USER@$name ##########"
 echo
 
 echo "In the WebMO admin page, under Remote Server Manager, add $name as a remote server with:
  Server name:		$name
  Hostname:		$name
  CPU cores:		$numcpus
- Username:		$USER
- Home directory:	/home/$USER
+ Username:		$WEBMO_USER
+ Home directory:	/home/$WEBMO_USER
  Scratch directory:	/tmp
  Protocal:		ssh
 

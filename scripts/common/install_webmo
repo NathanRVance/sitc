@@ -5,7 +5,7 @@ password=$WEBMO_PASSWORD
 
 echo "Setting up WebMO user..."
 # Set up WebMO user
-sudo useradd -m $WEBMO_USER -s /bin/bash
+sudo useradd -m $WEBMO_USER -s /bin/bash >> $SITC_ROOT/sitc.log 2>&1
 
 echo "Creating public_html directory..."
 # Create public_html directory

@@ -4,11 +4,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source $DIR/api.conf
 
-#if [ `whoami` != "$WEBMO_USER" ]; then
-#        echo "Please run this script as the webmo user"
-#        exit
-#fi
+if [ `whoami` != "$WEBMO_USER" ]; then
+        echo "Please run this script as the webmo user"
+        exit
+fi
 
 zone=`gcloud compute instances list | grep "$(hostname)" | awk '{print $2}'`
 
 gcloud config set compute/zone $zone
+
+cmd=$1
+name=$2
+$DIR/scripts/$cmd $name
