@@ -156,14 +156,15 @@ fi
 if [ "$REMOTE_SERVER" == "true" ]; then
 	echo
 	echo "*** TARING SCRIPTS TO /home/$WEBMO_USER ***"
-	sudo tar czf /home/$WEBMO_USER/sitc.tar.gz $SITC_ROOT
+	cd $SITC_ROOT/..
+	sudo tar czf /home/$WEBMO_USER/sitc.tar.gz sitc
 	if [ "$YES_TO_ALL" == "false" ]; then
 	        read -s -n 1 -p "Press any key to continue"
 	fi
 
 	echo
 	echo "*** CREATING A REMOTE SERVER ***"
-	sudo su $WEBMO_USER -c "$SITC_ROOT/scripts/api/api spawn"
+	sudo -E su $WEBMO_USER -c "$SITC_ROOT/scripts/api/api spawn"
 	if [ "$YES_TO_ALL" == "false" ]; then
                 read -s -n 1 -p "Press any key to continue"
         fi
