@@ -35,7 +35,7 @@ if [ -z "$REMOTE_SERVER_ENGINES" ]; then
 	REMOTE_SERVER_ENGINES="$ENGINES"
 fi
 
-scp /home/$WEBMO_USER/sitc.tar.gz $WEBMO_USER@${name}:/$SITC_ROT/sitc.tar.gz
+scp /home/$WEBMO_USER/sitc.tar.gz $WEBMO_USER@${name}:/$SITC_ROOT/sitc.tar.gz
 
 echo "tar xzf $SITC_ROOT/sitc.tar.gz && $SITC_ROOT/sitc/install -y --SKIP_WEBMO=true --REMOTE_SERVER=false --ENGINES=$REMOTE_SERVER_ENGINES" | ssh -o StrictHostKeyChecking=no $name
 
