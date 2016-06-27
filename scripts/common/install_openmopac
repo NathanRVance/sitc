@@ -15,6 +15,7 @@ echo "Downloading openmopac..."
 sudo curl -O http://openmopac.net/MOPAC2016_for_Linux_64_bit.zip >> $SITC_ROOT/sitc.log 2>&1
 echo "Unzipping openmopac..."
 sudo unzip -d mopac2016/ MOPAC2016_for_Linux_64_bit.zip >> $SITC_ROOT/sitc.log 2>&1
+echo "Installing openmopac..."
 cd mopac2016/
 sudo mv libiomp5.so /usr/lib/
 sudo ldconfig
