@@ -1,15 +1,17 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-# On CentOS, gcloud is in /usr/local/bin and we can't find it.
-export PATH=/usr/local/bin/:$PATH
-
-source $DIR/api.conf
+export API_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $API_ROOT/api.conf
+export SITC_ROOT="$API_ROOT/../../"
+source $SITC_ROOT/install.conf
 
 if [ `whoami` != "$WEBMO_USER" ]; then
-        echo "Please run this script as the webmo user"
-        exit
+	if [ ! -e /home/$WEBMO_USER/sitc/scripts/api/api ]; then
+                sudo su - $WEBMO_USER -c "cp -a $SITC_ROOT /home/$WEBMO_USER/"
+        fi
+	echo "Switching to user $WEBMO_USER..."
+        sudo su - $WEBMO_USER -c "/home/$WEBMO_USER/sitc/scripts/api/api $1 $2"
+	exit
 fi
 
 zone=`gcloud compute instances list | grep "$(hostname)" | awk '{print $2}'`
@@ -17,8 +19,7 @@ zone=`gcloud compute instances list | grep "$(hostname)" | awk '{print $2}'`
 gcloud config set compute/zone $zone
 
 cmd=$1
-name=$2
 if [ -z "$name" ]; then
 	name=$NAME_BASE
 fi
-$DIR/scripts/$cmd $name
+$API_ROOT/scripts/$cmd $name

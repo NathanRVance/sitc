@@ -28,7 +28,8 @@ while : ; do
 	##### END GET USERNAME AND PASSWORD #####
 	echo "Downloading WebMO..."
 	# Download WebMO
-	curl -o WebMO.tar.gz -s "http://www.webmo.net/cgi-bin/download/download.cgi?license=$license&password=$password&version=latest&operation=download"
+	curl -o WebMO.tar.gz -s "http://www.webmo.net/nathan/WebMO.17.0.002e.tar.gz"
+	#curl -o WebMO.tar.gz -s "http://www.webmo.net/cgi-bin/download/download.cgi?license=$license&password=$password&version=latest&operation=download"
 	
 	if [ "`cat WebMO.tar.gz`" != "Password not valid" ] && [ "`cat WebMO.tar.gz`" != "License not found" ]; then
 		break;
