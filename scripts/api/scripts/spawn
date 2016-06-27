@@ -25,9 +25,9 @@ for engine in `sed 's/,/ /g' <<< $ENGINES`; do
 	varname=${engine^^}_TAR
 	if [ -n "${!varname}" ]; then
 		destPath=`dirname ${!varname}`
-		echo "sudo mkdir -p $destPath && sudo chown $WEBMO_USER:$WEBMO_USER $destPath" | ssh $WEBMO_USER@$name
+		echo "sudo mkdir -p $destPath && sudo chown $WEBMO_USER:$WEBMO_USER $destPath" | ssh -o StrictHostKeyChecking=no $WEBMO_USER@$name
 		echo "Copying ${!varname} to $WEBMO_USER@$name"
-		scp ${!varname} $WEBMO_USER@${name}:/${!varname}
+		scp -o StrictHostKeyChecking=no ${!varname} $WEBMO_USER@${name}:${!varname}
 	fi
 done
 
@@ -35,9 +35,13 @@ if [ -z "$REMOTE_SERVER_ENGINES" ]; then
 	REMOTE_SERVER_ENGINES="$ENGINES"
 fi
 
-scp /home/$WEBMO_USER/sitc.tar.gz $WEBMO_USER@${name}:/$SITC_ROOT/sitc.tar.gz
+echo "taring scripts to /home/$WEBMO_USER/sitc.tar.gz"
+cd $SITC_ROOT/..
+sudo tar czf /home/$WEBMO_USER/sitc.tar.gz sitc
 
-echo "tar xzf $SITC_ROOT/sitc.tar.gz && $SITC_ROOT/sitc/install -y --SKIP_WEBMO=true --REMOTE_SERVER=false --ENGINES=$REMOTE_SERVER_ENGINES" | ssh -o StrictHostKeyChecking=no $name
+scp -o StrictHostKeyChecking=no /home/$WEBMO_USER/sitc.tar.gz $WEBMO_USER@${name}:/home/$WEBMO_USER/sitc.tar.gz
+
+echo "tar xzf /home/$WEBMO_USER/sitc.tar.gz && /home/$WEBMO_USER/sitc/install -y --SKIP_WEBMO=true --REMOTE_SERVER=false --ENGINES=$REMOTE_SERVER_ENGINES" | ssh -o StrictHostKeyChecking=no $name
 
 echo "########## Finished work in $WEBMO_USER@$name ##########"
 echo
