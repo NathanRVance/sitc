@@ -36,10 +36,8 @@ if [ -z "$REMOTE_SERVER_ENGINES" ]; then
 fi
 
 echo "taring scripts to /home/$WEBMO_USER/sitc.tar.gz"
-rm -f $SITC_ROOT/ran_os_additions
 cd $SITC_ROOT/..
-sudo tar czf /home/$WEBMO_USER/sitc.tar.gz sitc
-touch $SITC_ROOT/ran_os_additions
+tar czf /home/$WEBMO_USER/sitc.tar.gz sitc --exclude=ran_os_additions
 
 scp -o StrictHostKeyChecking=no /home/$WEBMO_USER/sitc.tar.gz $WEBMO_USER@${name}:/home/$WEBMO_USER/sitc.tar.gz
 
