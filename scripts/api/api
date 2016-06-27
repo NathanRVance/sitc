@@ -2,6 +2,9 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# On CentOS, gcloud is in /usr/local/bin and we can't find it.
+export PATH=/usr/local/bin/:$PATH
+
 source $DIR/api.conf
 
 if [ `whoami` != "$WEBMO_USER" ]; then
