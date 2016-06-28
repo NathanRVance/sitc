@@ -7,8 +7,7 @@ $API_ROOT/scripts/lowlevel/start_snapshot $name$number $name
 
 # Set up the new server
 cd /home/$WEBMO_USER/public_html/cgi-bin/webmo
-perl -e "
-require qw(servercontrol.cgi);
+perl -e "require qw(servercontrol.cgi);
 add_server(\"$name$number\", \"$name$number\", \"$NUMCPUS\", \"$WEBMO_USER\", \"/home/$WEBMO_USER\", \"/tmp\", \"ssh\");"
 
 

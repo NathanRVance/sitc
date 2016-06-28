@@ -1,5 +1,13 @@
 #!/bin/bash
 
+echo "1: $1"
+rest="${@:2}"
+if [ -z "$rest" ]; then
+        rest="test"
+fi
+echo "rest: $rest"
+exit
+
 export API_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $API_ROOT/api.conf
 export SITC_ROOT="$API_ROOT/../../"

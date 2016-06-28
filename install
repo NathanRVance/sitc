@@ -156,7 +156,7 @@ fi
 if [ "$REMOTE_SERVER" == "true" ]; then
 	echo
 	echo "*** CREATING A REMOTE SERVER ***"
-	sudo -E su $WEBMO_USER -c "$SITC_ROOT/scripts/api/api create"
+	$SITC_ROOT/scripts/api/api create
 	if [ "$YES_TO_ALL" == "false" ]; then
                 read -s -n 1 -p "Press any key to continue"
         fi
