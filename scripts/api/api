@@ -7,10 +7,10 @@ source $SITC_ROOT/install.conf
 
 if [ `whoami` != "$WEBMO_USER" ]; then
 	if [ ! -e /home/$WEBMO_USER/sitc/scripts/api/api ]; then
-                sudo su - $WEBMO_USER -c "cp -a $SITC_ROOT /home/$WEBMO_USER/"
+                sudo su - $WEBMO_USER -c "cp -a $SITC_ROOT /home/$WEBMO_USER/sitc"
         fi
 	echo "Switching to user $WEBMO_USER..."
-        sudo su - $WEBMO_USER -c "/home/$WEBMO_USER/sitc/scripts/api/api $1 $2"
+        sudo su - $WEBMO_USER -c "/home/$WEBMO_USER/sitc/scripts/api/api $@"
 	exit
 fi
 
@@ -19,7 +19,8 @@ zone=`gcloud compute instances list | grep "$(hostname)" | awk '{print $2}'`
 gcloud config set compute/zone $zone
 
 cmd=$1
-if [ -z "$name" ]; then
-	name=$NAME_BASE
+rest=`cut -d ' ' -f2- <<< "$@"`
+if [ -z "$rest" ]; then
+	rest=$NAME_BASE
 fi
-$API_ROOT/scripts/$cmd $name
+$API_ROOT/scripts/$cmd $rest

@@ -15,7 +15,7 @@ rm /home/$WEBMO_USER/.ssh/config
 # Automatic passwordless ssh
 cp /home/$WEBMO_USER/.ssh/google_compute_engine /home/$WEBMO_USER/.ssh/id_rsa
 # Remove the ip from knownhosts in case it collides with an existing one
-ip=`gcloud compute instances list "$name" | tail -1 | rev | awk '{ print $2 }' | rev`
+ip=`gcloud compute instances list "$name" | tail -1 | rev | awk '{ print $3 }' | rev`
 ssh-keygen -R $ip
 
 echo

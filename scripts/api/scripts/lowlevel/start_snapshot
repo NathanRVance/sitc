@@ -11,3 +11,7 @@ numcpus="1"
 gcloud compute disks create $name --size $disksize --source-snapshot $snapshotName
 
 gcloud compute instances create $name --machine-type "n1-$memory-$numcpus" --disk "name=$name,device-name=$name,mode=rw,boot=yes,auto-delete=yes"
+
+# Remove the ip from knownhosts in case it collides with an existing one
+ip=`gcloud compute instances list "$name" | tail -1 | rev | awk '{ print $3 }' | rev`
+ssh-keygen -R $ip

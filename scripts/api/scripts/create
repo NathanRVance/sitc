@@ -21,7 +21,9 @@ export ENGINES=$REMOTE_SERVER_ENGINES
 export ENGINE_DIR=$ENGINE_DIR
 EOF
 
+echo "Spawning $name..."
 $API_ROOT/scripts/lowlevel/spawn $name
+echo "Snapshoting $name..."
 $API_ROOT/scripts/lowlevel/snapshot $name $name
-$API_ROOT/scripts/lowlevel/shutdown $name
-$API_ROOT/scripts/lowlevel/delete_disk $name
+echo "Deleting $name..."
+$API_ROOT/scripts/lowlevel/delete_instance $name
