@@ -10,4 +10,13 @@ cd /home/$WEBMO_USER/public_html/cgi-bin/webmo
 perl -e "require qw(servercontrol.cgi);
 add_server(\"$name$number\", \"$name$number\", \"$NUMCPUS\", \"$WEBMO_USER\", \"/home/$WEBMO_USER\", \"/tmp\", \"ssh\");"
 
+# Aquire the engines and enginedir for the server
+source $API_ROOT/$name
 
+serverDir=`grep -o "remoteserver7,[0-9]\+" /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/globals.int | cut -d ',' -f2`
+serverDir="/home/$WEBMO_USER/public_html/cgi-bin/webmo/servers/server_$serverDir/"
+
+# Enable the installed engines
+for engine in `sed 's/,/ /g' <<< $ENGINES`; do
+	$SITC_ROOT/scripts/common/enable_in_webmo $engine $serverDir
+done

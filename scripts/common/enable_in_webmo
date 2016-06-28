@@ -1,0 +1,34 @@
+#!/bin/bash
+
+engine=$1
+
+path=$2
+cd $path
+
+case $engine in
+	"gamess")
+		sudo mv gamess.int.disabled gamess.int >> $SITC_ROOT/sitc.log 2>&1
+		sudo sed -i "s&gamessVersion=.*&gamessVersion=\"2014\"&" gamess.int >> $SITC_ROOT/sitc.log 2>&1
+		sudo sed -i "s&gamessGMSPATH=.*&gamessGMSPATH=\"$ENGINE_DIR/gamess\"&" gamess.int >> $SITC_ROOT/sitc.log 2>&1
+		;;
+	"gaussian")
+		sudo mv gaussian.int.disabled gaussian.int >> $SITC_ROOT/sitc.log 2>&1
+		sudo sed -i "s&/usr/local&$ENGINE_DIR&g" gaussian.int >> $SITC_ROOT/sitc.log 2>&1
+		;;
+	"mopac7")
+                sudo mv mopac.int.disabled mopac.int >> $SITC_ROOT/sitc.log 2>&1
+                sudo sed -i "s&mopacVersion=.*&mopacVersion=\"7\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
+                sudo sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac7/mopac.exe\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
+                sudo sed -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
+                ;;
+	"openmopac")
+		sudo mv mopac.int.disabled mopac.int > /dev/null 2>&1 >> $SITC_ROOT/sitc.log 2>&1
+		sudo sed -i "s&mopacVersion=.*&mopacVersion=\"2016\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
+		sudo sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac2016/MOPAC2016.exe\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
+		sudo sed -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
+		;;
+	"psi4")
+		sudo mv psi.int.disabled psi.int >> $SITC_ROOT/sitc.log 2>&1
+		sudo sed -i "s&psiBase=.*&psiBase=\"$ENGINE_DIR/miniconda\"&" psi.int >> $SITC_ROOT/sitc.log 2>&1
+		;;
+esac

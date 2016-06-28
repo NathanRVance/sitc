@@ -25,7 +25,7 @@ echo "Unpacking gaussian..."
 sudo tar xzf $GAUSSIAN_TAR
 sudo chown -R root:gaussian g09
 
-echo "Enabling gaussian in WebMO..."
-cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/ >> $SITC_ROOT/sitc.log 2>&1
-sudo mv gaussian.int.disabled gaussian.int >> $SITC_ROOT/sitc.log 2>&1
-sudo sed -i "s&/usr/local&$ENGINE_DIR&g" gaussian.int >> $SITC_ROOT/sitc.log 2>&1
+if [ ! "$SKIP_WEBMO" == "true" ]; then
+        echo "Enabling gaussian in WebMO..."
+        $SITC_ROOT/scripts/common/enable_in_webmo gaussian /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
+fi

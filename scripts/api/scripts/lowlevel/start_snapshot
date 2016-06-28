@@ -9,7 +9,13 @@ gcloud compute instances create $name --machine-type "n1-$MEMORY-$NUMCPUS" --dis
 
 gcloud compute config-ssh
 rm /home/$WEBMO_USER/.ssh/config
-# Automatic passwordless ssh
+# Passwordless ssh
 cp /home/$WEBMO_USER/.ssh/google_compute_engine /home/$WEBMO_USER/.ssh/id_rsa
 # Remove the host from knownhosts in case it collides with an existing one
-ssh-keygen -f "/home/$WEBMO_USER/.ssh/knownhosts" -R $name
+ssh-keygen -R $name
+# Remove the ip from knownhosts in case it collides with an existing one
+ip=`gcloud compute instances list "$name" | tail -1 | rev | awk '{ print $3 }' | rev`
+ssh-keygen -R $ip
+
+# Get the correct host/ip added to knownhosts
+echo "exit" | ssh -o StrictHostKeyChecking=no $name

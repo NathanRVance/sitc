@@ -14,6 +14,8 @@ gcloud compute config-ssh
 rm /home/$WEBMO_USER/.ssh/config
 # Automatic passwordless ssh
 cp /home/$WEBMO_USER/.ssh/google_compute_engine /home/$WEBMO_USER/.ssh/id_rsa
+# Remove the host from knownhosts in case it collides with an existing one
+ssh-keygen -R $name
 # Remove the ip from knownhosts in case it collides with an existing one
 ip=`gcloud compute instances list "$name" | tail -1 | rev | awk '{ print $3 }' | rev`
 ssh-keygen -R $ip
@@ -45,15 +47,3 @@ echo "tar xzf /home/$WEBMO_USER/sitc.tar.gz && /home/$WEBMO_USER/sitc/install -y
 
 echo "########## Finished work in $WEBMO_USER@$name ##########"
 echo
-
-echo "In the WebMO admin page, under Remote Server Manager, add $name as a remote server with:
- Server name:           $name
- Hostname:              $name
- CPU cores:             $NUMCPUS
- Username:              $WEBMO_USER
- Home directory:        /home/$WEBMO_USER
- Scratch directory:     /tmp
- Protocal:              ssh
-
-Under Interface Manager, select $name as the server being edited and enable Mopac. Verify that the paths for the interface were set up correctly.
-"

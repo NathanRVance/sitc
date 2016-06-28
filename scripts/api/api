@@ -1,13 +1,5 @@
 #!/bin/bash
 
-echo "1: $1"
-rest="${@:2}"
-if [ -z "$rest" ]; then
-        rest="test"
-fi
-echo "rest: $rest"
-exit
-
 export API_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $API_ROOT/api.conf
 export SITC_ROOT="$API_ROOT/../../"
@@ -18,7 +10,7 @@ if [ `whoami` != "$WEBMO_USER" ]; then
                 sudo su - $WEBMO_USER -c "cp -a $SITC_ROOT /home/$WEBMO_USER/sitc"
         fi
 	echo "Switching to user $WEBMO_USER..."
-        sudo su - $WEBMO_USER -c "/home/$WEBMO_USER/sitc/scripts/api/api $@"
+        sudo su - $WEBMO_USER -c "/home/$WEBMO_USER/sitc/scripts/api/api $*"
 	exit
 fi
 
