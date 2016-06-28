@@ -19,7 +19,7 @@ zone=`gcloud compute instances list | grep "$(hostname)" | awk '{print $2}'`
 gcloud config set compute/zone $zone
 
 cmd=$1
-rest=`cut -d ' ' -f2- <<< "$@"`
+rest="${@:2}"
 if [ -z "$rest" ]; then
 	rest=$NAME_BASE
 fi
