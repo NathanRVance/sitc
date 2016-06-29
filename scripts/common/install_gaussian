@@ -23,7 +23,7 @@ while [ ! -e "$GAUSSIAN_TAR" ]; do
 done
 echo "Unpacking gaussian..."
 sudo tar xzf $GAUSSIAN_TAR
-sudo chown -R root:gaussian g09
+sudo chown -R root:gaussian $ENGINE_DIR/g09
 
 if [ ! "$SKIP_WEBMO" == "true" ]; then
         echo "Enabling gaussian in WebMO..."
