@@ -3,9 +3,12 @@
 help_and_exit=$1
 
 if [ "$help_and_exit" == "true" ]; then
+	source $SITC_ROOT/util
 	echo "
 Gamess:
-  --GAMESS_TAR=<path>  location of the gamess tar file"
+  --GAMESS_TAR=<path>  location of the gamess tar file`printDefault $GAMESS_TAR`
+  --GAMESS_VERSION=<year>
+                       version of gamess to install`printDefault $GAMESS_VERSION`"
 	exit
 fi
 

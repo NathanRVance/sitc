@@ -1,0 +1,34 @@
+#!/bin/bash
+
+help_and_exit=$1
+
+if [ "$help_and_exit" == "true" ]; then
+	source $SITC_ROOT/util
+	echo "
+Quantum Espresso:
+  --ESPRESSO_VERSION=<version>
+                       version of quantum espresso to install`printDefault $ESPRESSO_VERSION`"
+        exit
+fi
+
+# Download and untar quantum espresso to /usr/local
+echo "Downloading quantum espresso..."
+cd $ENGINE_DIR
+# There are two semi-unpredictable numbers in the download link, so we parse the predictable site for that.
+link=`curl -s "http://qe-forge.org/gf/project/q-e/frs/?action=FrsReleaseBrowse&frs_package_id=18" | grep -o "/gf/download/frsrelease.*>espresso-$ESPRESSO_VERSION.tar.gz" | cut -d '"' -f1`
+if [ -z "$link" ]; then
+	echo "Bad quantum espresso version! Exiting..."
+	exit
+fi
+sudo curl -s -O $link
+echo "Untarring quantum espresso to $ENGINE_DIR..."
+sudo tar xzf espresso-${ESPRESSO_VERSION}.tar.gz
+echo "Compliling quantum espresso"
+cd espresso-${ESPRESSO_VERSION}/
+sudo ./configure
+sudo make all
+
+if [ ! "$SKIP_WEBMO" == "true" ]; then
+        echo "Enabling quantum espresso in WebMO..."
+        $SITC_ROOT/scripts/common/enable_in_webmo espresso /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
+fi

@@ -3,10 +3,11 @@
 help_and_exit=$1
 
 if [ "$help_and_exit" == "true" ]; then
+	source $SITC_ROOT/util
         echo "
 Gaussian:
   --GAUSSIAN_TAR=<path>
-                       location of the gaussian tar file"
+                       location of the gaussian tar file`printDefault $GAUSSIAN_TAR`"
         exit
 fi
 

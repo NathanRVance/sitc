@@ -3,70 +3,7 @@
 #Obtain current directory
 export SITC_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SITC_ROOT/install.conf
-
-printHelp()
-{
-echo "Usage: install [OPTIONS...]
-Installs WebMO and (a) computational chemistry engine(s).
-
-WebMO options:
-  --WEBMO_USER=<name>  unix user WebMO software will be installed under`printDefaultMaybe $WEBMO_USER`
-  --WEBMO_LICENSE=<license>
-                       license used to download and install WebMO`printDefaultMaybe $WEBMO_LICENSE`
-  --WEBMO_PASSWORD=<password>
-                       password that corresponds to WEBMO_LICENSE`printDefaultMaybe $WEBMO_PASSWORD`
-  --WEBMO_INITIAL_USERS=<users>
-                       comma separated username:password`printDefaultMaybe $WEBMO_INITIAL_USERS`
-  --SKIP_WEBMO=<true/false>
-                       optionally omit webmo (install engines only)`printDefaultMaybe $SKIP_WEBMO`
-
-Engine options:
-  --ENGINE_DIR=<path>  path to directory that engines are to be installed in`printDefaultMaybe $ENGINE_DIR`
-  --ENGINES=<engines>  comma separated engines to be installed on this computer`printDefaultMaybe $ENGINES`
-
-Available engines:"
-for file in `ls $SITC_ROOT/scripts/common`; do
-	if [ "`echo $file | cut -c1-7`" == "install" ]; then
-		engine="`echo $file | cut -c9-`"
-		if [ "$engine" != "webmo" ]; then
-			echo "  $engine"
-		fi
-	fi
-done
-
-for file in `ls $SITC_ROOT/scripts/common`; do
-        if [ "`echo $file | cut -c1-7`" == "install" ]; then
-                engine="`echo $file | cut -c9-`"
-                if [ "$engine" != "webmo" ]; then
-                        $SITC_ROOT/scripts/common/install_$engine "true"
-                fi
-        fi
-done
-
-echo
-echo "Remote server options:
-  --REMOTE_SERVER=<true/false>
-                       create a remote server`printDefaultMaybe $REMOTE_SERVER`
-  --REMOTE_SERVER_ENGINES=<engines>
-                       comma separated engines to be installed to a remote server
-                       If blank, defaults to ENGINES`printDefaultMaybe $REMOTE_SERVER_ENGINES`
-
-Miscellaneous:
-  --YES_TO_ALL=<true/false>
-                       accept licenses and don't prompt for continuing
-  -y                   same as --YES_TO_ALL=true
-  -v                   display version information and exit
-  -h                   display this help text and exit"
-exit
-}
-
-printDefaultMaybe() {
-var=$1
-if [ ! -z "$var" ]; then
-	echo "
-                       default: $var"
-fi
-}
+source $SITC_ROOT/util
 
 for param in $@; do
 	# Potentially override defaults in install.conf
