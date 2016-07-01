@@ -20,6 +20,7 @@ if [ -z "$link" ]; then
 	echo "Bad quantum espresso version! Exiting..."
 	exit
 fi
+link="http://qe-forge.org$link"
 sudo curl -s -O $link
 echo "Untarring quantum espresso to $ENGINE_DIR..."
 sudo tar xzf espresso-${ESPRESSO_VERSION}.tar.gz
