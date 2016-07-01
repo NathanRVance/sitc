@@ -25,8 +25,7 @@ echo "Untarring quantum espresso to $ENGINE_DIR..."
 sudo tar xzf espresso-${ESPRESSO_VERSION}.tar.gz
 echo "Compliling quantum espresso"
 cd espresso-${ESPRESSO_VERSION}/
-sudo ./configure
-sudo make all
+sudo ./configure && sudo make all
 
 if [ ! "$SKIP_WEBMO" == "true" ]; then
         echo "Enabling quantum espresso in WebMO..."
