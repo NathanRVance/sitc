@@ -3,8 +3,8 @@
 IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
 DN=$IP.xip.io
 
-sudo apt-get -y install python-certbot-apache -t jessie-backports
-sudo certbot --apache certonly -d $DN --register-unsafely-without-email
+sudo apt-get -y install python-letsencrypt-apache
+sudo letsencrypt --apache certonly -d $DN --register-unsafely-without-email
 
 sudo a2enmod ssl
 sudo a2ensite default-ssl
