@@ -2,17 +2,17 @@
 
 export API_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $API_ROOT/api.conf
-export SITC_ROOT="$API_ROOT/../../"
-source $SITC_ROOT/install.conf
+#export SITC_ROOT="$API_ROOT/../../"
+#source $SITC_ROOT/install.conf
 
-if [ `whoami` != "$WEBMO_USER" ]; then
-	if [ ! -e /home/$WEBMO_USER/sitc/scripts/api/api ]; then
-                sudo su - $WEBMO_USER -c "cp -a $SITC_ROOT /home/$WEBMO_USER/sitc"
-        fi
-	echo "Switching to user $WEBMO_USER..."
-        sudo su - $WEBMO_USER -c "/home/$WEBMO_USER/sitc/scripts/api/api $*"
-	exit
-fi
+#if [ `whoami` != "$WEBMO_USER" ]; then
+#	if [ ! -e /home/$WEBMO_USER/sitc/scripts/api/api ]; then
+#                sudo su - $WEBMO_USER -c "cp -a $SITC_ROOT /home/$WEBMO_USER/sitc"
+#        fi
+#	echo "Switching to user $WEBMO_USER..."
+#        sudo su - $WEBMO_USER -c "/home/$WEBMO_USER/sitc/scripts/api/api $*"
+#	exit
+#fi
 
 #Make sure gcloud is up to date
 echo "Y" | sudo /usr/local/share/google/google-cloud-sdk/bin/gcloud components update

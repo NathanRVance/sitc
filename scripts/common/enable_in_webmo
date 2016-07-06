@@ -1,41 +1,15 @@
 #!/bin/bash
 
-engine=$1
+# File containing engines
+log=$1
 
+# Directory containing engine.int.(disabled)
 path=$2
-cd $path
 
-case $engine in
-	"espresso")
-		sudo mv pwscf.int.disabled pwscf.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&pwscfVersion=.*&pwscfVersion=\"$ESPRESSO_VERSION\"&" pwscf.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&pwscfUseMPI=.*&pwscfUseMPI=\"0\"&" pwscf.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&pwscfBinDir=.*&pwscfBinDir=\"/usr/local/espresso-$ESPRESSO_VERSION/bin\"&" pwscf.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&pwscfPotentials=.*&pwscfPotentials=\"/usr/local/espresso-$ESPRESSO_VERSION/pseudo\"&" pwscf.int >> $SITC_ROOT/sitc.log 2>&1
-		;;
-	"gamess")
-		sudo mv gamess.int.disabled gamess.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&gamessVersion=.*&gamessVersion=\"$GAMESS_VERSION\"&" gamess.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&gamessGMSPATH=.*&gamessGMSPATH=\"$ENGINE_DIR/gamess\"&" gamess.int >> $SITC_ROOT/sitc.log 2>&1
-		;;
-	"gaussian")
-		sudo mv gaussian.int.disabled gaussian.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&/usr/local&$ENGINE_DIR&g" gaussian.int >> $SITC_ROOT/sitc.log 2>&1
-		;;
-	"mopac7")
-                sudo mv mopac.int.disabled mopac.int >> $SITC_ROOT/sitc.log 2>&1
-                sudo sed -i "s&mopacVersion=.*&mopacVersion=\"7\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
-                sudo sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac7/mopac.exe\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
-                sudo sed -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
-                ;;
-	"openmopac")
-		sudo mv mopac.int.disabled mopac.int > /dev/null 2>&1 >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&mopacVersion=.*&mopacVersion=\"$OPENMOPAC_VERSION\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&mopacPath=.*&mopacPath=\"$ENGINE_DIR/mopac$OPENMOPAC_VERSION/MOPAC$OPENMOPAC_VERSION.exe\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&mopacExternal=.*&mopacExternal=\"\"&" mopac.int >> $SITC_ROOT/sitc.log 2>&1
-		;;
-	"psi4")
-		sudo mv psi.int.disabled psi.int >> $SITC_ROOT/sitc.log 2>&1
-		sudo sed -i "s&psiBase=.*&psiBase=\"$ENGINE_DIR/miniconda\"&" psi.int >> $SITC_ROOT/sitc.log 2>&1
-		;;
-esac
+for engine in `grep -o "<[^/]*>" $log | tr -d "<>"`; do
+	cp $path/$engine.int.disabled $path/$engine.int
+	for setting in `grep -zo "<$engine>[^<>]*</$engine>" $log | sed "s&</\?$engine>&&"`; do
+		name=`echo $setting | cut -d "=" -f1`
+		sed -i "s&$name=.*&$setting&" $path/$engine.int
+	done
+done

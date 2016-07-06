@@ -12,15 +12,6 @@ if [ -e $API_ROOT/$name ]; then
 	exit
 fi
 
-if [ -z "$REMOTE_SERVER_ENGINES" ]; then
-        REMOTE_SERVER_ENGINES="$ENGINES"
-fi
-
-cat >> $API_ROOT/$name << EOF
-export ENGINES=$REMOTE_SERVER_ENGINES
-export ENGINE_DIR=$ENGINE_DIR
-EOF
-
 echo "Spawning $name..."
 $API_ROOT/scripts/lowlevel/spawn $name
 echo "Snapshoting $name..."

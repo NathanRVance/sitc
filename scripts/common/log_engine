@@ -1,0 +1,63 @@
+#!/bin/bash
+
+engine=$1
+log="$SITC_ROOT/engines.log"
+
+case $engine in
+	"espresso")
+		cat >> $log << EOF
+<pwscf>
+pwscfVersion="$ESPRESSO_VERSION"
+pwscfUseMPI="0"
+pwscfBinDir="$ENGINE_DIR/espresso-$ESPRESSO_VERSION/bin"
+pwscfPotentials="$ENGINE_DIR/espresso-$ESPRESSO_VERSION/pseudo"
+</pwscf>
+EOF
+		;;
+	"gamess")
+		cat >> $log << EOF
+<gamess>
+gamessVersion="$GAMESS_VERSION"
+gamessGMSPATH="$ENGINE_DIR/gamess"
+</gamess>
+EOF
+		;;
+	"gaussian")
+		cat >> $log << EOF
+<gaussian>
+gaussianBase="$ENGINE_DIR/g09"
+gaussianRoot="$ENGINE_DIR"
+GAUSS_EXEDIR="$ENGINE_DIR/g09"
+GAUSS_ARCHDIR="$ENGINE_DIR/g09/arch"
+GMAIN="$ENGINE_DIR/g09/bsd:$ENGINE_DIR/g09/private:$ENGINE_DIR/g09"
+LD_LIBRARY_PATH="$ENGINE_DIR/g09/bsd:$ENGINE_DIR/g09/private:$ENGINE_DIR/g09"
+gaussianBasis="$ENGINE_DIR/g09/basis"
+</gaussian>
+EOF
+		;;
+	"mopac7")
+		cat >> $log << EOF
+<mopac>
+mopacVersion="7"
+mopacPath="$ENGINE_DIR/mopac7/mopac.exe"
+mopacExternal=""
+</mopac>
+EOF
+                ;;
+	"openmopac")
+		cat >> $log << EOF
+<mopac>
+mopacVersion="$OPENMOPAC_VERSION"
+mopacPath="$ENGINE_DIR/mopac$OPENMOPAC_VERSION/MOPAC$OPENMOPAC_VERSION.exe"
+mopacExternal=""
+</mopac>
+EOF
+		;;
+	"psi4")
+		cat >> $log << EOF
+<psi>
+psiBase="$ENGINE_DIR/miniconda"
+</psi>
+EOF
+		;;
+esac

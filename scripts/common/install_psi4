@@ -19,7 +19,5 @@ sudo env "PATH=$PATH" conda config --add channels http://conda.anaconda.org/psi4
 echo "Installing psi4..."
 sudo env "PATH=$PATH" conda install --yes psi4 >> $SITC_ROOT/sitc.log 2>&1
 
-if [ ! "$SKIP_WEBMO" == "true" ]; then
-        echo "Enabling psi4 in WebMO..."
-        $SITC_ROOT/scripts/common/enable_in_webmo psi4 /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
-fi
+echo "Logging installation options"
+$SITC_ROOT/scripts/common/log_engine psi4

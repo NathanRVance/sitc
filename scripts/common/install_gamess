@@ -64,7 +64,5 @@ sudo ./lked gamess 00
 
 sudo patch rungms < $SITC_ROOT/patches/rungms.patch
 
-if [ ! "$SKIP_WEBMO" == "true" ]; then
-	echo "Enabling gamess in WebMO..."
-	$SITC_ROOT/scripts/common/enable_in_webmo gamess /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
-fi
+echo "Logging installation options"
+$SITC_ROOT/scripts/common/log_engine gamess

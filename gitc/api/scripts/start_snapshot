@@ -1,0 +1,16 @@
+#!/bin/bash
+
+name=$1
+snapshotName=$2
+
+gcloud compute disks create $name --size $DISKSIZE --source-snapshot $snapshotName
+
+gcloud compute instances create $name --machine-type "n1-$MEMORY-$NUMCPUS" --disk "name=$name,device-name=$name,mode=rw,boot=yes,auto-delete=yes"
+
+# Set up ssh keys
+if [ ! -e "/home/`whoami`/.ssh/google_compute_engine" ]; then
+        echo "/home/`whoami`/.ssh/google_compute_engine" | ssh-keygen -N ""
+fi
+gcloud compute config-ssh
+# Get the correct host/ip added to knownhosts
+echo "exit" | ssh -o StrictHostKeyChecking=no $name

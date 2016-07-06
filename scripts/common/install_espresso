@@ -24,11 +24,10 @@ link="http://qe-forge.org$link"
 sudo curl -s -O $link
 echo "Untarring quantum espresso to $ENGINE_DIR..."
 sudo tar xzf espresso-${ESPRESSO_VERSION}.tar.gz
+sudo chown -R root:root espresso-${ESPRESSO_VERSION}/
 echo "Compliling quantum espresso"
 cd espresso-${ESPRESSO_VERSION}/
 sudo ./configure && sudo make all
 
-if [ ! "$SKIP_WEBMO" == "true" ]; then
-        echo "Enabling quantum espresso in WebMO..."
-        $SITC_ROOT/scripts/common/enable_in_webmo espresso /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
-fi
+echo "Logging installation options"
+$SITC_ROOT/scripts/common/log_engine espresso

@@ -23,11 +23,6 @@ for param in $@; do
 	fi
 done
 
-#if [ "$YES_TO_ALL" == "true" ] && [ -z "$WEBMO_LICENSE" -o -z "$WEBMO_PASSWORD" ]; then
-#	echo "ERROR: Cannot be accept_all without specifying both WEBMO_LICENSE and WEBMO_PASSWORD"
-#	exit
-#fi
-
 #if [ -n "`echo $ENGINES | grep "mopac7"`" ] && [ -n "`echo $ENGINES | grep "openmopac"`" ]; then
 #	echo "ERROR: Cannot install both mopac7 and openmopac"
 #	exit
@@ -91,16 +86,9 @@ if [ "$YES_TO_ALL" == "false" ]; then
         read -s -n 1 -p "Press any key to continue"
 fi
 
-if [ "$REMOTE_SERVER" == "true" ]; then
-	echo
-	echo "*** CREATING A REMOTE SERVER ***"
-	$SITC_ROOT/scripts/api/api create
-	if [ "$YES_TO_ALL" == "false" ]; then
-                read -s -n 1 -p "Press any key to continue"
-        fi
-fi
-
 if [ "$SKIP_WEBMO" != "true" ]; then
+	echo "Enabling engines in WebMO"
+	$SITC_ROOT/scripts/common/enable_in_webmo $SITC_ROOT/engines.log /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces
 
 	IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
 	echo "

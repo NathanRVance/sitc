@@ -48,14 +48,7 @@ for file in `ls $SITC_ROOT/scripts/common`; do
 done
 
 echo
-echo "Remote server options:
-  --REMOTE_SERVER=<true/false>
-                       create a remote server`printDefault $REMOTE_SERVER`
-  --REMOTE_SERVER_ENGINES=<engines>
-                       comma separated engines to be installed to a remote server
-                       If blank, defaults to ENGINES`printDefault $REMOTE_SERVER_ENGINES`
-
-Miscellaneous:
+echo "Miscellaneous:
   --YES_TO_ALL=<true/false>
                        accept licenses and don't prompt for continuing
   -y                   same as --YES_TO_ALL=true

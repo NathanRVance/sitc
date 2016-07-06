@@ -15,7 +15,5 @@ echo "Untarring mopac7 to $ENGINE_DIR..."
 sudo tar xzf mopac7-bin.tar.gz
 sudo chown -R root:root mopac7
 
-if [ ! "$SKIP_WEBMO" == "true" ]; then
-        echo "Enabling mopac7 in WebMO..."
-        $SITC_ROOT/scripts/common/enable_in_webmo mopac7 /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/
-fi
+echo "Logging installation options"
+$SITC_ROOT/scripts/common/log_engine mopac7
