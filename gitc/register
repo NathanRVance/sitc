@@ -19,7 +19,7 @@ if [ -z "$sitcpath" ]; then
 	exit
 fi
 
-$DIR/gcloud/api start_snapshot $name $name
+$DIR/gcloud/api start_snapshot $name $name 10 standard 1
 fullname=`$DIR/gcloud/api get_fullname $name`
 scp $fullname:$sitcpath/engines.log $DIR/servers/$name.engines
 $DIR/gcloud/api delete_instance $name
