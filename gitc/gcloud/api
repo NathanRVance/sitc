@@ -15,8 +15,8 @@ source $API_ROOT/api.conf
 #fi
 
 #Make sure gcloud is up to date
-gcloud=`which gcloud`
-echo "Y" | sudo $gcloud components update
+#gcloud=`which gcloud`
+#echo "Y" | sudo $gcloud components update
 
 zone=`gcloud compute instances list | grep "$(hostname)" | awk '{print $2}'`
 
