@@ -1,7 +1,8 @@
 #!/bin/bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $DIR/../install.conf
+SITC_ROOT=$DIR/../
+source $SITC_ROOT/install.conf
 
 name=$1
 number=$2
@@ -11,12 +12,14 @@ numcpus=$4
 
 $DIR/gcloud/api start_snapshot $name$number $name $disksize $memory $numcpus
 
-# Set up the new server
-cd /home/$WEBMO_USER/public_html/cgi-bin/webmo
-perl -e "require qw(servercontrol.cgi);
-add_server(\"$name$number\", \"$name$number\", \"$numcpus\", \"$WEBMO_USER\", \"/home/$WEBMO_USER\", \"/tmp\", \"ssh\");"
+fullname=`$DIR/gcloud/api get_fullname $name$number`
 
-serverDir=`grep -o "$name$number,[0-9]\+" /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/globals.int | cut -d ',' -f2`
+# Set up the new server
+cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/
+perl -e "require qw(servercontrol.cgi);
+add_server(\"$fullname\", \"$fullname\", \"$numcpus\", \"$WEBMO_USER\", \"/home/$WEBMO_USER\", \"/tmp\", \"ssh\");"
+
+serverDir=`grep -o "$fullname,[0-9]\+" /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/globals.int | cut -d ',' -f2`
 serverDir="/home/$WEBMO_USER/public_html/cgi-bin/webmo/servers/server_$serverDir/"
 
 # Enable the installed engines
