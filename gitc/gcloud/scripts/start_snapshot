@@ -13,4 +13,5 @@ if [ ! -e "/home/`whoami`/.ssh/google_compute_engine" ]; then
 fi
 gcloud compute config-ssh
 # Get the correct host/ip added to knownhosts
-echo "exit" | ssh -o StrictHostKeyChecking=no $name
+fullname=`$API_ROOT/scripts/get_fullname $name`
+echo "exit" | ssh -o StrictHostKeyChecking=no $fullname
