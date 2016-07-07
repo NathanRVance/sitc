@@ -16,5 +16,6 @@ sitcpath=$2
 
 mkdir $name
 
-$DIR/api/api start_snapshot $name $name
-scp $name:$sitcpath/engines.log $name/engines.log
+$DIR/gcloud/api start_snapshot $name $name
+fullname=`$DIR/gcloud/api get_fullname $name`
+scp $fullname:$sitcpath/engines.log $name/engines.log
