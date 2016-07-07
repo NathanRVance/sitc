@@ -2,10 +2,14 @@
 
 name=$1
 snapshotName=$2
+disksize=$3
+memory=$4
+numcpus=$5
 
-gcloud compute disks create $name --size $DISKSIZE --source-snapshot $snapshotName
 
-gcloud compute instances create $name --machine-type "n1-$MEMORY-$NUMCPUS" --disk "name=$name,device-name=$name,mode=rw,boot=yes,auto-delete=yes"
+gcloud compute disks create $name --size $disksize --source-snapshot $snapshotName
+
+gcloud compute instances create $name --machine-type "n1-$memory-$numcpus" --disk "name=$name,device-name=$name,mode=rw,boot=yes,auto-delete=yes"
 
 # Set up ssh keys
 if [ ! -e "/home/`whoami`/.ssh/google_compute_engine" ]; then

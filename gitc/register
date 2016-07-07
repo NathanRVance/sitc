@@ -14,8 +14,12 @@ name=$1
 # path to sitc on snapshot
 sitcpath=$2
 
-mkdir $name
+if [ -z "$sitcpath" ]; then
+	echo "No path specified, exiting..."
+	exit
+fi
 
 $DIR/gcloud/api start_snapshot $name $name
 fullname=`$DIR/gcloud/api get_fullname $name`
-scp $fullname:$sitcpath/engines.log $name/engines.log
+scp $fullname:$sitcpath/engines.log $DIR/servers/$name.engines
+$DIR/gcloud/api delete_instance $name
