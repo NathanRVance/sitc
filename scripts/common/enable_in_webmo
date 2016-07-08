@@ -7,7 +7,7 @@ log=$1
 path=$2
 
 for engine in `grep -o "<[^/]*>" $log | tr -d "<>"`; do
-	cp $path/$engine.int.disabled $path/$engine.int
+	mv $path/$engine.int.disabled $path/$engine.int
 	for setting in `grep -zo "<$engine>[^<>]*</$engine>" $log | sed "s&</\?$engine>&&"`; do
 		name=`echo $setting | cut -d "=" -f1`
 		sed -i "s&$name=.*&$setting&" $path/$engine.int
