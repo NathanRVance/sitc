@@ -6,9 +6,9 @@ log=$1
 # Directory containing engine.int.(disabled)
 path=$2
 
-for engine in `grep -o "<[^/]*>" $log | tr -d "<>"`; do
+for engine in `grep -Po "<[^/]*>" $log | tr -d "<>"`; do
 	mv $path/$engine.int.disabled $path/$engine.int
-	for setting in `grep -zo "<$engine>[^<>]*</$engine>" $log | sed "s&</\?$engine>&&"`; do
+	for setting in `grep -Pzo "<$engine>[^<>]*</$engine>" $log | sed "s&</\?$engine>&&"`; do
 		name=`echo $setting | cut -d "=" -f1`
 		sed -i "s&$name=.*&$setting&" $path/$engine.int
 	done

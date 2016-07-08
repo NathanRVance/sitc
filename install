@@ -90,6 +90,12 @@ if [ "$SKIP_WEBMO" != "true" ]; then
 	echo "Enabling engines in WebMO"
 	$SITC_ROOT/scripts/common/enable_in_webmo $SITC_ROOT/engines.log /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces
 
+	if [ ! -d /home/$WEBMO_USER/sitc ]; then
+		echo "Copying scripts to /home/$WEBMO_USER/sitc"
+		cp -a $SITC_ROOT /home/$WEBMO_USER/sitc
+		sudo chown -R $WEBMO_USER:$WEBMO_USER /home/$WEBMO_USER/sitc
+	fi
+
 	IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
 	echo "
 
