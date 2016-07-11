@@ -53,6 +53,15 @@ mopacExternal=""
 </mopac>
 EOF
 		;;
+	"orca")
+		cat >> $log << EOF
+<orca>
+orcaVersion="$ORCA_VERSION"
+orcaBase="$ORCA_PATH"
+orcaMPIsetupScript=""
+</orca>
+EOF
+		;;
 	"psi4")
 		cat >> $log << EOF
 <psi>

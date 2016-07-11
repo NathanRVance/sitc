@@ -1,0 +1,23 @@
+#!/bin/bash
+
+help_and_exit=$1
+
+if [ "$help_and_exit" == "true" ]; then
+	source $SITC_ROOT/util
+	echo "
+Orca:
+  --ORCA_TAR=<path>    location of the file orca_X_X_X_linux_x86-64.tbz`printDefault $ORCA_TAR`"
+        exit
+fi
+
+echo "Untarring mopac7 to $ENGINE_DIR..."
+cd $ENGINE_DIR
+sudo tar xjf $ORCA_TAR
+dirname=`echo "$ORCA_TAR" | rev | cut -d '/' -f1 | rev | cut -d '.' -f1`
+sudo chown -R root:root $dirname
+
+export ORCA_VERSION=`echo $dirname | grep -oP '\d_\d_\d' | tr '_' '.'`
+export ORCA_PATH="$ENGINE_DIR/$dirname"
+
+echo "Logging installation options"
+$SITC_ROOT/scripts/common/log_engine orca
