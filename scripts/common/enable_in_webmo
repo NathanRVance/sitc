@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Since this script gets run on systems without passwordless sudo, it
+# should be called as sudo in situations where permissions are needed.
+
 # File containing engines
 log=$1
 
