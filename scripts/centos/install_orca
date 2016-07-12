@@ -1,1 +1,7 @@
-../common/install_orca
+#!/bin/bash
+
+echo "Installing bzip2..."
+# Install bzip2
+sudo yum -y install bzip2 >> $SITC_ROOT/sitc.log 2>&1
+
+$SITC_ROOT/scripts/common/install_orca
