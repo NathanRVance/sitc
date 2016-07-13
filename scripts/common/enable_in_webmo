@@ -18,11 +18,12 @@ for engine in `grep -Po "<[^/]*>" $log | tr -d "<>"`; do
 done
 
 if [ -n "`echo $path | grep -o 'cgi-bin/webmo/servers'`" ]; then
-	# This is a remote server, so copy .int files over
+	# This is a remote server, so copy all engine.int files over
 	dest=`grep '^cgiBase=' $path/globals.int | cut -d "=" -f2 | sed 's/\"//g'`
 	host=`grep '^host=' $path/globals.int | cut -d "=" -f2 | sed 's/\"//g'`
-	ssh $host "mkdir -p $dest"
 	for file in `ls $path/*.int`; do
-		scp $path/$engine.int $host:$dest/$engine.int
+		if [ $file != "globals.int" ]; then
+			scp $path/$file $host:$dest/interfaces/$file
+		fi
 	done
 fi
