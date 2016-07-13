@@ -21,8 +21,9 @@ if [ -n "`echo $path | grep -o 'cgi-bin/webmo/servers'`" ]; then
 	# This is a remote server, so copy all engine.int files over
 	dest=`grep '^cgiBase=' $path/globals.int | cut -d "=" -f2 | sed 's/\"//g'`
 	host=`grep '^host=' $path/globals.int | cut -d "=" -f2 | sed 's/\"//g'`
-	for file in `ls $path/*.int`; do
-		if [ $file != "globals.int" ]; then
+	cd $path
+	for file in `ls *.int`; do
+		if [ "$file" != "globals.int" ]; then
 			scp $path/$file $host:$dest/interfaces/$file
 		fi
 	done
