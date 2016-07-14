@@ -14,6 +14,8 @@ $DIR/gcloud/api start_snapshot $name$number $name $disksize $memory $numcpus
 
 fullname=`$DIR/gcloud/api get_fullname $name$number`
 
+echo "fullname: $fullname"
+
 # Set up the new server
 cd /home/$WEBMO_USER/public_html/cgi-bin/webmo/
 perl -e "require qw(servercontrol.cgi);
