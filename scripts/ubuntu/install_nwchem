@@ -1,0 +1,30 @@
+#!/bin/bash
+
+cd /usr/local
+sudo curl -O http://www.nwchem-sw.org/images/Nwchem-6.6.revision27746-src.2015-10-20.tar.gz
+sudo tar xzf Nwchem-6.6.revision27746-src.2015-10-20.tar.gz
+
+export NWCHEM_TOP="/usr/local/nwchem-6.6"
+
+sudo apt-get -y install python-dev gfortran libopenblas-dev libopenmpi-dev openmpi-bin tcsh make
+
+sudo cat > $NWCHEM_TOP/make.sh << EOF
+#!/bin/bash
+export USE_MPI=y
+export NWCHEM_TARGET=LINUX64
+export USE_PYTHONCONFIG=y
+export PYTHONVERSION=2.7
+export PYTHONHOME=/usr
+export BLASOPT="-lopenblas -lpthread -lrt"
+export BLAS_SIZE=4
+export USE_64TO32=y
+export NWCHEM_TOP=$NWCHEM_TOP
+cd $NWCHEM_TOP/src
+make nwchem_config NWCHEM_MODULES="all python"
+make 64_to_32
+make
+EOF
+
+sudo chmod +x $NWCHEM_TOP/make.sh
+
+$SITC_ROOT/scripts/common/install_nwchem

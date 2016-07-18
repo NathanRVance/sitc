@@ -44,6 +44,16 @@ mopacExternal=""
 </mopac>
 EOF
                 ;;
+	"nwchem")
+		cat >> $log << EOF
+<nwchem>
+nwchemVersion="6.6"
+nwchemBase="/usr/local/nwchem-6.6"
+nwchemBinary="/usr/local/nwchem-6.6/bin/LINUX64/nwchem"
+nwchemRc="/usr/local/nwchem-6.6/contrib/distro-tools/gen_default.nwchemrc"
+</nwchem>
+EOF
+		;;
 	"openmopac")
 		cat >> $log << EOF
 <mopac>

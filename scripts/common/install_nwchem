@@ -1,0 +1,20 @@
+#!/bin/bash
+
+help_and_exit=$1
+
+if [ "$help_and_exit" == "true" ]; then
+	source $SITC_ROOT/util
+	echo "
+NWChem:
+  --NWCHEM_TAR=<path>  location of the NWChem tar file`printDefault $NWCHEM_TAR`"
+        exit
+fi
+
+# Since compilation is incredibly OS specific, most of the heavy lifting has already been done.
+# We just have to compile and log.
+echo "Compiling NWchem (this may take a while, go grab a coffee)..."
+# This file was created in the OS script
+$NWCHEM_TOP/make.sh &> $SITC_ROOT/sitc.log
+
+echo "Logging installation options"
+$SITC_ROOT/scripts/common/log_engine nwchem
