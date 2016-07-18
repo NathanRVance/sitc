@@ -8,7 +8,7 @@ export NWCHEM_TOP="/usr/local/nwchem-6.6"
 
 sudo yum -y install python-devel gcc-gfortran openmpi-devel tcsh make
 
-sudo cat > $NWCHEM_TOP/make.sh << EOF
+sudo tee $NWCHEM_TOP/make.sh > $SITC_ROOT/sitc.log << EOF
 #!/bin/bash
 export USE_MPI=y
 export NWCHEM_TARGET=LINUX64
