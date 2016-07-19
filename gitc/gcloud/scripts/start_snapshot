@@ -18,4 +18,6 @@ fi
 gcloud compute config-ssh
 # Get the correct host/ip added to knownhosts
 fullname=`$API_ROOT/scripts/get_fullname $name`
+# The snapshot might still be coming up, so wait a bit
+sleep 10
 echo "exit" | ssh -o StrictHostKeyChecking=no $fullname
