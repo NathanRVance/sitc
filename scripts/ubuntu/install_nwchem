@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd /usr/local
+echo "Unpacking nwchem to /usr/local..."
 sudo curl -O http://www.nwchem-sw.org/images/Nwchem-6.6.revision27746-src.2015-10-20.tar.gz
 sudo tar xzf Nwchem-6.6.revision27746-src.2015-10-20.tar.gz
 
