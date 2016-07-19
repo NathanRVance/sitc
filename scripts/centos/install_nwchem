@@ -7,7 +7,9 @@ sudo tar xzf Nwchem-6.6.revision27746-src.2015-10-20.tar.gz
 
 export NWCHEM_TOP="/usr/local/nwchem-6.6"
 
-sudo yum -y install python-devel gcc-gfortran openmpi-devel tcsh make
+echo "Installing python-devel gcc-gfortran openmpi-devel tcsh make..."
+# Install python-devel gcc-gfortran openmpi-devel tcsh make
+sudo yum -y install python-devel gcc-gfortran openmpi-devel tcsh make >> $SITC_ROOT/sitc.log 2>&1
 
 sudo tee $NWCHEM_TOP/make.sh > $SITC_ROOT/sitc.log << EOF
 #!/bin/bash

@@ -16,5 +16,5 @@ echo "Compiling NWchem (this may take a while, go grab a coffee)..."
 # This file was created in the OS script
 sudo -E $NWCHEM_TOP/make.sh &> $SITC_ROOT/sitc.log
 
-echo "Logging installation options"
+echo "Logging installation options..."
 $SITC_ROOT/scripts/common/log_engine nwchem

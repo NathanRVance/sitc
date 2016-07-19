@@ -7,7 +7,9 @@ sudo tar xzf Nwchem-6.6.revision27746-src.2015-10-20.tar.gz
 
 export NWCHEM_TOP="/usr/local/nwchem-6.6"
 
-sudo apt-get -y install python-dev gfortran libopenblas-dev libopenmpi-dev openmpi-bin tcsh make
+echo "Installing python-dev gfortran libopenblas-dev libopenmpi-dev openmpi-bin tcsh make..."
+# Install python-dev gfortran libopenblas-dev libopenmpi-dev openmpi-bin tcsh make
+sudo apt-get -y install python-dev gfortran libopenblas-dev libopenmpi-dev openmpi-bin tcsh make >> $SITC_ROOT/sitc.log 2>&1
 
 sudo tee $NWCHEM_TOP/make.sh > $SITC_ROOT/sitc.log << EOF
 #!/bin/bash

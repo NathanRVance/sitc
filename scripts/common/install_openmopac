@@ -35,5 +35,5 @@ fi
 echo -e "\nYes\n" | ./MOPAC${OPENMOPAC_VERSION}.exe $OPENMOPAC_LICENSE >> $SITC_ROOT/sitc.log 2>&1
 sudo chmod 755 .
 
-echo "Logging installation options"
+echo "Logging installation options..."
 $SITC_ROOT/scripts/common/log_engine openmopac

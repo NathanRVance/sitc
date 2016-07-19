@@ -29,5 +29,5 @@ echo "Compliling quantum espresso (this may take a while, go grab a coffee)..."
 cd espresso-${ESPRESSO_VERSION}/
 sudo ./configure && sudo make all &> $SITC_ROOT/sitc.log
 
-echo "Logging installation options"
+echo "Logging installation options..."
 $SITC_ROOT/scripts/common/log_engine espresso

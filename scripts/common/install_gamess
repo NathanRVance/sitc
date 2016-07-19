@@ -64,5 +64,5 @@ sudo ./lked gamess 00
 
 sudo patch rungms < $SITC_ROOT/patches/rungms.patch
 
-echo "Logging installation options"
+echo "Logging installation options..."
 $SITC_ROOT/scripts/common/log_engine gamess

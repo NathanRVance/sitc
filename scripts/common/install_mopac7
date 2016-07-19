@@ -15,5 +15,5 @@ echo "Untarring mopac7 to $ENGINE_DIR..."
 sudo tar xzf mopac7-bin.tar.gz
 sudo chown -R root:root mopac7
 
-echo "Logging installation options"
+echo "Logging installation options..."
 $SITC_ROOT/scripts/common/log_engine mopac7
