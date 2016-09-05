@@ -7,7 +7,7 @@ if [ "$help_and_exit" == "true" ]; then
 	echo "
 Tinker:
   --TINKER_VERSION=<version>
-                       version of Tinker to download and install`printDefault $ORCA_TAR`"
+                       version of Tinker to download and install`printDefault $TINKER_VERSION`"
         exit
 fi
 
