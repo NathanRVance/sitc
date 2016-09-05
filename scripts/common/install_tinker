@@ -21,7 +21,7 @@ sudo chown -R root:root tinker/
 
 sudo cp tinker/make/Makefile tinker/source/
 cd tinker/source/
-sed "s/ENGINE_DIR/$ENGINE_DIR/" $SITC_ROOT/patches/tinker_makefile.patch | sudo patch Makefile
+sudo pactch Makefile < $SITC_ROOT/patches/tinker_makefile.patch
 
 sudo make all
 sudo mkdir $ENGINE_DIR/tinker/bin/
