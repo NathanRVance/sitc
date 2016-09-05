@@ -24,8 +24,8 @@ cd tinker/source/
 sudo patch Makefile < $SITC_ROOT/patches/tinker_makefile.patch
 
 sudo make all
-sudo mkdir $ENGINE_DIR/tinker/bin/
-sudo make rename
+sudo mkdir ../bin/
+sudo cp *.x ../bin/
 
 echo "Logging installation options..."
 $SITC_ROOT/scripts/common/log_engine tinker
