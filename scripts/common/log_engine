@@ -79,4 +79,15 @@ psiBase="$ENGINE_DIR/miniconda"
 </psi>
 EOF
 		;;
+	"tinker")
+		cat >> $log << EOF
+<tinker>
+tinkerVersion="$TINKER_VERSION"
+tinkerBinDir="$ENGINE_DIR/tinker/bin"
+tinkerBinExt=""
+tinkerParamDir="$ENGINE_DIR/tinker/params"
+</tinker>
+EOF
+		;;
+
 esac

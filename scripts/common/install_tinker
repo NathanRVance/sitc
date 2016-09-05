@@ -1,0 +1,31 @@
+#!/bin/bash
+
+help_and_exit=$1
+
+if [ "$help_and_exit" == "true" ]; then
+	source $SITC_ROOT/util
+	echo "
+Tinker:
+  --TINKER_VERSION=<version>
+                       version of Tinker to download and install`printDefault $ORCA_TAR`"
+        exit
+fi
+
+echo "Downloading tinker-$TINKER_VERSION.tar.gz to $ENGINE_DIR..."
+cd $ENGINE_DIR
+sudo curl -O http://dasher.wustl.edu/tinker/downloads/tinker-$TINKER_VERSION.tar.gz
+
+echo "Untarring tinker-$TINKER_VERSION.tar.gz..."
+sudo tar xzf tinker-$TINKER_VERSION.tar.gz
+sudo chown -R root:root tinker/
+
+sudo cp tinker/make/Makefile tinker/source/
+cd tinker/source/
+sed "s/ENGINE_DIR/$ENGINE_DIR/" $SITC_ROOT/patches/tinker_makefile.patch | sudo patch Makefile
+
+sudo make all
+sudo mkdir $ENGINE_DIR/tinker/bin/
+sudo make rename
+
+echo "Logging installation options..."
+$SITC_ROOT/scripts/common/log_engine tinker
