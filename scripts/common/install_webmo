@@ -30,10 +30,11 @@ while : ; do
 	# Download WebMO
 	curl -o WebMO.tar.gz -s "http://www.webmo.net/cgi-bin/download/download.cgi?license=$license&password=$password&version=latest&operation=download"
 	
-	if [ "`cat WebMO.tar.gz`" != "Password not valid" ] && [ "`cat WebMO.tar.gz`" != "License not found" ]; then
+	if [ "`du WebMO.tar.gz | awk '{print $1}'`" -gt "1000" ]; then #1000 is an arbitrary cutoff
 		break;
 	fi
-	echo "Invalid license or password, try again."
+	cat WebMO.tar.gz
+	echo "Try again."
 	license=""
 	password=""
 done

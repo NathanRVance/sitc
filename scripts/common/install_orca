@@ -14,10 +14,11 @@ echo "Untarring orca to $ENGINE_DIR..."
 cd $ENGINE_DIR
 sudo tar xjf $ORCA_TAR
 dirname=`echo "$ORCA_TAR" | rev | cut -d '/' -f1 | rev | cut -d '.' -f1`
-sudo chown -R root:root $dirname
+sudo mv $dirname orca/
+sudo chown -R root:root orca/
 
 export ORCA_VERSION=`echo $dirname | grep -oP '\d_\d_\d' | tr '_' '.'`
-export ORCA_PATH="$ENGINE_DIR/$dirname"
+export ORCA_PATH="$ENGINE_DIR/orca"
 
 echo "Logging installation options..."
 $SITC_ROOT/scripts/common/log_engine orca

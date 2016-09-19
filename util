@@ -56,3 +56,15 @@ echo "Miscellaneous:
   -h                   display this help text and exit"
 exit
 }
+
+summarizeSettings() {
+	if [ -n "$ENGINES" ]; then
+		echo "Installing $ENGINES to $ENGINE_DIR"
+	fi
+	if [ "$SKIP_WEBMO" == "true" ]; then
+		echo "WebMO will not be installed"
+	else
+		echo "WebMO will be installed for user $WEBMO_USER"
+	fi
+}
+

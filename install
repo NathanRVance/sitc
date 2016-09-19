@@ -23,11 +23,6 @@ for param in $@; do
 	fi
 done
 
-#if [ -n "`echo $ENGINES | grep "mopac7"`" ] && [ -n "`echo $ENGINES | grep "openmopac"`" ]; then
-#	echo "ERROR: Cannot install both mopac7 and openmopac"
-#	exit
-#fi
-
 echo "Server In The Cloud version `cat $SITC_ROOT/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
@@ -41,6 +36,12 @@ if [ ! -e $SITC_ROOT/license_agreed ] && [ "$accept_all" == "false" ]; then
 	read ans
 	touch $SITC_ROOT/license_agreed
 fi
+
+echo -e "\nSanity check! You have selected to do the following:"
+summarizeSettings
+echo "Press ENTER to continue, or CTRL-c to exit."
+echo
+read ans
 
 if [ -n "`uname -a | grep -i Debian`" ]; then
    OS="debian"
