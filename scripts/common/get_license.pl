@@ -6,8 +6,9 @@ local $license = test_license("$ARGV[0]");
 chomp $license;
 local $password = "$ARGV[1]";
 chomp $password;
+local $file = "$ARGV[2]";
 if (($license ne "") && ($password ne "")) {
-	print "$license $password";
+	write_to_file("$license $password");
 	exit;
 }
 
@@ -75,7 +76,14 @@ if ($password eq "") {
 	chomp $password;
 }
 chomp $license;
-print "$license $password";
+write_to_file("$license $password");
+
+sub write_to_file
+{
+	open(my $fh, '>', "$file") or die "Could not open file $file";
+	print $fh @_;
+	close $fh;
+}
 
 sub test_license
 {

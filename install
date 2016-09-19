@@ -26,7 +26,7 @@ done
 echo "Server In The Cloud version `cat $SITC_ROOT/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
-if [ ! -e $SITC_ROOT/license_agreed ] && [ "$accept_all" == "false" ]; then
+if [ ! -e $SITC_ROOT/license_agreed ] && [ "$YES_TO_ALL" == "false" ]; then
 	echo
 	echo "This script automates the installation of software from several"
 	echo "third parties. Many of these have licenses that are agreed to"

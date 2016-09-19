@@ -20,11 +20,11 @@ echo "Installing WebMO..."
 cd /tmp
 while : ; do
 	##### GET USERNAME AND PASSWORD #####
-	credentials=`$SITC_ROOT/scripts/common/get_license.pl "$license" "$password"`
-	# get_lecense.pl is set up to populate credentials with
-	# your license and password.
-	license=`echo $credentials | awk '{ print $1 }'`
-	password=`echo $credentials | awk '{ print $2 }'`
+	$SITC_ROOT/scripts/common/get_license.pl "$license" "$password" "$SITC_ROOT/scripts/common/creds.txt"
+	# get_lecense.pl is set up to populate the file in the parameter
+	# with your license and password.
+	license=`cat $SITC_ROOT/scripts/common/creds.txt | awk '{ print $1 }'`
+	password=`cat $SITC_ROOT/scripts/common/creds.txt | awk '{ print $2 }'`
 	##### END GET USERNAME AND PASSWORD #####
 	echo "Downloading WebMO..."
 	# Download WebMO
