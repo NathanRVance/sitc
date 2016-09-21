@@ -28,7 +28,7 @@ while : ; do
 	##### END GET USERNAME AND PASSWORD #####
 	echo "Downloading WebMO..."
 	# Download WebMO
-	curl -o WebMO.tar.gz -s "http://www.webmo.net/cgi-bin/download/download.cgi?license=$license&password=$password&version=latest&operation=download"
+	curl -o WebMO.tar.gz -s "https://www.webmo.net/cgi-bin/download/download.cgi?license=$license&password=$password&version=latest&operation=download"
 	
 	if [ "`du WebMO.tar.gz | awk '{print $1}'`" -gt "1000" ]; then #1000 is an arbitrary cutoff
 		break;
