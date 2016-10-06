@@ -58,13 +58,13 @@ exit
 }
 
 summarizeSettings() {
-	if [ -n "$ENGINES" ]; then
-		echo "Installing $ENGINES to $ENGINE_DIR"
-	fi
 	if [ "$SKIP_WEBMO" == "true" ]; then
-		echo "WebMO will not be installed"
+		echo " Skip installing WebMO"
 	else
-		echo "WebMO will be installed for user $WEBMO_USER"
+		echo " Install WebMO for user $WEBMO_USER"
 	fi
+	if [ -n "$ENGINES" ]; then
+                echo " Install $ENGINES to $ENGINE_DIR"
+        fi
 }
 
