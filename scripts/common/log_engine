@@ -48,9 +48,9 @@ EOF
 		cat >> $log << EOF
 <nwchem>
 nwchemVersion="6.6"
-nwchemBase="/usr/local/nwchem-6.6"
-nwchemBinary="/usr/local/nwchem-6.6/bin/LINUX64/nwchem"
-nwchemRc="/usr/local/nwchem-6.6/contrib/distro-tools/gen_default.nwchemrc"
+nwchemBase="/usr/share/nwchem/libraries/"
+nwchemBinary="/usr/lib64/openmpi/bin/nwchem_openmpi"
+nwchemRc="/etc/nwchemrc"
 </nwchem>
 EOF
 		;;
