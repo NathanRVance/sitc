@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Installing gcc-gfortran..."
+# Install gcc-gfortran
+sudo yum -y install gcc-gfortran >> $SITC_ROOT/sitc.log 2>&1
+
+$SITC_ROOT/scripts/common/install_tinker

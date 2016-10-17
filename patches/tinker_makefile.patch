@@ -1,0 +1,43 @@
+--- ../make/Makefile	2015-05-08 16:57:52.000000000 -0400
++++ Makefile	2016-09-05 12:07:40.927765606 -0400
+@@ -46,26 +46,26 @@
+ ##  CPU Type: Intel x86 Compatible
+ ##  Compiler: GNU gfortran
+ 
+-#F77 = gfortran
+-#LIBS =
+-#F77FLAGS = -c
+-#OPTFLAGS = -O3 -ffast-math
+-#LIBFLAGS = -crusv
+-#RANLIB = ranlib -c
+-#LINKFLAGS = $(OPTFLAGS) -static-libgcc
++F77 = gfortran
++LIBS =
++F77FLAGS = -c
++OPTFLAGS = -O3 -ffast-math
++LIBFLAGS = -crusv
++RANLIB = ranlib -c
++LINKFLAGS = $(OPTFLAGS) -static-libgcc
+ 
+ ##  Machine:  Generic Linux or Macintosh
+ ##  CPU Type: Intel x86 Compatible
+ ##  Compiler: GNU gfortran
+ ##  Parallel: OpenMP
+ 
+-F77 = gfortran
+-LIBS = -L$(TINKERDIR)/fftw/lib -lfftw3_threads -lfftw3
+-F77FLAGS = -c
+-OPTFLAGS = -O3 -ffast-math -fopenmp
+-LIBFLAGS = -crusv
+-RANLIB = ranlib -c
+-LINKFLAGS = $(OPTFLAGS) -static-libgcc
++#F77 = gfortran
++#LIBS = -L$(TINKERDIR)/fftw/lib -lfftw3_threads -lfftw3
++#F77FLAGS = -c
++#OPTFLAGS = -O3 -ffast-math -fopenmp
++#LIBFLAGS = -crusv
++#RANLIB = ranlib -c
++#LINKFLAGS = $(OPTFLAGS) -static-libgcc
+ 
+ ##  Machine:  Generic Linux
+ ##  CPU Type: Intel x86 Compatible (also AMD)
