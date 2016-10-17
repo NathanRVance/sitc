@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Installed from packages, logging is all that's left
+
+echo "Logging installation options..."
+$SITC_ROOT/scripts/common/log_engine nwchem

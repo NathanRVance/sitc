@@ -49,7 +49,7 @@ EOF
 <nwchem>
 nwchemVersion="6.6"
 nwchemBase="/usr/share/nwchem/libraries/"
-nwchemBinary="/usr/lib64/openmpi/bin/nwchem_openmpi"
+nwchemBinary="/usr/bin/nwchem"
 nwchemRc="/etc/nwchemrc"
 </nwchem>
 EOF

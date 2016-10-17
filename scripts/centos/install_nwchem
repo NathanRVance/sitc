@@ -10,11 +10,8 @@ echo '/usr/lib64/openmpi/lib
 /usr/lib64/compat-openmpi16/lib' | sudo tee /etc/ld.so.conf.d/nwchem_openmpi.conf > /dev/null
 sudo ldconfig
 
-#sudo chmod +w /usr/share/nwchem/nwchemrc
-#sudo cp -p /usr/share/nwchem/nwchemrc /usr/share/nwchem/nwchemrc.000
-#sudo sed -i 's/NWCHEM_BASIS_LIBRARY/nwchem_basis_library/' /usr/share/nwchem/nwchemrc
-#sudo sed -i 's/NWCHEM_NWPW_LIBRARY/nwchem_nwpw_library/' /usr/share/nwchem/nwchemrc
-cat /usr/share/nwchem/nwchemrc | tr [:upper:] [:lower:] > /etc/nwchemrc
+cat /usr/share/nwchem/nwchemrc | tr [:upper:] [:lower:] | sudo tee /etc/nwchemrc > /dev/null
 
-echo "Logging installation options..."
-$SITC_ROOT/scripts/common/log_engine nwchem
+sudo ln -s /usr/lib64/openmpi/bin/nwchem_openmpi /usr/bin/nwchem
+
+$SITC_ROOT/scripts/common/install_nwchem
