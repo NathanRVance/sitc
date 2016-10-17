@@ -1,1 +1,5 @@
-../ubuntu/install_nwchem
+#!/bin/bash
+
+sudo apt-get -y install nwchem >> $SITC_ROOT/sitc.log 2>&1
+
+sudo touch /etc/nwchemrc

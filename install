@@ -80,7 +80,12 @@ echo
 echo "*** INSTALLING ENGINES ***"
 for engine in `sed 's/,/ /g' <<< $ENGINES`; do
         echo "Installing $engine"
-        $SITC_ROOT/scripts/$OS/install_$engine
+	if [ -e "$SITC_ROOT/scripts/$OS/install_$engine" ]; then
+		# Distro specific installation instructions
+	        $SITC_ROOT/scripts/$OS/install_$engine
+	fi
+	# Common insallation instructions
+	$SITC_ROOT/scripts/common/install_$engine
 	echo
 done
 if [ "$YES_TO_ALL" == "false" ]; then

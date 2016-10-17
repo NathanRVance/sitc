@@ -1,7 +1,1 @@
-#!/bin/bash
-
-sudo apt-get -y install nwchem >> $SITC_ROOT/sitc.log 2>&1
-
-sudo touch /etc/nwchemrc
-
-$SITC_ROOT/scripts/common/install_nwchem
+../debian/install_nwchem

@@ -13,5 +13,3 @@ sudo ldconfig
 cat /usr/share/nwchem/nwchemrc | tr [:upper:] [:lower:] | sudo tee /etc/nwchemrc > /dev/null
 
 sudo ln -s /usr/lib64/openmpi/bin/nwchem_openmpi /usr/bin/nwchem
-
-$SITC_ROOT/scripts/common/install_nwchem

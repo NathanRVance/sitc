@@ -3,5 +3,3 @@
 echo "Installing gfortran..."
 # Install gfortran
 sudo apt-get -y install gfortran >> $SITC_ROOT/sitc.log 2>&1
-
-$SITC_ROOT/scripts/common/install_espresso
