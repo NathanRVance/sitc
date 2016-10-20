@@ -2,6 +2,7 @@
 
 #Obtain current directory
 export SITC_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export SITC_LOG="$SITC_ROOT/sitc.log"
 source $SITC_ROOT/install.conf
 source $SITC_ROOT/util
 
@@ -37,7 +38,8 @@ if [ ! -e $SITC_ROOT/license_agreed ] && [ "$YES_TO_ALL" == "false" ]; then
 	touch $SITC_ROOT/license_agreed
 fi
 
-echo -e "\nSanity check! You have selected to do the following:"
+echo
+echo "Sanity check! You have selected to do the following:"
 summarizeSettings
 echo "Press ENTER to continue, or CTRL-c to exit."
 echo
@@ -93,14 +95,15 @@ if [ "$YES_TO_ALL" == "false" ]; then
 fi
 
 if [ "$SKIP_WEBMO" != "true" ]; then
+	echo
 	echo "Enabling engines in WebMO"
 	sudo $SITC_ROOT/scripts/common/enable_in_webmo $SITC_ROOT/engines.log /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces
 
-	if [ ! -d /home/$WEBMO_USER/sitc ]; then
-		echo "Copying scripts to /home/$WEBMO_USER/sitc"
-		sudo cp -a $SITC_ROOT /home/$WEBMO_USER/sitc
-		sudo chown -R $WEBMO_USER:$WEBMO_USER /home/$WEBMO_USER/sitc
-	fi
+	#if [ ! -d /home/$WEBMO_USER/sitc ]; then
+	#	echo "Copying scripts to /home/$WEBMO_USER/sitc"
+	#	sudo cp -a $SITC_ROOT /home/$WEBMO_USER/sitc
+	#	sudo chown -R $WEBMO_USER:$WEBMO_USER /home/$WEBMO_USER/sitc
+	#fi
 
 	IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
 	echo "
