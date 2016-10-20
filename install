@@ -24,6 +24,7 @@ for param in $@; do
 	fi
 done
 
+echo
 echo "Server In The Cloud version `cat $SITC_ROOT/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
@@ -56,10 +57,9 @@ else
    exit
 fi
 
-echo
 echo "Installing for $OS"
 echo
-echo "Logging script output in $SITC_LOG"
+echo "Logging script output to $SITC_LOG"
 
 if [ ! -e $SITC_ROOT/ran_os_additions ]; then
 	echo
