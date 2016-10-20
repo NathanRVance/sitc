@@ -27,7 +27,7 @@ sudo tar xzf espresso-${ESPRESSO_VERSION}.tar.gz
 sudo chown -R root:root espresso-${ESPRESSO_VERSION}/
 echo "Compliling quantum espresso (this may take a while, go grab a coffee)..."
 cd espresso-${ESPRESSO_VERSION}/
-sudo ./configure && sudo make all &> $SITC_ROOT/sitc.log
+sudo ./configure && sudo make all &> $SITC_LOG
 
 echo "Logging installation options..."
 $SITC_ROOT/scripts/common/log_engine espresso

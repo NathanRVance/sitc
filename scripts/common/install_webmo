@@ -5,7 +5,7 @@ password=$WEBMO_PASSWORD
 
 echo "Setting up WebMO user..."
 # Set up WebMO user
-sudo useradd -m $WEBMO_USER -s /bin/bash >> $SITC_ROOT/sitc.log 2>&1
+sudo useradd -m $WEBMO_USER -s /bin/bash >> $SITC_LOG 2>&1
 
 echo "Creating public_html directory..."
 # Create public_html directory
@@ -57,7 +57,7 @@ EOF
 
 sudo chown -R $WEBMO_USER:$WEBMO_USER WebMO.install
 cd WebMO.install
-sudo su $WEBMO_USER -c "perl setup.pl" >> $SITC_ROOT/sitc.log 2>&1
+sudo su $WEBMO_USER -c "perl setup.pl" >> $SITC_LOG 2>&1
 
 echo "Cleaning up temporary files..."
 cd ..

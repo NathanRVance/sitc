@@ -2,8 +2,8 @@
 
 echo "Installing csh..."
 # Install csh
-sudo yum -y install csh >> $SITC_ROOT/sitc.log 2>&1
+sudo yum -y install csh >> $SITC_LOG 2>&1
 
 echo "Installing gcc-gfortran..."
 # Install gcc-gfortran
-sudo yum -y install gcc-gfortran >> $SITC_ROOT/sitc.log 2>&1
+sudo yum -y install gcc-gfortran >> $SITC_LOG 2>&1

@@ -10,11 +10,11 @@ RedirectMatch ^/$WEBMO_USER(()|/)$ /~$WEBMO_USER/cgi-bin/webmo/login.cgi"
 
 echo "Configuring webserver..."
 # Configure webserver
-sudo a2enmod suexec >> $SITC_ROOT/sitc.log 2>&1
-sudo a2enmod cgid >> $SITC_ROOT/sitc.log 2>&1
-sudo a2enmod userdir >> $SITC_ROOT/sitc.log 2>&1
+sudo a2enmod suexec >> $SITC_LOG 2>&1
+sudo a2enmod cgid >> $SITC_LOG 2>&1
+sudo a2enmod userdir >> $SITC_LOG 2>&1
 if [ ! -e /etc/apache2/mods-available/userdir.conf.orig ]; then
 	sudo cp -p /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-available/userdir.conf.orig
 	echo "$APPEND" | sudo tee --append /etc/apache2/mods-available/userdir.conf > /dev/null
-	sudo service apache2 restart >> $SITC_ROOT/sitc.log 2>&1
+	sudo service apache2 restart >> $SITC_LOG 2>&1
 fi

@@ -2,4 +2,4 @@
 
 echo "Installing unzip..."
 # Install unzip
-sudo apt-get -y install unzip >> $SITC_ROOT/sitc.log 2>&1
+sudo apt-get -y install unzip >> $SITC_LOG 2>&1

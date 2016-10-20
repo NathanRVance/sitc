@@ -1,10 +1,16 @@
 #!/bin/bash
 
-sudo yum -y install epel-release >> $SITC_ROOT/sitc.log 2>&1
+echo "Installing epel-release..."
+# Install epel-release
+sudo yum -y install epel-release >> $SITC_LOG 2>&1
 
-sudo yum -y install nwchem >> $SITC_ROOT/sitc.log 2>&1
+echo "Installing nwchem..."
+# Install nwchem
+sudo yum -y install nwchem >> $SITC_LOG 2>&1
 
-sudo yum -y install nwchem-openmpi >> $SITC_ROOT/sitc.log 2>&1
+echo "Installing nwchem-openmpi..."
+# Install nwchem-openmpi
+sudo yum -y install nwchem-openmpi >> $SITC_LOG 2>&1
 
 echo '/usr/lib64/openmpi/lib
 /usr/lib64/compat-openmpi16/lib' | sudo tee /etc/ld.so.conf.d/nwchem_openmpi.conf > /dev/null

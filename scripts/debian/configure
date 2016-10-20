@@ -10,9 +10,9 @@ RedirectMatch ^/$WEBMO_USER(()|/)$ /~$WEBMO_USER/cgi-bin/webmo/login.cgi"
 
 echo "Configuring webserver..."
 # Configure webserver
-sudo a2enmod userdir >> $SITC_ROOT/sitc.log 2>&1
-sudo a2enmod suexec >> $SITC_ROOT/sitc.log 2>&1
-sudo a2enmod cgid >> $SITC_ROOT/sitc.log 2>&1
+sudo a2enmod userdir >> $SITC_LOG 2>&1
+sudo a2enmod suexec >> $SITC_LOG 2>&1
+sudo a2enmod cgid >> $SITC_LOG 2>&1
 if [ -e /etc/apache2/conf.d/ ]; then
 	#debian 7
 	sudo cp /etc/apache2/mods-enabled/userdir.conf /etc/apache2/conf.d
@@ -21,7 +21,7 @@ if [ -e /etc/apache2/conf.d/ ]; then
 		sudo cp -p /etc/apache2/conf.d/userdir.conf /etc/apache2/conf.d/userdir.conf.orig
 		echo "$APPEND" | sudo tee --append /etc/apache2/conf.d/userdir.conf > /dev/null
 	fi
-	sudo service apache2 restart >> $SITC_ROOT/sitc.log 2>&1
+	sudo service apache2 restart >> $SITC_LOG 2>&1
 elif [ -e /etc/apache2/mods-available/userdir.conf ]; then
 	#debian 8
 	if [ ! -e /etc/apache2/mods-available/userdir.conf.orig ]; then
@@ -29,5 +29,5 @@ elif [ -e /etc/apache2/mods-available/userdir.conf ]; then
                 sudo cp -p /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-available/userdir.conf.orig
 		echo "$APPEND" | sudo tee --append /etc/apache2/mods-available/userdir.conf > /dev/null
         fi
-	sudo systemctl restart apache2 >> $SITC_ROOT/sitc.log 2>&1
+	sudo systemctl restart apache2 >> $SITC_LOG 2>&1
 fi

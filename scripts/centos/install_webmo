@@ -4,19 +4,19 @@ version=`cat /etc/redhat-release | grep -o '[0-9]' | awk '{ print $1 }' | head -
 
 echo "Installing httpd..."
 # Install httpd
-sudo yum -y install httpd >> $SITC_ROOT/sitc.log 2>&1
+sudo yum -y install httpd >> $SITC_LOG 2>&1
 if (( "$version" == 6 )); then
-	sudo chkconfig --add httpd >> $SITC_ROOT/sitc.log 2>&1
-	sudo service httpd start >> $SITC_ROOT/sitc.log 2>&1
+	sudo chkconfig --add httpd >> $SITC_LOG 2>&1
+	sudo service httpd start >> $SITC_LOG 2>&1
 else
-	sudo systemctl enable httpd >> $SITC_ROOT/sitc.log 2>&1
-	sudo systemctl start httpd >> $SITC_ROOT/sitc.log 2>&1
+	sudo systemctl enable httpd >> $SITC_LOG 2>&1
+	sudo systemctl start httpd >> $SITC_LOG 2>&1
 fi
 
 echo "Installing perl..."
 # Install perl
-sudo yum -y install perl >> $SITC_ROOT/sitc.log 2>&1
-sudo yum -y install perl-CGI >> $SITC_ROOT/sitc.log 2>&1
+sudo yum -y install perl >> $SITC_LOG 2>&1
+sudo yum -y install perl-CGI >> $SITC_LOG 2>&1
 
 echo "Configuring httpd..."
 # Configure httpd

@@ -2,5 +2,5 @@
 
 echo "Updating operating system..."
 # Update operating system
-sudo apt-get -y update >> $SITC_ROOT/sitc.log 2>&1
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade >> $SITC_ROOT/sitc.log 2>&1
+sudo apt-get -y update >> $SITC_LOG 2>&1
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade >> $SITC_LOG 2>&1

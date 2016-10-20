@@ -58,6 +58,8 @@ fi
 
 echo
 echo "Installing for $OS"
+echo
+echo "Logging script output in $SITC_LOG"
 
 if [ ! -e $SITC_ROOT/ran_os_additions ]; then
 	echo

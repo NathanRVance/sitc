@@ -2,4 +2,4 @@
 
 echo "Installing bzip2..."
 # Install bzip2
-sudo apt-get -y install bzip2 >> $SITC_ROOT/sitc.log 2>&1
+sudo apt-get -y install bzip2 >> $SITC_LOG 2>&1
