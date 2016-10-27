@@ -49,9 +49,13 @@ done
 
 echo
 echo "Miscellaneous:
-  --YES_TO_ALL=<true/false>
+  --YES_TO_PROMPTS=<true/false>
                        accept licenses and don't prompt for continuing
-  -y                   same as --YES_TO_ALL=true
+  -y                   same as --YES_TO_PROMPTS=true
+  --YES_TO_SANITY_CHECK=<true/false>
+                       bypass sanity check
+  -yy                  same as --YES_TO_PROMPTS=true and
+                          --YES_TO_SANITY_CHECK=true
   -v                   display version information and exit
   -h, --help           display this help text and exit"
 exit

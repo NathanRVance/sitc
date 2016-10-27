@@ -12,8 +12,13 @@ echo "Installing perl..."
 # Install perl
 sudo apt-get -y install libcgi-pm-perl >> $SITC_LOG 2>&1
 
-echo "Configuring apache..."
-# Configure apache
-$SITC_ROOT/scripts/ubuntu/configure
+# The configure script modifies system configuration files,
+# and it can get annoying if it runs twice.
+if [ ! -e $SITC_ROOT/ran_configure ]; then
+        echo "Configuring apache..."
+        # Configure apache
+        $SITC_ROOT/scripts/ubuntu/configure
+        touch $SITC_ROOT/ran_configure
+fi
 
 $SITC_ROOT/scripts/common/install_webmo

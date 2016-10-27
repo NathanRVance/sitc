@@ -18,13 +18,12 @@ for param in $@; do
 		sed -i "s&export $paramname=.*&export $paramname=\"${!paramname}\"&" $SITC_ROOT/install.conf
 	elif [ "`echo $param | cut -c1-1`" == "-" ]; then
 		param="`echo $param | cut -c2-`" # remove the '-'
-		for var in `echo "$param" | sed -e 's/\(.\)/\1\n/g'`; do
-			case $var in
-				"y") YES_TO_ALL=true ;;
-				"v") cat $SITC_ROOT/version && exit ;;
-				"h") printHelp ;;
-			esac
-		done
+		case $param in
+			"y") YES_TO_PROMPTS=true ;;
+			"yy") YES_TO_PROMPTS=true; YES_TO_SANITY_CHECK=true ;;
+			"v") cat $SITC_ROOT/version && exit ;;
+			"h") printHelp ;;
+		esac
 	fi
 done
 
@@ -32,7 +31,7 @@ echo
 echo "Server In The Cloud version `cat $SITC_ROOT/version`"
 echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
 
-if [ ! -e $SITC_ROOT/license_agreed ] && [ "$YES_TO_ALL" == "false" ]; then
+if [ ! -e $SITC_ROOT/license_agreed ] && [ "$YES_TO_PROMPTS" == "false" ]; then
 	echo
 	echo "This script automates the installation of software from several"
 	echo "third parties. Many of these have licenses that are agreed to"
@@ -43,12 +42,14 @@ if [ ! -e $SITC_ROOT/license_agreed ] && [ "$YES_TO_ALL" == "false" ]; then
 	touch $SITC_ROOT/license_agreed
 fi
 
-echo
-echo "Sanity check! You have selected to do the following:"
-summarizeSettings
-echo "Press ENTER to continue, or CTRL-c to exit."
-echo
-read ans
+if [ "$YES_TO_SANITY_CHECK" != "true" ]; then
+	echo
+	echo "Sanity check! You have selected to do the following:"
+	summarizeSettings
+	echo "Press ENTER to continue, or CTRL-c to exit."
+	echo
+	read ans
+fi
 
 if [ -n "`uname -a | grep -i Debian`" ]; then
    OS="debian"
@@ -65,14 +66,11 @@ echo "Installing for $OS"
 echo
 echo "Logging script output to $SITC_LOG"
 
-if [ ! -e $SITC_ROOT/ran_os_additions ]; then
-	echo
-	echo "*** RUNNING OS_ADDITIONS ***"
-	$SITC_ROOT/scripts/$OS/os_additions
-	if [ "$YES_TO_ALL" == "false" ]; then
-		read -s -n 1 -p "Press any key to continue"
-	fi
-	touch $SITC_ROOT/ran_os_additions
+echo
+echo "*** RUNNING OS_ADDITIONS ***"
+$SITC_ROOT/scripts/$OS/os_additions
+if [ "$YES_TO_ALL" == "false" ]; then
+	read -s -n 1 -p "Press any key to continue"
 fi
 
 if [ "$SKIP_WEBMO" != "true" ]; then

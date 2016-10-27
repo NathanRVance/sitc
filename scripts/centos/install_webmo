@@ -18,8 +18,13 @@ echo "Installing perl..."
 sudo yum -y install perl >> $SITC_LOG 2>&1
 sudo yum -y install perl-CGI >> $SITC_LOG 2>&1
 
-echo "Configuring httpd..."
-# Configure httpd
-$SITC_ROOT/scripts/centos/configure
+# The configure script modifies system configuration files,
+# and it can get annoying if it runs twice.
+if [ ! -e $SITC_ROOT/ran_configure ]; then
+	echo "Configuring httpd..."
+	# Configure httpd
+	$SITC_ROOT/scripts/centos/configure
+	touch $SITC_ROOT/ran_configure
+fi
 
 $SITC_ROOT/scripts/common/install_webmo

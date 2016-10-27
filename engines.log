@@ -1,0 +1,6 @@
+<nwchem>
+nwchemVersion="6.6"
+nwchemBase="/usr/share/nwchem/libraries/"
+nwchemBinary="/usr/bin/nwchem"
+nwchemRc="/etc/nwchemrc"
+</nwchem>
