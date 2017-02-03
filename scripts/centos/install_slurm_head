@@ -24,9 +24,8 @@ export VER=`curl -s https://www.schedmd.com/downloads.php | grep -oP 'latest/slu
 cd /tmp
 curl -O https://www.schedmd.com/downloads/latest/slurm-$VER.tar.bz2
 rpmbuild -ta slurm-$VER.tar.bz2
-cd /root/rpmbuild/RPMS/x86_64/
+cd ~/rpmbuild/RPMS/x86_64/
 sudo yum -y install slurm-$VER*rpm slurm-devel-$VER*rpm slurm-munge-$VER*rpm slurm-perlapi-$VER*rpm slurm-plugins-$VER*rpm slurm-sjobexit-$VER*rpm slurm-sjstat-$VER*rpm slurm-torque-$VER*rpm slurm-seff-$VER*rpm
-
 
 sudo mkdir /var/spool/slurmctld /var/log/slurm
 sudo chown slurm: /var/spool/slurmctld /var/log/slurm
@@ -45,4 +44,4 @@ echo "$exports" | sudo tee --append /etc/exports > /dev/null
 
 #Put compute node software in /etc/slurm nfs share
 sudo mkdir /etc/slurm/software/
-sudo cp /root/rpmbuild/RPMS/x86_64/*rpm /etc/slurm/software/
+sudo cp ~/rpmbuild/RPMS/x86_64/*rpm /etc/slurm/software/
