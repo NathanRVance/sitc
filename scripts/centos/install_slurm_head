@@ -10,7 +10,7 @@ sudo useradd  -m -c "Slurm workload manager" -d /var/lib/slurm -u $SLURMUSER -g 
 sudo yum -y install epel-release
 sudo yum -y install munge munge-libs munge-devel
 
-sudo dd if=/dev/urandom bs=1 count=1024 > /etc/munge/munge.key
+sudo dd if=/dev/urandom bs=1 count=1024 | sudo tee /etc/munge/munge.key > /dev/null
 sudo chown munge:munge /etc/munge/munge.key
 sudo chmod 400 /etc/munge/munge.key
 
@@ -20,7 +20,7 @@ sudo chmod 0700 /etc/munge/ /var/log/munge/
 sudo yum -y install rpm-build gcc openssl openssl-devel pam-devel numactl numactl-devel hwloc hwloc-devel lua lua-devel readline-devel rrdtool-devel ncurses-devel gtk2-devel man2html libibmad libibumad perl-Switch perl-ExtUtils-MakeMaker
 sudo yum -y install mariadb-server mariadb-devel
 
-export VER=16.05.6
+export VER=`curl -s https://www.schedmd.com/downloads.php | grep -oP 'latest/slurm-.*?.tar.bz2' | head -n 1 | grep -o '\([0-9][0-9]*.\)*' | rev | cut -c 2- | rev`
 cd /tmp
 curl -O https://www.schedmd.com/downloads/latest/slurm-$VER.tar.bz2
 rpmbuild -ta slurm-$VER.tar.bz2
