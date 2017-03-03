@@ -40,15 +40,6 @@ sudo chown slurm: /var/log/slurm/slurmctld.log
 sudo touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
 sudo chown slurm: /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
 
-sudo yum -y install nfs-utils
-exports="/etc/slurm 10.0.0.0/255.0.0.0(ro,sync,no_root_squash)
-/etc/munge 10.0.0.0/255.0.0.0(ro,sync,no_root_squash)"
-echo "$exports" | sudo tee --append /etc/exports > /dev/null
-
-#Put compute node software in /etc/slurm nfs share
-sudo mkdir /etc/slurm/software/
-sudo cp ~/rpmbuild/RPMS/x86_64/*rpm /etc/slurm/software/
-
 #Make a good default slurm.conf
 namescheme=`hostname`
 slurmconf="ControlMachine=$namescheme
@@ -61,5 +52,3 @@ SlurmdLogFile=/var/log/slurm/slurmd.log
 NodeName=$namescheme[01-99] CPUs=1 State=UNKNOWN
 PartationName=DEFAULT Nodes=$namescheme[01-99] Default=YES MaxTime=INFINITE State=UP"
 echo "$slurmconf" | sudo tee /etc/slurm/slurm.conf > /dev/null
-sudo systemctl enable slurmctld
-sudo systemctl start slurmctld

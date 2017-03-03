@@ -10,24 +10,23 @@ sudo useradd  -m -c "Slurm workload manager" -d /var/lib/slurm -u $SLURMUSER -g 
 sudo yum -y install epel-release
 sudo yum -y install munge munge-libs munge-devel
 
-sudo dd if=/dev/urandom bs=1 count=1024 | sudo tee /etc/munge/munge.key > /dev/null
-sudo chown munge:munge /etc/munge/munge.key
-sudo chmod 400 /etc/munge/munge.key
-
 sudo chown -R munge:munge /etc/munge/ /var/log/munge/
 sudo chmod 0700 /etc/munge/ /var/log/munge/
+
+sudo yum -y install nfs-utils
+headname=`hostname | sed 's/[0-9]*$//'`
+fstab="
+$headname:/etc/slurm		/etc/slurm		nfs	ro,hard,intr	0 0
+$headname:/home/webmo/.ssh	/home/webmo/.ssh	nfs	ro,hard,intr	0 0"
+echo "$fstab" | sudo tee --append /etc/fstab > /dev/null
+sudo mount /etc/munge
+sudo mkdir /etc/slurm
+sudo mount /etc/slurm
 
 sudo systemctl enable munge
 sudo systemctl start munge
 
-sudo yum -y install rpm-build gcc openssl openssl-devel pam-devel numactl numactl-devel hwloc hwloc-devel lua lua-devel readline-devel rrdtool-devel ncurses-devel gtk2-devel man2html libibmad libibumad perl-Switch perl-ExtUtils-MakeMaker
-sudo yum -y install mariadb-server mariadb-devel
-
-export VER=`curl -s https://www.schedmd.com/downloads.php | grep -oP 'latest/slurm-.*?.tar.bz2' | head -n 1 | grep -o '\([0-9][0-9]*.\)*' | rev | cut -c 2- | rev`
-cd /tmp
-curl -O https://www.schedmd.com/downloads/latest/slurm-$VER.tar.bz2
-rpmbuild -ta slurm-$VER.tar.bz2
-cd ~/rpmbuild/RPMS/x86_64/
+cd /etc/slurm/
 sudo yum -y install slurm-$VER*rpm slurm-devel-$VER*rpm slurm-munge-$VER*rpm slurm-perlapi-$VER*rpm slurm-plugins-$VER*rpm slurm-sjobexit-$VER*rpm slurm-sjstat-$VER*rpm slurm-torque-$VER*rpm slurm-seff-$VER*rpm
 
 sudo mkdir /var/spool/slurmctld /var/log/slurm
@@ -39,15 +38,6 @@ sudo chown slurm: /var/log/slurm/slurmctld.log
 
 sudo touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
 sudo chown slurm: /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
-
-sudo yum -y install nfs-utils
-exports="/etc/slurm 10.0.0.0/255.0.0.0(ro,sync,no_root_squash)
-/etc/munge 10.0.0.0/255.0.0.0(ro,sync,no_root_squash)"
-echo "$exports" | sudo tee --append /etc/exports > /dev/null
-
-#Put compute node software in /etc/slurm nfs share
-sudo mkdir /etc/slurm/software/
-sudo cp ~/rpmbuild/RPMS/x86_64/*rpm /etc/slurm/software/
 
 #Make a good default slurm.conf
 namescheme=`hostname`
@@ -61,5 +51,5 @@ SlurmdLogFile=/var/log/slurm/slurmd.log
 NodeName=$namescheme[01-99] CPUs=1 State=UNKNOWN
 PartationName=DEFAULT Nodes=$namescheme[01-99] Default=YES MaxTime=INFINITE State=UP"
 echo "$slurmconf" | sudo tee /etc/slurm/slurm.conf > /dev/null
-sudo systemctl enable slurmctld
-sudo systemctl start slurmctld
+sudo systemctl enable slurmd
+sudo systemctl start slurmd
