@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#Install slurm
+sudo apt-get install slurm-wlm
