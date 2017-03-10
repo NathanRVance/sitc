@@ -52,9 +52,11 @@ sudo chown slurm: /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.
 # cloud compute nodes to access the local head node's configuration.
 sudo yum -y install nfs-utils
 exports="/etc/slurm 10.0.0.0/255.0.0.0(ro,sync,no_root_squash)
-/etc/munge 10.0.0.0/255.0.0.0(ro,sync,no_root_squash)"
+/etc/munge 10.0.0.0/255.0.0.0(ro,sync,no_root_squash)
+/home/webmo/.ssh 10.0.0.0/255.0.0.0(ro,sync,no_root_squash)"
 echo "$exports" | sudo tee --append /etc/exports > /dev/null
-sudo systemctl restart nfs
+sudo systemctl enable nfs
+sudo systemctl start nfs
 
 #Make a good default slurm.conf
 namescheme=`hostname`
@@ -76,12 +78,12 @@ if [ \"\`hostname\`\" == \"$namescheme\" ]; then
 	systemctl start slurmctld.service
 else
 	# do compute node stuff
-	fstab=\"
-$namescheme:/etc/slurm            /etc/slurm              nfs     ro,hard,intr    0 0
-$namescheme:/home/webmo/.ssh      /home/webmo/.ssh        nfs     ro,hard,intr    0 0\"
-	echo \"\$fstab\" | sudo tee --append /etc/fstab > /dev/null
-	sudo mount /etc/munge
+	echo \"$namescheme:/etc/slurm            /etc/slurm              nfs     ro,hard,intr    0 0\" | sudo tee --append /etc/fstab > /dev/null
+	echo \"$namescheme:/etc/munge            /etc/munge              nfs     ro,hard,intr    0 0\" | sudo tee --append /etc/fstab > /dev/null
+	echo \"$namescheme:/home/webmo/.ssh      /home/webmo/.ssh        nfs     ro,hard,intr    0 0\" | sudo tee --append /etc/fstab > /dev/null
 	sudo mount /etc/slurm
+	sudo mount /etc/munge
+	sudo mount /home/webmo/.ssh
 	systemctl start slurmd.service
 fi"
 echo "$clic" | sudo tee /usr/bin/clic > /dev/null
