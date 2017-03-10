@@ -66,12 +66,12 @@ ClusterName=cluster
 SlurmctldLogFile=/var/log/slurm/slurmctld.log
 SlurmdLogFile=/var/log/slurm/slurmd.log
 NodeName=$namescheme[01-99] CPUs=1 State=UNKNOWN
-PartationName=DEFAULT Nodes=$namescheme[01-99] Default=YES MaxTime=INFINITE State=UP"
+PartitionName=debug Nodes=$namescheme[01-99] Default=YES MaxTime=INFINITE State=UP"
 echo "$slurmconf" | sudo tee /etc/slurm/slurm.conf > /dev/null
 
 #Create a script to get clic started
 clic="#!/bin/bash
-if [ \`hostname\` -eq \"$namescheme\" ]; then
+if [ \"\`hostname\`\" == \"$namescheme\" ]; then
 	# do head node stuff
 	systemctl start slurmctld.service
 else
