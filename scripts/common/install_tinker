@@ -13,7 +13,7 @@ fi
 
 echo "Downloading tinker-$TINKER_VERSION.tar.gz to $ENGINE_DIR..."
 cd $ENGINE_DIR
-sudo curl -O http://dasher.wustl.edu/tinker/downloads/tinker-$TINKER_VERSION.tar.gz
+sudo curl -O https://dasher.wustl.edu/tinker/downloads/tinker-$TINKER_VERSION.tar.gz
 
 echo "Untarring tinker-$TINKER_VERSION.tar.gz..."
 sudo tar xzf tinker-$TINKER_VERSION.tar.gz
