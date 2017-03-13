@@ -15,19 +15,20 @@ fi
 echo "Downloading quantum espresso..."
 cd $ENGINE_DIR
 # There are two semi-unpredictable numbers in the download link, so we parse the predictable site for that.
-link=`curl -s "http://qe-forge.org/gf/project/q-e/frs/?action=FrsReleaseBrowse&frs_package_id=18" | grep -o "/gf/download/frsrelease.*>espresso-$ESPRESSO_VERSION.tar.gz" | cut -d '"' -f1`
+link=`curl -s "http://qe-forge.org/gf/project/q-e/frs/?action=FrsReleaseBrowse&frs_package_id=18" | grep -o "/gf/download/frsrelease.*>\(espresso\|qe\)-$ESPRESSO_VERSION.tar.gz" | cut -d '"' -f1`
 if [ -z "$link" ]; then
 	echo "Bad quantum espresso version! Exiting..."
 	exit
 fi
+prefix=`echo "$link" | rev | cut -d '/' -f 1 | rev | cut -d '-' -f 1`
 link="http://qe-forge.org$link"
 sudo curl -s -O $link
 echo "Untarring quantum espresso to $ENGINE_DIR..."
-sudo tar xzf espresso-${ESPRESSO_VERSION}.tar.gz
-sudo chown -R root:root espresso-${ESPRESSO_VERSION}/
+sudo tar xzf $prefix-${ESPRESSO_VERSION}.tar.gz
+sudo chown -R root:root $prefix-${ESPRESSO_VERSION}/
 echo "Compliling quantum espresso (this may take a while, go grab a coffee)..."
-cd espresso-${ESPRESSO_VERSION}/
+cd $prefix-${ESPRESSO_VERSION}/
 sudo ./configure && sudo make all &> $SITC_LOG
 
 echo "Logging installation options..."
-$SITC_ROOT/scripts/common/log_engine espresso
+$SITC_ROOT/scripts/common/log_engine espresso $prefix

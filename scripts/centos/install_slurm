@@ -91,6 +91,7 @@ sudo chmod +x /usr/bin/clic
 
 clicservice="[Unit]
 Description=Start clic: CLuster In the Cloud
+After=network-online.target
 
 [Service]
 Type=oneshot

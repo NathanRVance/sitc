@@ -9,8 +9,8 @@ case $engine in
 <pwscf>
 pwscfVersion="$ESPRESSO_VERSION"
 pwscfUseMPI="0"
-pwscfBinDir="$ENGINE_DIR/espresso-$ESPRESSO_VERSION/bin"
-pwscfPotentials="$ENGINE_DIR/espresso-$ESPRESSO_VERSION/pseudo"
+pwscfBinDir="$ENGINE_DIR/$2-$ESPRESSO_VERSION/bin"
+pwscfPotentials="$ENGINE_DIR/$2-$ESPRESSO_VERSION/pseudo"
 </pwscf>
 EOF
 		;;
