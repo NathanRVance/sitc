@@ -3,8 +3,8 @@
 help_and_exit=$1
 
 if [ "$help_and_exit" == "true" ]; then
-	:
 	# Do nothing
+	exit
 fi
 
 # Installed from packages, logging is all that's left
