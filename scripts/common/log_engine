@@ -9,6 +9,7 @@ case $engine in
 <pwscf>
 pwscfVersion="$ESPRESSO_VERSION"
 pwscfUseMPI="0"
+pwscfMpirun="`which mpiexec`"
 pwscfBinDir="$ENGINE_DIR/$2-$ESPRESSO_VERSION/bin"
 pwscfPotentials="$ENGINE_DIR/$2-$ESPRESSO_VERSION/pseudo"
 </pwscf>

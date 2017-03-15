@@ -26,7 +26,7 @@ elif [ -e /etc/apache2/mods-available/userdir.conf ]; then
 	#debian 8
 	if [ ! -e /etc/apache2/mods-available/userdir.conf.orig ]; then
 		#This is the first time the script was run, so back up the current userdir.conf
-                sudo cp -p /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-available/userdir.conf.orig
+		sudo cp -p /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-available/userdir.conf.orig
 		echo "$APPEND" | sudo tee --append /etc/apache2/mods-available/userdir.conf > /dev/null
         fi
 	sudo systemctl restart apache2 >> $SITC_LOG 2>&1

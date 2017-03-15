@@ -7,3 +7,8 @@ sudo apt-get -y install gfortran >> $SITC_LOG 2>&1
 echo "Installing make..."
 # Install make
 sudo apt-get -y install make >> $SITC_LOG 2>&1
+
+echo "Installing openmpi..."
+# Install openmpi
+sudo apt-get -y install openmpi-bin >> $SITC_LOG 2>&1
+

@@ -3,3 +3,7 @@
 echo "Installing gcc-gfortran..."
 # Install gcc-gfortran
 sudo yum -y install gcc-gfortran >> $SITC_LOG 2>&1
+
+echo "Installing openmpi..."
+# Install openmpi
+sudo yum -y install openmpi >> $SITC_LOG 2>&1

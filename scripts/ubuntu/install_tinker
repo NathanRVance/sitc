@@ -1,5 +1,1 @@
-#!/bin/bash
-
-echo "Installing gfortran..."
-# Install gfortran
-sudo apt-get -y install gfortran >> $SITC_LOG 2>&1
+../debian/install_tinker

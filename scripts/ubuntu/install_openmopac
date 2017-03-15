@@ -1,5 +1,1 @@
-#!/bin/bash
-
-echo "Installing unzip..."
-# Install unzip
-sudo apt-get -y install unzip >> $SITC_LOG 2>&1
+../debian/install_openmopac
