@@ -29,7 +29,7 @@ done
 
 echo
 echo "Server In The Cloud version `cat $SITC_ROOT/version`"
-echo "Copyright (c) 2016, WebMO, LLC, all rights reserved."
+echo "Copyright (c) 2017, WebMO, LLC, all rights reserved."
 
 if [ ! -e $SITC_ROOT/license_agreed ] && [ "$YES_TO_PROMPTS" == "false" ]; then
 	echo
