@@ -1,9 +1,6 @@
 --- gamess/comp	2015-01-15 14:49:05.000000000 +0000
 +++ gamess.new/comp	2016-05-27 12:30:30.767673931 +0000
-@@ -1793,6 +1793,7 @@
-             breaksw
-          case 4.8:
-          case 4.9:
+@@ -1793,3 +1793,4 @@
 +	 case X:
              if ($MODULE == cosmo)  set OPT='-O0'  # same issue as seen in 4.6
              if ($MODULE == dcscf)  set OPT='-O0'  # exam44, continues from 4.7
