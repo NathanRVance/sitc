@@ -6,9 +6,9 @@ if [ "$help_and_exit" == "true" ]; then
 	source $SITC_ROOT/util
 	echo "
 Openmopac:
-  --OPENMOPAC_LICENSE=<key>
+  --openmopac-license=<key>
                        license key for openmopac`printDefault $OPENMOPAC_LICENSE`
-  --OPENMOPAC_VERSION=<year>
+  --openmopac-version=<year>
                        version of openmopac to install`printDefault $OPENMOPAC_VERSION`"
         exit
 fi

@@ -9,20 +9,23 @@ source $SITC_ROOT/util
 for param in $@; do
 	# Potentially override defaults in install.conf
 	if [ "`echo $param | cut -c1-2`" == "--" ]; then
-		export "`echo $param | cut -c3-`"
-		paramname=`echo $param | cut -c3- | cut -d "=" -f1`
-		if [ "$paramname" == "help" ]; then
+		paramname=`echo $param | cut -c3- | cut -d "=" -f1 | tr 'a-z-' 'A-Z_'`
+		option=`echo $param | cut -c3- | cut -d "=" -f2`
+		if [ -z "$option" ]; then
+			option="true"
+		fi
+		if [ "$paramname" == "HELP" ]; then
 			printHelp
 			quit
 		fi
-		sed -i "s&export $paramname=.*&export $paramname=\"${!paramname}\"&" $SITC_ROOT/install.conf
+		export "$parmamname=$option"
 	elif [ "`echo $param | cut -c1-1`" == "-" ]; then
 		param="`echo $param | cut -c2-`" # remove the '-'
 		case $param in
 			"y") YES_TO_PROMPTS=true ;;
 			"yy") YES_TO_PROMPTS=true; YES_TO_SANITY_CHECK=true ;;
 			"v") cat $SITC_ROOT/version && exit ;;
-			"h") printHelp ;;
+			"h") printHelp && exit ;;
 		esac
 	fi
 done
@@ -31,7 +34,7 @@ echo
 echo "Server In The Cloud version `cat $SITC_ROOT/version`"
 echo "Copyright (c) 2017, WebMO, LLC, all rights reserved."
 
-if [ ! -e $SITC_ROOT/license_agreed ] && [ "$YES_TO_PROMPTS" == "false" ]; then
+if [ "$YES_TO_PROMPTS" == "false" ]; then
 	echo
 	echo "This script automates the installation of software from several"
 	echo "third parties. Many of these have licenses that are agreed to"
@@ -39,7 +42,6 @@ if [ ! -e $SITC_ROOT/license_agreed ] && [ "$YES_TO_PROMPTS" == "false" ]; then
 	echo "ENTER, or press CTRL-c to exit."
 	echo
 	read ans
-	touch $SITC_ROOT/license_agreed
 fi
 
 if [ "$YES_TO_SANITY_CHECK" != "true" ]; then
@@ -66,20 +68,16 @@ echo "Installing for $OS"
 echo
 echo "Logging script output to $SITC_LOG"
 
-echo
-echo "*** RUNNING OS_ADDITIONS ***"
-$SITC_ROOT/scripts/$OS/os_additions
-if [ "$YES_TO_ALL" == "false" ]; then
-	read -s -n 1 -p "Press any key to continue"
+if [ "$SKIP_UPDATE" != "true" ]; then
+	echo
+	echo "*** RUNNING OS_UPDATE ***"
+	$SITC_ROOT/scripts/$OS/os_update
 fi
 
 if [ "$SKIP_WEBMO" != "true" ]; then
 	echo
 	echo "*** RUNNING INSTALL_WEBMO ***"
 	$SITC_ROOT/scripts/$OS/install_webmo $SITC_ROOT
-	if [ "$YES_TO_ALL" == "false" ]; then
-		read -s -n 1 -p "Press any key to continue"
-	fi
 fi
 
 echo
@@ -94,27 +92,18 @@ for engine in `sed 's/,/ /g' <<< $ENGINES`; do
 	$SITC_ROOT/scripts/common/install_$engine
 	echo
 done
-if [ "$YES_TO_ALL" == "false" ]; then
-        read -s -n 1 -p "Press any key to continue"
-fi
 
 if [ "$SKIP_WEBMO" != "true" ]; then
 	echo
 	echo "Enabling engines in WebMO"
 	sudo $SITC_ROOT/scripts/common/enable_in_webmo $SITC_ROOT/engines.log /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces
 
-	#if [ ! -d /home/$WEBMO_USER/sitc ]; then
-	#	echo "Copying scripts to /home/$WEBMO_USER/sitc"
-	#	sudo cp -a $SITC_ROOT /home/$WEBMO_USER/sitc
-	#	sudo chown -R $WEBMO_USER:$WEBMO_USER /home/$WEBMO_USER/sitc
-	#fi
-
 	IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
 	echo "
 
 *** CONFIGURE INSTALLATION ***
 
-In your web browser, login to $IP/$WEBMO_USER with the
+In your web browser, log in to $IP/$WEBMO_USER with the
 username \"admin\" and a blank password. Set the admin password.
 
 Run a test job."

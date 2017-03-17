@@ -1,6 +1,11 @@
 #!/bin/bash
 
 echo "Configuring webserver..."
+
+echo "Installing patch..."
+# Install patch
+sudo yum -y install patch >> $SITC_LOG 2>&1
+
 # Configure webserver (enable public_html, enable cgi scripts, redirect webmo to login.cgi)
 version=`cat /etc/redhat-release | grep -o '[0-9]' | awk '{ print $1 }' | head -n 1`
 if (( "$version" >= 7 )); then

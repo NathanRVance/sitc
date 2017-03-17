@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# update os
-$SITC_ROOT/scripts/ubuntu/os_update

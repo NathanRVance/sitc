@@ -6,7 +6,7 @@ if [ "$help_and_exit" == "true" ]; then
 	source $SITC_ROOT/util
 	echo "
 Tinker:
-  --TINKER_VERSION=<version>
+  --tinker-version=<version>
                        version of Tinker to download and install`printDefault $TINKER_VERSION`"
         exit
 fi

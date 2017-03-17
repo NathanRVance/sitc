@@ -6,12 +6,18 @@ if [ "$help_and_exit" == "true" ]; then
 	source $SITC_ROOT/util
 	echo "
 Orca:
-  --ORCA_TAR=<path>    location of the file orca_X_X_X_linux_x86-64.tbz`printDefault $ORCA_TAR`"
+  --orca-tar=<path>    location of the file orca_X_X_X_linux_x86-64.tbz`printDefault $ORCA_TAR`"
         exit
 fi
 
 echo "Untarring orca to $ENGINE_DIR..."
 cd $ENGINE_DIR
+
+while [ ! -e $ORCA_TAR ]; do
+        echo -n "Enter the location of the orca tar: "
+        read ORCA_TAR
+done
+
 sudo tar xjf $ORCA_TAR
 dirname=`ls /usr/local/ | grep "orca"`
 sudo mv $dirname orca/

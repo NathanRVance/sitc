@@ -6,7 +6,7 @@ if [ "$help_and_exit" == "true" ]; then
 	source $SITC_ROOT/util
 	echo "
 Quantum Espresso:
-  --ESPRESSO_VERSION=<version>
+  --espresso-version=<version>
                        version of quantum espresso to install`printDefault $ESPRESSO_VERSION`"
         exit
 fi

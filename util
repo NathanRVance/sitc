@@ -14,19 +14,18 @@ echo "Usage: install [OPTIONS...]
 Installs WebMO and (a) computational chemistry engine(s).
 
 WebMO options:
-  --WEBMO_USER=<name>  unix user WebMO software will be installed under`printDefault $WEBMO_USER`
-  --WEBMO_LICENSE=<license>
+  --webmo-user=<name>  unix user WebMO software will be installed under`printDefault $WEBMO_USER`
+  --webmo-license=<license>
                        license used to download and install WebMO`printDefault $WEBMO_LICENSE`
-  --WEBMO_PASSWORD=<password>
+  --webmo-password=<password>
                        password that corresponds to WEBMO_LICENSE`printDefault $WEBMO_PASSWORD`
-  --WEBMO_INITIAL_USERS=<users>
+  --webmo-initial-users=<users>
                        comma separated username:password`printDefault $WEBMO_INITIAL_USERS`
-  --SKIP_WEBMO=<true/false>
-                       omit webmo (install engines only)`printDefault $SKIP_WEBMO`
+  --skip-webmo         omit webmo (install engines only)`printDefault $SKIP_WEBMO`
 
 Engine options:
-  --ENGINE_DIR=<path>  path to directory that engines are to be installed in`printDefault $ENGINE_DIR`
-  --ENGINES=<engines>  comma separated engines to be installed on this computer`printDefault $ENGINES`
+  --engine-dir=<path>  path to directory that engines are to be installed in`printDefault $ENGINE_DIR`
+  --engines=<engines>  comma separated engines to be installed on this computer`printDefault $ENGINES`
 
 Available engines:"
 for file in `ls $SITC_ROOT/scripts/common`; do
@@ -49,19 +48,21 @@ done
 
 echo
 echo "Miscellaneous:
-  --YES_TO_PROMPTS=<true/false>
+  --skip-update        skips performing a system update
+  -y, --yes-to-prompts
                        accept licenses and don't prompt for continuing
-  -y                   same as --YES_TO_PROMPTS=true
-  --YES_TO_SANITY_CHECK=<true/false>
+  --yes-to-sanity-check
                        bypass sanity check
-  -yy                  same as --YES_TO_PROMPTS=true and
-                          --YES_TO_SANITY_CHECK=true
+  -yy                  same as --yes-to-prompts and --yes-to-sanity-check
   -v                   display version information and exit
   -h, --help           display this help text and exit"
 exit
 }
 
 summarizeSettings() {
+	if [ "$SKIP_UPDATE" != "true" ]; then
+		echo " Update the operating system"
+	fi
 	if [ "$SKIP_WEBMO" == "true" ]; then
 		echo " Skip installing WebMO"
 	else
