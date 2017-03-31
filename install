@@ -10,7 +10,7 @@ for param in $@; do
 	# Potentially override defaults in install.conf
 	if [ "`echo $param | cut -c1-2`" == "--" ]; then
 		paramname=`echo $param | cut -c3- | cut -d "=" -f1 | tr 'a-z-' 'A-Z_'`
-		option=`echo $param | cut -c3- | cut -d "=" -f2`
+		option=`echo $param | cut -c3- | cut -s -d "=" -f2`
 		if [ -z "$option" ]; then
 			option="true"
 		fi
@@ -18,7 +18,7 @@ for param in $@; do
 			printHelp
 			quit
 		fi
-		export "$parmamname=$option"
+		export "$paramname=$option"
 	elif [ "`echo $param | cut -c1-1`" == "-" ]; then
 		param="`echo $param | cut -c2-`" # remove the '-'
 		case $param in
