@@ -18,10 +18,10 @@ WebMO options:
   --webmo-license=<license>
                        license used to download and install WebMO`printDefault $WEBMO_LICENSE`
   --webmo-password=<password>
-                       password that corresponds to WEBMO_LICENSE`printDefault $WEBMO_PASSWORD`
+                       password that corresponds to the webmo license`printDefault $WEBMO_PASSWORD`
   --webmo-initial-users=<users>
                        comma separated username:password`printDefault $WEBMO_INITIAL_USERS`
-  --skip-webmo         omit webmo (install engines only)`printDefault $SKIP_WEBMO`
+  --skip-webmo         omit webmo (install engines only)
 
 Engine options:
   --engine-dir=<path>  path to directory that engines are to be installed in`printDefault $ENGINE_DIR`
