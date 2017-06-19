@@ -13,7 +13,7 @@ if (($license ne "") && ($password ne "")) {
 }
 
 print "\n";
-print "Have you previously obtained a WebMO license number [y/n]:";
+print "Have you previously obtained a WebMO license number? [y/n]:";
 local $choice = "";
 	while ($choice eq "")
 	{
