@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt -y install openssl ssl-cert
+sudo apt -y install openssl ssl-cert &> /dev/null
 sudo a2enmod ssl
 sudo a2ensite default-ssl.conf
 sudo systemctl restart apache2
