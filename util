@@ -21,7 +21,7 @@ WebMO options:
                        password that corresponds to the webmo license`printDefault $WEBMO_PASSWORD`
   --webmo-initial-users=<users>
                        comma separated username:password`printDefault $WEBMO_INITIAL_USERS`
-  --webmo-upgrade      perform a webmo upgrade only
+  --upgrade-webmo      perform a webmo upgrade only
   --skip-webmo         omit webmo (install engines only)
 
 Engine options:
@@ -62,16 +62,20 @@ exit
 }
 
 summarizeSettings() {
-	if [ "$SKIP_UPDATE" != "true" ]; then
-		echo " Update the operating system"
-	fi
-	if [ "$SKIP_WEBMO" == "true" ]; then
-		echo " Skip installing WebMO"
+	if [ "$UPGRADE_WEBMO" == "true" ]; then
+		echo " Upgrade WebMO"
 	else
-		echo " Install WebMO for user $WEBMO_USER"
+		if [ "$SKIP_UPDATE" != "true" ]; then
+			echo " Update the operating system"
+		fi
+		if [ "$SKIP_WEBMO" == "true" ]; then
+			echo " Skip installing WebMO"
+		else
+			echo " Install WebMO for user $WEBMO_USER"
+		fi
+		if [ -n "$ENGINES" ]; then
+	                echo " Install $ENGINES to $ENGINE_DIR"
+	        fi
 	fi
-	if [ -n "$ENGINES" ]; then
-                echo " Install $ENGINES to $ENGINE_DIR"
-        fi
 }
 

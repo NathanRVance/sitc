@@ -71,7 +71,7 @@ echo "Installing for $OS"
 echo
 echo "Logging script output to $SITC_LOG"
 
-if [ "$SKIP_UPDATE" != "true" ] && [ "$WEBMO_UPGRADE" != "true" ]; then
+if [ "$SKIP_UPDATE" != "true" ] && [ "$UPGRADE_WEBMO" != "true" ]; then
 	echo
 	echo "*** RUNNING OS_UPDATE ***"
 	$SITC_ROOT/scripts/$OS/os_update
@@ -81,7 +81,8 @@ if [ "$SKIP_WEBMO" != "true" ]; then
 	echo
 	echo "*** RUNNING INSTALL_WEBMO ***"
 	$SITC_ROOT/scripts/$OS/install_webmo $SITC_ROOT
-	if [ "$WEBMO_UPGRADE" == "true" ]; then
+	if [ "$UPGRADE_WEBMO" == "true" ]; then
+		echo "Done upgrading WebMO"
 		exit
 	fi
 fi
