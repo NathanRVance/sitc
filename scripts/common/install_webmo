@@ -43,6 +43,7 @@ echo "Unpacking WebMO..."
 # Unpack WebMO
 tar xzf WebMO.tar.gz
 
+
 #Setup autoinstall script
 sudo cat > /tmp/WebMO.install/setup.conf << EOF
 license="$license"
@@ -57,6 +58,12 @@ EOF
 
 sudo chown -R $WEBMO_USER:$WEBMO_USER WebMO.install
 cd WebMO.install
+
+if [ "$WEBMO_UPGRADE" == "true" ]; then
+	sudo su $WEBMO_USER -c "perl upgrade.pl /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/globals.int" >> $SITC_LOG 2>&1
+	exit
+fi
+
 sudo su $WEBMO_USER -c "perl setup.pl" >> $SITC_LOG 2>&1
 
 echo "Cleaning up temporary files..."

@@ -64,14 +64,14 @@ elif [ -e "/etc/redhat-release" ]; then
    OS="centos"
 else
    echo "Unidentified OS! Exiting."
-   exit
+   exit 1
 fi
 
 echo "Installing for $OS"
 echo
 echo "Logging script output to $SITC_LOG"
 
-if [ "$SKIP_UPDATE" != "true" ]; then
+if [ "$SKIP_UPDATE" != "true" ] && [ "$WEBMO_UPGRADE" != "true" ]; then
 	echo
 	echo "*** RUNNING OS_UPDATE ***"
 	$SITC_ROOT/scripts/$OS/os_update
@@ -81,6 +81,9 @@ if [ "$SKIP_WEBMO" != "true" ]; then
 	echo
 	echo "*** RUNNING INSTALL_WEBMO ***"
 	$SITC_ROOT/scripts/$OS/install_webmo $SITC_ROOT
+	if [ "$WEBMO_UPGRADE" == "true" ]; then
+		exit
+	fi
 fi
 
 echo

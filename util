@@ -21,6 +21,7 @@ WebMO options:
                        password that corresponds to the webmo license`printDefault $WEBMO_PASSWORD`
   --webmo-initial-users=<users>
                        comma separated username:password`printDefault $WEBMO_INITIAL_USERS`
+  --webmo-upgrade      perform a webmo upgrade only
   --skip-webmo         omit webmo (install engines only)
 
 Engine options:
