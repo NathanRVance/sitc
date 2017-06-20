@@ -12,7 +12,7 @@ for param in $@; do
 		paramname=`echo $param | cut -c3- | cut -d "=" -f1 | tr 'a-z-' 'A-Z_'`
 		option=`echo $param | cut -c3- | cut -s -d "=" -f2`
 		if [ -z "$option" ]; then
-			option="true"
+			option=true
 		fi
 		if [ "$paramname" == "HELP" ]; then
 			printHelp
@@ -29,6 +29,10 @@ for param in $@; do
 		esac
 	fi
 done
+
+if [ "$SKIP_ENGINES" == "true" ]; then
+	export ENGINES=""
+fi
 
 echo
 echo "Server In The Cloud version `cat $SITC_ROOT/version`"

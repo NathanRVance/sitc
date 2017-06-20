@@ -26,6 +26,7 @@ WebMO options:
 Engine options:
   --engine-dir=<path>  path to directory that engines are to be installed in`printDefault $ENGINE_DIR`
   --engines=<engines>  comma separated engines to be installed on this computer`printDefault $ENGINES`
+  --skip-engines       equivalent to --engines=\"\"
 
 Available engines:"
 for file in `ls $SITC_ROOT/scripts/common`; do
