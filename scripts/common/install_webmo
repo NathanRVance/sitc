@@ -62,15 +62,15 @@ cd WebMO.install
 if [ "$UPGRADE_WEBMO" == "true" ]; then
 	echo "Upgrading WebMO..."
 	sudo su $WEBMO_USER -c "perl upgrade.pl /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/globals.int" >> $SITC_LOG 2>&1
-	exit
+else
+	sudo su $WEBMO_USER -c "perl setup.pl" >> $SITC_LOG 2>&1
 fi
-
-sudo su $WEBMO_USER -c "perl setup.pl" >> $SITC_LOG 2>&1
-
 echo "Cleaning up temporary files..."
 cd ..
 sudo rm -rf WebMO.install
-
+if [ "$UPGRADE_WEBMO" == "true" ]; then
+	exit
+fi
 # Make sure permissions are correct for /home/$WEBMO_USER/webmo
 # (it can get messed up on different distributions)
 sudo chmod 757 /home/$WEBMO_USER/webmo
