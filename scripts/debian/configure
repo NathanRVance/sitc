@@ -31,3 +31,6 @@ elif [ -e /etc/apache2/mods-available/userdir.conf ]; then
         fi
 	sudo systemctl restart apache2 >> $SITC_LOG 2>&1
 fi
+
+# There's no harm in setting up ssl
+$SITC_ROOT/scripts/debian/setup_ss

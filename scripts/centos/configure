@@ -16,6 +16,9 @@ else
 	sudo service httpd restart >> $SITC_LOG 2>&1
 fi
 
+# There's no harm in setting up ssl
+$SITC_ROOT/scripts/centos/setup_ssl
+
 echo "Configuring selinux..."
 # Configure selinux (set to permissive mode)
 sudo cp -p /etc/selinux/config /etc/selinux/config.orig
