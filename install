@@ -33,9 +33,9 @@ done
 echo
 echo "Server In The Cloud version `cat $SITC_ROOT/version`"
 echo "Copyright (c) 2017, WebMO, LLC, all rights reserved."
+echo
 
 if [ "$YES_TO_PROMPTS" == "false" ]; then
-	echo
 	echo "This script automates the installation of software from several"
 	echo "third parties. Many of these have licenses that are agreed to"
 	echo "automatically by this script. Indicate your consent by pressing"
@@ -45,7 +45,6 @@ if [ "$YES_TO_PROMPTS" == "false" ]; then
 fi
 
 if [ "$YES_TO_SANITY_CHECK" != "true" ]; then
-	echo
 	echo "Sanity check! You have selected to do the following:"
 	summarizeSettings
 	echo "Press ENTER to continue, or CTRL-c to exit."

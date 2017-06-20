@@ -1,23 +1,6 @@
 #!/bin/bash
 
-IP=`curl -s "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "X-Google-Metadata-Request: True"`
-DN=$IP.xip.io
-
-sudo apt-get -y install python-certbot-apache -t jessie-backports
-sudo certbot --apache certonly -d $DN --register-unsafely-without-email
-
+sudo apt -y install openssl ssl-cert
 sudo a2enmod ssl
-sudo a2ensite default-ssl
-
-sudo sed -i.orig "s&SSLCertificateFile.*&SSLCertificateFile /etc/letsencrypt/live/$DN/cert.pem&g" /etc/apache2/sites-available/default-ssl.conf
-sudo sed -i "s&SSLCertificateKeyFile.*&SSLCertificateKeyFile /etc/letsencrypt/live/$DN/privkey.pem&g" /etc/apache2/sites-available/default-ssl.conf
-sudo sed -i "s&#SSLCertificateChainFile.*&SSLCertificateChainFile /etc/letsencrypt/live/$DN/chain.pem&g" /etc/apache2/sites-available/default-ssl.conf
-
-echo "
-<VirtualHost *:80>
-        Redirect permanent / https://$DN/
-</VirtualHost>" | sudo tee --append /etc/apache2/apache2.conf > /dev/null
-
-sudo mv /etc/apache2/sites-enabled/000-default.conf /etc/apache2/sites-enabled/000-default.conf.disabled
-
+sudo a2ensite default-ssl.conf
 sudo systemctl restart apache2
