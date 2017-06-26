@@ -75,6 +75,11 @@ fi
 # (it can get messed up on different distributions)
 sudo chmod 757 /home/$WEBMO_USER/webmo
 
+if [ "$YES_TO_PROMPTS" == "true" ]; then
+	# We're done here
+	exit
+fi
+
 if [ -n "$WEBMO_INITIAL_USERS" ]; then
 	for user in `sed 's/,/ /g' <<< $WEBMO_INITIAL_USERS`; do
 		username=`echo $user | cut -f1 -d ":"`
