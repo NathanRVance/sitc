@@ -20,7 +20,7 @@ sudo yum -y install perl-CGI >> $SITC_LOG 2>&1
 
 # The configure script modifies system configuration files,
 # and it can get annoying if it runs twice.
-if [ ! -e $SITC_ROOT/ran_configure ]; then
+if [ ! -e $SITC_ROOT/ran_configure ] && [ "$UPGRADE_WEBMO" != "true" ]; then
 	echo "Configuring httpd..."
 	# Configure httpd
 	$SITC_ROOT/scripts/centos/configure

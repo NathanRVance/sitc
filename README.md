@@ -9,9 +9,13 @@ SITC is a set of scripts that installs a computational chemistry webserver to a 
 
 ## Quickstart
 
-On the machine you wish to configure (cloud or otherwise), execute the `install` script. Common options include:
-  * `--engines="ENGINES"` where ENGINES is a comma separated list of computational chemistry engines to install. Execute `install --help` to see an exhaustive list with engine specific options.
+On the machine you wish to configure (cloud or otherwise), execute the `install` script.  
+Common options include:
+  * `--help` provides an exhaustive list of options.
+  * `--engines="ENGINES"` where ENGINES is a comma separated list of computational chemistry engines to install.
   * `--skip-engines` to perform a WebMO only installation. This is equivalent to specifying `--engines=""`.
   * `--skip-webmo` to install engines only.
+  * `--upgrade-webmo` to upgrade WebMO.
+  * Default installs WebMO and Mopac7.
 
 When scripting installations, specify all desired options on the command line along with `-yy` to skip prompts. Alternatively, modify `install.conf` to include all desired options and execute `install` without options. See `install.conf` for further instructions.
