@@ -61,7 +61,7 @@ cd WebMO.install
 
 if [ "$UPGRADE_WEBMO" == "true" ]; then
 	echo "Upgrading WebMO..."
-	sudo su $WEBMO_USER -c "perl upgrade.pl /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/globals.int" >> $SITC_LOG 2>&1
+	sudo su $WEBMO_USER -c "echo $license | perl upgrade.pl /home/$WEBMO_USER/public_html/cgi-bin/webmo/interfaces/globals.int" >> $SITC_LOG 2>&1
 else
 	sudo su $WEBMO_USER -c "perl setup.pl" >> $SITC_LOG 2>&1
 fi
