@@ -14,7 +14,7 @@ sudo apt-get -y install libcgi-pm-perl >> $SITC_LOG 2>&1
 
 # The configure script modifies system configuration files,
 # and it can get annoying if it runs twice.
-if [ ! -e $SITC_ROOT/ran_configure ]; then
+if [ ! -e $SITC_ROOT/ran_configure ] && [ "$UPGRADE_WEBMO" != "true" ]; then
         echo "Configuring apache..."
         # Configure apache
         $SITC_ROOT/scripts/ubuntu/configure
