@@ -13,24 +13,12 @@ echo "Configuring webserver..."
 sudo a2enmod userdir >> $SITC_LOG 2>&1
 sudo a2enmod suexec >> $SITC_LOG 2>&1
 sudo a2enmod cgid >> $SITC_LOG 2>&1
-if [ -e /etc/apache2/conf.d/ ]; then
-	#debian 7
-	sudo cp /etc/apache2/mods-enabled/userdir.conf /etc/apache2/conf.d
-	if [ ! -e /etc/apache2/conf.d/userdir.conf.orig ]; then
-		#This is the first time the script was run, so back up the current userdir.conf
-		sudo cp -p /etc/apache2/conf.d/userdir.conf /etc/apache2/conf.d/userdir.conf.orig
-		echo "$APPEND" | sudo tee --append /etc/apache2/conf.d/userdir.conf > /dev/null
-	fi
-	sudo service apache2 restart >> $SITC_LOG 2>&1
-elif [ -e /etc/apache2/mods-available/userdir.conf ]; then
-	#debian 8
-	if [ ! -e /etc/apache2/mods-available/userdir.conf.orig ]; then
-		#This is the first time the script was run, so back up the current userdir.conf
-		sudo cp -p /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-available/userdir.conf.orig
-		echo "$APPEND" | sudo tee --append /etc/apache2/mods-available/userdir.conf > /dev/null
-        fi
-	sudo systemctl restart apache2 >> $SITC_LOG 2>&1
+if [ ! -e /etc/apache2/mods-available/userdir.conf.orig ]; then
+	#This is the first time the script was run, so back up the current userdir.conf
+	sudo cp -p /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-available/userdir.conf.orig
+	echo "$APPEND" | sudo tee --append /etc/apache2/mods-available/userdir.conf > /dev/null
 fi
+sudo systemctl restart apache2 >> $SITC_LOG 2>&1
 
-# There's no harm in setting up ssl
-$SITC_ROOT/scripts/debian/setup_ssl
+# Set up SSL, whether we need it or not
+$SITC_ROOT/scripts/$OS/setup_ssl >> $SITC_LOG 2>&1

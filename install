@@ -57,11 +57,11 @@ if [ "$YES_TO_SANITY_CHECK" != "true" ]; then
 fi
 
 if [ -n "`uname -a | grep -i Debian`" ]; then
-   OS="debian"
+   export OS="debian"
 elif [ -n "`uname -a | grep -i ubuntu`" ]; then
-   OS="ubuntu"
+   export OS="ubuntu"
 elif [ -e "/etc/redhat-release" ]; then
-   OS="centos"
+   export OS="centos"
 else
    echo "Unidentified OS! Exiting."
    exit 1
